@@ -6,7 +6,7 @@ _build*
 pm_to_blib*
 *.tar.gz
 .lwpcookies
--*
+Test-Moose-More-*
 cover_db
 *.old
 inc
