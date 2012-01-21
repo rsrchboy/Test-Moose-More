@@ -1,0 +1,63 @@
+=pod
+
+=head1 NAME
+
+Test::Moose::More - More tools for testing Moose packages
+
+=head1 VERSION
+
+version 0.001
+
+=head1 SYNOPSIS
+
+    use Test::Moose::More;
+
+    is_class 'Some::Class';
+    is_role  'Some::Role';
+    has_method_ok 'Some::Class', 'foo';
+
+    # ... etc
+
+=head1 DESCRIPTION
+
+This package contains a number of additional tests that can be employed
+against Moose classes/roles.  It is intended to coexist with L<Test::Moose>,
+though it does not (currently) require it.
+
+=function has_method_ok $thing, @methods
+
+Queries $thing's metaclass to see if $thing has the methods named in @methods.
+
+=function is_role $thing
+
+Passes if $thing's metaclass isa L<Moose::Meta::Role>.
+
+=function is_class $thing
+
+Passes if $thing's metaclass isa L<Moose::Meta::Class>.
+
+=head1 SEE ALSO
+
+L<Test::Moose>
+
+=head1 BUGS
+
+All complex software has bugs lurking in it, and this module is no exception.
+
+Bugs, feature requests and pull requests through GitHub are most welcome; our
+page and repo (same URI):
+
+    https://github.com/RsrchBoy/test-moose-more
+
+=head1 AUTHOR
+
+Chris Weyl <cweyl@alumni.drew.edu>
+
+=head1 COPYRIGHT AND LICENSE
+
+This software is Copyright (c) 2012 by Chris Weyl.
+
+This is free software, licensed under:
+
+  The GNU Lesser General Public License, Version 2.1, February 1999
+
