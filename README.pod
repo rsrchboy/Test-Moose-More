@@ -24,15 +24,17 @@ This package contains a number of additional tests that can be employed
 against Moose classes/roles.  It is intended to coexist with L<Test::Moose>,
 though it does not (currently) require it.
 
-=function has_method_ok $thing, @methods
+=head1 TEST_FUNCTIONS
+
+=head2 has_method_ok $thing, @methods
 
 Queries $thing's metaclass to see if $thing has the methods named in @methods.
 
-=function is_role $thing
+=head2 is_role $thing
 
 Passes if $thing's metaclass isa L<Moose::Meta::Role>.
 
-=function is_class $thing
+=head2 is_class $thing
 
 Passes if $thing's metaclass isa L<Moose::Meta::Class>.
 
