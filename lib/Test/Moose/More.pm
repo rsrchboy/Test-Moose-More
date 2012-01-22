@@ -21,7 +21,7 @@ use Moose::Util 'does_role', 'find_meta';
 
 my $tb = Test::Builder->new();
 
-=function has_method_ok $thing, @methods
+=test has_method_ok $thing, @methods
 
 Queries $thing's metaclass to see if $thing has the methods named in @methods.
 
@@ -39,11 +39,11 @@ sub has_method_ok {
     return;
 }
 
-=function is_role $thing
+=test is_role $thing
 
 Passes if $thing's metaclass isa L<Moose::Meta::Role>.
 
-=function is_class $thing
+=test is_class $thing
 
 Passes if $thing's metaclass isa L<Moose::Meta::Class>.
 
@@ -65,14 +65,17 @@ sub _is_moosey {
     return;
 }
 
-=function check_sugar_removed_ok $thing
+=test check_sugar_removed_ok $thing
 
 Ensures that all the standard Moose sugar is no longer directly callable on a
 given package.
 
+=function known_sugar
+
+Returns a list of all the known standard Moose sugar (has, extends, etc).
+
 =cut
 
-#my @sugar = qw{ has around augment inner before after blessed confess };
 sub known_sugar { qw{ has around augment inner before after blessed confess } }
 
 sub check_sugar_removed_ok {
@@ -85,7 +88,7 @@ sub check_sugar_removed_ok {
     return;
 }
 
-=function check_sugar_ok $thing
+=test check_sugar_ok $thing
 
 Checks and makes sure a class/etc can still do all the standard Moose sugar.
 
