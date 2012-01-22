@@ -6,7 +6,10 @@ use strict;
 use warnings;
 
 use Sub::Exporter -setup => {
-    exports => [ qw{ has_method_ok is_role is_class } ],
+    exports => [ qw{
+        has_method_ok is_role is_class
+        check_sugar_ok check_sugar_removed_ok
+    } ],
     groups  => { default => [ ':all' ] },
 };
 use Test::Builder;
@@ -59,6 +62,42 @@ sub _is_moosey {
     return unless !!$meta;
 
     $tb->ok($meta->isa("Moose::Meta::$type"), "$thing_name is a Moose " . lc $type);
+    return;
+}
+
+=function check_sugar_removed_ok $thing
+
+Ensures that all the standard Moose sugar is no longer directly callable on a
+given package.
+
+=cut
+
+#my @sugar = qw{ has around augment inner before after blessed confess };
+sub known_sugar { qw{ has around augment inner before after blessed confess } }
+
+sub check_sugar_removed_ok {
+    my $t = shift @_;
+
+    # check some (not all) Moose sugar to make sure it has been cleared
+    #my @sugar = qw{ has around augment inner before after blessed confess };
+    $tb->ok(!$t->can($_) => "$t cannot $_") for known_sugar;
+
+    return;
+}
+
+=function check_sugar_ok $thing
+
+Checks and makes sure a class/etc can still do all the standard Moose sugar.
+
+=cut
+
+sub check_sugar_ok {
+    my $t = shift @_;
+
+    # check some (not all) Moose sugar to make sure it has been cleared
+    #my @sugar = qw{ has around augment inner before after blessed confess };
+    $tb->ok($t->can($_) => "$t can $_") for known_sugar;
+
     return;
 }
 
