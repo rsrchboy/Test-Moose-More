@@ -2,5 +2,8 @@ Revision history for Test-Moose-More
 
 {{$NEXT}}
 
+0.002     2012-01-21 20:07:26 America/Los_Angeles
+- add check_sugar_ok and check_sugar_removed_ok
+
 0.001     2012-01-21 10:52:14 America/Los_Angeles
 - initial release
