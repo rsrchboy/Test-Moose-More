@@ -128,14 +128,4 @@ though it does not (currently) require it.
 
 L<Test::Moose>
 
-=head1 BUGS
-
-All complex software has bugs lurking in it, and this module is no exception.
-
-Bugs, feature requests and pull requests through GitHub are most welcome; our
-page and repo (same URI):
-
-    https://github.com/RsrchBoy/test-moose-more
-
 =cut
-
