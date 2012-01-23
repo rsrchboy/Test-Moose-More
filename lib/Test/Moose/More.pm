@@ -9,11 +9,13 @@ use Sub::Exporter -setup => {
     exports => [ qw{
         has_method_ok is_role is_class
         check_sugar_ok check_sugar_removed_ok
+        validate_class validate_role
     } ],
     groups  => { default => [ ':all' ] },
 };
 use Test::Builder;
 use Test::More;
+use Test::Moose;
 use Moose::Util 'does_role', 'find_meta';
 
 # debugging...
@@ -61,8 +63,7 @@ sub _is_moosey {
     $tb->ok(!!$meta, "$thing_name has a metaclass");
     return unless !!$meta;
 
-    $tb->ok($meta->isa("Moose::Meta::$type"), "$thing_name is a Moose " . lc $type);
-    return;
+    return $tb->ok($meta->isa("Moose::Meta::$type"), "$thing_name is a Moose " . lc $type);
 }
 
 =test check_sugar_removed_ok $thing
@@ -102,6 +103,68 @@ sub check_sugar_ok {
     $tb->ok($t->can($_) => "$t can $_") for known_sugar;
 
     return;
+}
+
+
+=test validate_class
+
+validate_class {
+
+    attributes => [ ... ],
+    methods    => [ ... ],
+    isa        => [ ... ],
+    does       => [ ... ],
+
+    requires_methods => [ ... ],
+
+    meta => {
+        class => {
+            ...as above
+        },
+        attribute ... etc
+    },
+};
+
+=test validate_role
+
+The same as validate_class(), but for roles.
+
+=test validate_thing
+
+The same as validate_class() and validate_role(), except without the class or
+role validation.
+
+=cut
+
+sub validate_thing {
+    my ($class, %args) = @_;
+
+    local $Test::Builder::Level = $Test::Builder::Level + 1;
+    do { does_ok($class, $_) for @{$args{does}} }
+        if exists $args{does};
+
+    do { has_method_ok($class, $_) for @{$args{methods}} }
+        if exists $args{methods};
+
+    return;
+}
+
+sub validate_class {
+    my ($class, @args) = @_;
+
+    local $Test::Builder::Level = $Test::Builder::Level + 1;
+    return unless is_class $class;
+
+    return validate_thing $class => @args;
+}
+
+sub validate_role {
+    my ($class, @args) = @_;
+
+    local $Test::Builder::Level = $Test::Builder::Level + 1;
+    return unless is_role $class;
+
+    return validate_thing $class => @args;
 }
 
 !!42;
