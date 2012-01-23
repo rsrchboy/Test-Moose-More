@@ -6,7 +6,7 @@ Test::Moose::More - More tools for testing Moose packages
 
 =head1 VERSION
 
-version 0.002
+version 0.003
 
 =head1 SYNOPSIS
 
@@ -47,6 +47,34 @@ given package.
 
 Checks and makes sure a class/etc can still do all the standard Moose sugar.
 
+=head2 validate_class
+
+validate_class {
+
+    attributes => [ ... ],
+    methods    => [ ... ],
+    isa        => [ ... ],
+    does       => [ ... ],
+
+    requires_methods => [ ... ],
+
+    meta => {
+        class => {
+            ...as above
+        },
+        attribute ... etc
+    },
+};
+
+=head2 validate_role
+
+The same as validate_class(), but for roles.
+
+=head2 validate_thing
+
+The same as validate_class() and validate_role(), except without the class or
+role validation.
+
 =head1 FUNCTIONS
 
 =head2 known_sugar
@@ -55,16 +83,29 @@ Returns a list of all the known standard Moose sugar (has, extends, etc).
 
 =head1 SEE ALSO
 
+Please see those modules/websites for more information related to this module.
+
+=over 4
+
+=item *
+
 L<Test::Moose>
+
+=back
+
+=head1 SOURCE
+
+The development version is on github at L<http://github.com/RsrchBoy/test-moose-more>
+and may be cloned from L<git://github.com/RsrchBoy/test-moose-more.git>
 
 =head1 BUGS
 
-All complex software has bugs lurking in it, and this module is no exception.
+Please report any bugs or feature requests on the bugtracker website
+https://github.com/RsrchBoy/test-moose-more/issues
 
-Bugs, feature requests and pull requests through GitHub are most welcome; our
-page and repo (same URI):
-
-    https://github.com/RsrchBoy/test-moose-more
+When submitting a bug or request, please include a test-file or a
+patch to an existing test-file that illustrates the bug or desired
+feature.
 
 =head1 AUTHOR
 
