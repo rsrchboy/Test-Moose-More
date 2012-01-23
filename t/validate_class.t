@@ -42,7 +42,7 @@ use Test::Builder::Tester; # tests => 1;
 use Test::More;
 use Test::Moose::More;
 
-# validate w/valid class 
+# validate w/valid class
 test_out 'ok 1 - TestClass has a metaclass';
 test_out 'ok 2 - TestClass is a Moose class';
 test_out 'ok 3 - The object does TestRole';
