@@ -10,18 +10,41 @@ use Sub::Exporter -setup => {
         has_method_ok is_role is_class
         check_sugar_ok check_sugar_removed_ok
         validate_class validate_role
+        does_ok
     } ],
     groups  => { default => [ ':all' ] },
 };
+
 use Test::Builder;
 use Test::More;
-use Test::Moose;
 use Moose::Util 'does_role', 'find_meta';
 
 # debugging...
 #use Smart::Comments;
 
 my $tb = Test::Builder->new();
+
+=test does_ok $thing, @roles
+
+Checks to see if $thing does the given roles.  $thing may be the class name or
+instance of the class you wish to check.
+
+=cut
+
+sub does_ok($$;$) {
+    my ($thing, $roles, $message) = @_;
+
+    my $thing_meta = find_meta($thing);
+    my $thing_name = $thing_meta->name;
+
+    $roles     = [ $roles ] unless ref $roles;
+    $message ||= "$thing_name does";
+
+    $tb->ok(!!$thing_meta->does_role($_), "$message $_")
+        for @$roles;
+
+    return;
+}
 
 =test has_method_ok $thing, @methods
 
