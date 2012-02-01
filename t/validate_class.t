@@ -45,7 +45,7 @@ use Test::Moose::More;
 # validate w/valid class
 test_out 'ok 1 - TestClass has a metaclass';
 test_out 'ok 2 - TestClass is a Moose class';
-test_out 'ok 3 - The object does TestRole';
+test_out 'ok 3 - TestClass does TestRole';
 my $i = 3;
 do { $i++; test_out "ok $i - TestClass has method $_" }
     for qw{ foo method1 has_bar };
@@ -67,7 +67,7 @@ test_test 'validate_class works correctly for non-moose classes';
 # validate w/invalid class
 test_out 'ok 1 - TestClass::Invalid has a metaclass';
 test_out 'ok 2 - TestClass::Invalid is a Moose class';
-test_out 'not ok 3 - The object does TestRole';
+test_out 'not ok 3 - TestClass::Invalid does TestRole';
 test_fail 4;
 $i = 3;
 do { $i++; test_out "not ok $i - TestClass::Invalid has method $_"; test_fail 2 }
