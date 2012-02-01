@@ -25,6 +25,21 @@ use Moose::Util 'does_role', 'find_meta';
 
 my $tb = Test::Builder->new();
 
+sub _thing_name {
+    my ($thing, $thing_meta) = @_;
+    $thing_meta ||= find_meta($thing);
+
+    # try very hard to come up with a meaningful name
+    my $desc
+        = !!$thing_meta  ? $thing_meta->name
+        : blessed $thing ? ref $thing
+        : ref $thing     ? 'The object'
+        :                  $thing
+        ;
+
+    return $desc;
+}
+
 =test meta_ok $thing
 
 Tests $thing to see if it has a metaclass; $thing may be the class name or
@@ -36,19 +51,7 @@ sub meta_ok ($;$) {
     my ($thing, $message) = @_;
 
     my $thing_meta = find_meta($thing);
-
-    if (!$message) {
-
-        # try very hard to come up with a meaningful name
-        my $desc
-            = !!$thing_meta  ? $thing_meta->name
-            : blessed $thing ? ref $thing
-            : ref $thing     ? 'The object'
-            :                  $thing
-            ;
-
-        $message = "$desc has a meta";
-    }
+    $message ||= _thing_name($thing, $thing_meta) . ' has a meta';
 
     return $tb->ok(!!$thing_meta, $message);
 }
@@ -64,10 +67,9 @@ sub does_ok($$;$) {
     my ($thing, $roles, $message) = @_;
 
     my $thing_meta = find_meta($thing);
-    my $thing_name = $thing_meta->name;
 
     $roles     = [ $roles ] unless ref $roles;
-    $message ||= "$thing_name does";
+    $message ||= _thing_name($thing, $thing_meta) . ' does';
 
     $tb->ok(!!$thing_meta->does_role($_), "$message $_")
         for @$roles;
