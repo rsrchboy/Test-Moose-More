@@ -10,19 +10,48 @@ use Sub::Exporter -setup => {
         has_method_ok is_role is_class
         check_sugar_ok check_sugar_removed_ok
         validate_class validate_role
-        does_ok
+        meta_ok does_ok
     } ],
     groups  => { default => [ ':all' ] },
 };
 
 use Test::Builder;
 use Test::More;
+use Scalar::Util 'blessed';
 use Moose::Util 'does_role', 'find_meta';
 
 # debugging...
 #use Smart::Comments;
 
 my $tb = Test::Builder->new();
+
+=test meta_ok $thing
+
+Tests $thing to see if it has a metaclass; $thing may be the class name or
+instance of the class you wish to check.
+
+=cut
+
+sub meta_ok ($;$) {
+    my ($thing, $message) = @_;
+
+    my $thing_meta = find_meta($thing);
+
+    if (!$message) {
+
+        # try very hard to come up with a meaningful name
+        my $desc
+            = !!$thing_meta  ? $thing_meta->name
+            : blessed $thing ? ref $thing
+            : ref $thing     ? 'The object'
+            :                  $thing
+            ;
+
+        $message = "$desc has a meta";
+    }
+
+    return $tb->ok(!!$thing_meta, $message);
+}
 
 =test does_ok $thing, @roles
 
