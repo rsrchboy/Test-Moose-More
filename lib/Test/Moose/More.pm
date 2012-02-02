@@ -56,22 +56,25 @@ sub meta_ok ($;$) {
     return $tb->ok(!!$thing_meta, $message);
 }
 
-=test does_ok $thing, @roles
+=test does_ok $thing, < $role | \@roles >, [ $message ]
 
 Checks to see if $thing does the given roles.  $thing may be the class name or
 instance of the class you wish to check.
 
+Note that the message will be taken verbatim unless it contains C<%s>
+somewhere; this will be replaced with the name of the role being tested for.
+
 =cut
 
-sub does_ok($$;$) {
+sub does_ok {
     my ($thing, $roles, $message) = @_;
 
     my $thing_meta = find_meta($thing);
 
     $roles     = [ $roles ] unless ref $roles;
-    $message ||= _thing_name($thing, $thing_meta) . ' does';
+    $message ||= _thing_name($thing, $thing_meta) . ' does %s';
 
-    $tb->ok(!!$thing_meta->does_role($_), "$message $_")
+    $tb->ok(!!$thing_meta->does_role($_), sprintf($message, $_))
         for @$roles;
 
     return;
