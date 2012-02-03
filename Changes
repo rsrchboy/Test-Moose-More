@@ -1,6 +1,9 @@
-Revision history for Test-Moose-More 
+Revision history for Test-Moose-More
 
 {{$NEXT}}
+
+0.004     2012-02-02 16:20:01 America/Los_Angeles
+- add does_ok(), meta_ok()
 
 0.003     2012-01-23 15:15:39 America/Los_Angeles
 
