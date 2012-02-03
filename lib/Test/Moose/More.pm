@@ -128,7 +128,7 @@ sub _is_moosey {
 Ensures that all the standard Moose sugar is no longer directly callable on a
 given package.
 
-=function known_sugar
+=func known_sugar
 
 Returns a list of all the known standard Moose sugar (has, extends, etc).
 
