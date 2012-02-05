@@ -243,8 +243,7 @@ __END__
 =head1 DESCRIPTION
 
 This package contains a number of additional tests that can be employed
-against Moose classes/roles.  It is intended to coexist with L<Test::Moose>,
-though it does not (currently) require it.
+against Moose classes/roles.  It is intended to replace L<Test::Moose>.
 
 =head1 SEE ALSO
 
