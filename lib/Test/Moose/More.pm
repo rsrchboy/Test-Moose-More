@@ -11,12 +11,14 @@ use Sub::Exporter -setup => {
         check_sugar_ok check_sugar_removed_ok
         validate_class validate_role
         meta_ok does_ok
+        with_immutable
     } ],
     groups  => { default => [ ':all' ] },
 };
 
 use Test::Builder;
 use Test::More;
+use Test::Moose 'with_immutable';
 use Scalar::Util 'blessed';
 use Moose::Util 'does_role', 'find_meta';
 
