@@ -2,6 +2,9 @@ Revision history for Test-Moose-More
 
 {{$NEXT}}
 
+0.006     2012-04-07 23:19:40 America/Los_Angeles
+- fix POD and actually implement more of validate_thing()
+
 0.005     2012-02-05 06:14:58 America/Los_Angeles
 - export Test::Moose::with_immutable()
 

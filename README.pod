@@ -8,7 +8,7 @@ Test::Moose::More - More tools for testing Moose packages
 
 =head1 VERSION
 
-version 0.005
+This document describes version 0.006 of Test::Moose::More - released April 07, 2012 as part of Test-Moose-More.
 
 =head1 SYNOPSIS
 
@@ -52,11 +52,11 @@ Queries $thing's metaclass to see if $thing has the methods named in @methods.
 
 =head2 is_role $thing
 
-Passes if $thing's metaclass isa L<Moose::Meta::Role>.
+Passes if $thing's metaclass is a L<Moose::Meta::Role>.
 
 =head2 is_class $thing
 
-Passes if $thing's metaclass isa L<Moose::Meta::Class>.
+Passes if $thing's metaclass is a L<Moose::Meta::Class>.
 
 =head2 check_sugar_removed_ok $thing
 
@@ -69,22 +69,14 @@ Checks and makes sure a class/etc can still do all the standard Moose sugar.
 
 =head2 validate_class
 
-validate_class {
+validate_class 'Some::Class' => (
 
     attributes => [ ... ],
     methods    => [ ... ],
     isa        => [ ... ],
     does       => [ ... ],
 
-    requires_methods => [ ... ],
-
-    meta => {
-        class => {
-            ...as above
-        },
-        attribute ... etc
-    },
-};
+);
 
 =head2 validate_role
 
