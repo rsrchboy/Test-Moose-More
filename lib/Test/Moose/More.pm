@@ -175,14 +175,6 @@ validate_class 'Some::Class' => (
     isa        => [ ... ],
     does       => [ ... ],
 
-    requires_methods => [ ... ],
-
-    meta => {
-        class => {
-            ...as above
-        },
-        attribute ... etc
-    },
 );
 
 =test validate_role
