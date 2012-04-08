@@ -103,11 +103,11 @@ sub has_method_ok {
 
 =test is_role $thing
 
-Passes if $thing's metaclass isa L<Moose::Meta::Role>.
+Passes if $thing's metaclass is a L<Moose::Meta::Role>.
 
 =test is_class $thing
 
-Passes if $thing's metaclass isa L<Moose::Meta::Class>.
+Passes if $thing's metaclass is a L<Moose::Meta::Class>.
 
 =cut
 
