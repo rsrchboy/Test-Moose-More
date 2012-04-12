@@ -37,33 +37,38 @@ use Test::Moose::More;
 
 require 't/funcs.pm' unless eval { require funcs };
 
-# validate w/valid class
-my ($_ok, $_nok) = counters();
-test_out $_ok->('TestClass has a metaclass');
-test_out $_ok->('TestClass is a Moose class');
-test_out $_ok->('The class isa Moose::Object');
-test_out $_ok->('TestClass does TestRole');
-test_out $_ok->('TestClass does not do TestRole::Two');
-test_out $_ok->("TestClass has method $_")
-    for qw{ foo method1 has_bar };
-test_out $_ok->('The object does has an attribute named bar');
-validate_class 'TestClass' => (
-    isa        => [ 'Moose::Object'           ],
-    attributes => [ 'bar'                     ],
-    does       => [ 'TestRole'                ],
-    does_not   => [ 'TestRole::Two'           ],
-    methods    => [ qw{ foo method1 has_bar } ],
-);
-test_test 'validate_class works correctly for valid classes';
+note 'validate w/valid class';
+{
+    my ($_ok, $_nok) = counters();
+    test_out $_ok->('TestClass has a metaclass');
+    test_out $_ok->('TestClass is a Moose class');
+    test_out $_ok->('The class isa Moose::Object');
+    test_out $_ok->('TestClass does TestRole');
+    test_out $_ok->('TestClass does not do TestRole::Two');
+    test_out $_ok->("TestClass has method $_")
+        for qw{ foo method1 has_bar };
+    test_out $_ok->('The object does has an attribute named bar');
+    validate_class 'TestClass' => (
+        isa        => [ 'Moose::Object'           ],
+        attributes => [ 'bar'                     ],
+        does       => [ 'TestRole'                ],
+        does_not   => [ 'TestRole::Two'           ],
+        methods    => [ qw{ foo method1 has_bar } ],
+    );
+    test_test 'validate_class works correctly for valid classes';
+}
 
-# validate w/non-moose package
-test_out 'not ok 1 - TestClass::NonMoosey has a metaclass';
-test_fail 1;
-validate_class 'TestClass::NonMoosey' => (
-    does    => [ 'TestRole' ],
-    methods => [ qw{ foo method1 has_bar } ],
-);
-test_test 'validate_class works correctly for non-moose classes';
+note 'validate w/non-moose package';
+{
+    my ($_ok, $_nok) = counters();
+    test_out $_nok->('TestClass::NonMoosey has a metaclass');
+    test_fail 1;
+    validate_class 'TestClass::NonMoosey' => (
+        does    => [ 'TestRole' ],
+        methods => [ qw{ foo method1 has_bar } ],
+    );
+    test_test 'validate_class works correctly for non-moose classes';
+}
 
 note 'validate invalid class';
 {
