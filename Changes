@@ -2,6 +2,10 @@ Revision history for Test-Moose-More
 
 {{$NEXT}}
 
+0.007     2012-04-11 17:52:41 America/Los_Angeles
+- add does_not_ok()
+- add 'does_not' option to validate_thing()/etc
+
 0.006     2012-04-07 23:19:40 America/Los_Angeles
 - fix POD and actually implement more of validate_thing()
 
