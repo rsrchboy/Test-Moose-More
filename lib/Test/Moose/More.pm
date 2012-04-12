@@ -197,8 +197,12 @@ validate_class 'Some::Class' => (
     attributes => [ ... ],
     methods    => [ ... ],
     isa        => [ ... ],
+
+    # ensures class does these roles
     does       => [ ... ],
 
+    # ensures class does not do these roles
+    does_not   => [ ... ],
 );
 
 =test validate_role
@@ -216,12 +220,18 @@ sub validate_thing {
     my ($class, %args) = @_;
 
     local $Test::Builder::Level = $Test::Builder::Level + 1;
+
+    ### roles...
     do { does_ok($class, $_) for @{$args{does}} }
         if exists $args{does};
+    do { does_not_ok($class, $_) for @{$args{does_not}} }
+        if exists $args{does_not};
 
+    ### methods...
     do { has_method_ok($class, $_) for @{$args{methods}} }
         if exists $args{methods};
 
+    ### attributes...
     do { has_attribute_ok($class, $_) for @{$args{attributes}} }
         if exists $args{attributes};
 

@@ -1,11 +1,11 @@
 use strict;
 use warnings;
 
+{ package TestRole;           use Moose::Role;                       }
+{ package TestRole::Two;      use Moose::Role;                       }
+{ package TestClass::Invalid; use Moose;       with 'TestRole::Two'; }
+{ package TestClass::NonMoosey;                                      }
 
-{
-    package TestRole;
-    use Moose::Role;
-}
 {
     package TestClass;
     use Moose;
@@ -30,13 +30,6 @@ use warnings;
         }
     );
 }
-{
-    package TestClass::NonMoosey;
-}
-{
-    package TestClass::Invalid;
-    use Moose;
-}
 
 use Test::Builder::Tester; # tests => 1;
 use Test::More;
@@ -50,7 +43,7 @@ test_out $_ok->('TestClass has a metaclass');
 test_out $_ok->('TestClass is a Moose class');
 test_out $_ok->('The class isa Moose::Object');
 test_out $_ok->('TestClass does TestRole');
-#do { $i++; test_out "ok $i - TestClass has method $_" }
+test_out $_ok->('TestClass does not do TestRole::Two');
 test_out $_ok->("TestClass has method $_")
     for qw{ foo method1 has_bar };
 test_out $_ok->('The object does has an attribute named bar');
@@ -58,6 +51,7 @@ validate_class 'TestClass' => (
     isa        => [ 'Moose::Object'           ],
     attributes => [ 'bar'                     ],
     does       => [ 'TestRole'                ],
+    does_not   => [ 'TestRole::Two'           ],
     methods    => [ qw{ foo method1 has_bar } ],
 );
 test_test 'validate_class works correctly for valid classes';
@@ -71,18 +65,25 @@ validate_class 'TestClass::NonMoosey' => (
 );
 test_test 'validate_class works correctly for non-moose classes';
 
-# validate w/invalid class
-test_out 'ok 1 - TestClass::Invalid has a metaclass';
-test_out 'ok 2 - TestClass::Invalid is a Moose class';
-test_out 'not ok 3 - TestClass::Invalid does TestRole';
-test_fail 4;
-my $i = 3;
-do { $i++; test_out "not ok $i - TestClass::Invalid has method $_"; test_fail 2 }
-    for qw{ foo method1 has_bar };
-validate_class 'TestClass::Invalid' => (
-    does    => [ 'TestRole' ],
-    methods => [ qw{ foo method1 has_bar } ],
-);
-test_test 'validate_class works correctly for invalid classes';
+note 'validate invalid class';
+{
+    my ($_ok, $_nok) = counters();
+
+    test_out $_ok->('TestClass::Invalid has a metaclass');
+    test_out $_ok->('TestClass::Invalid is a Moose class');
+    test_out $_nok->('TestClass::Invalid does TestRole');
+    test_fail 6;
+    test_out $_nok->('TestClass::Invalid does not do TestRole::Two');
+    test_fail 4;
+    do { test_out $_nok->("TestClass::Invalid has method $_"); test_fail 3 }
+        for qw{ foo method1 has_bar };
+
+    validate_class 'TestClass::Invalid' => (
+        does     => [ 'TestRole' ],
+        does_not => [ 'TestRole::Two'           ],
+        methods  => [ qw{ foo method1 has_bar } ],
+    );
+    test_test 'validate_class works correctly for invalid classes';
+}
 
 done_testing;
