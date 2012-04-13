@@ -19,7 +19,7 @@ use Sub::Exporter -setup => {
 
 use Test::Builder;
 use Test::More;
-use Test::Moose 'with_immutable', 'has_attribute_ok';
+use Test::Moose 'with_immutable';
 use Scalar::Util 'blessed';
 use Moose::Util 'does_role', 'find_meta';
 
@@ -105,6 +105,29 @@ sub does_not_ok {
         for @$roles;
 
     return;
+}
+
+=test has_attribute_ok $thing, $attribute_name, [ $message ]
+
+Checks C<$thing> for an attribute named C<$attribute_name>; C<$thing> may be a
+class name, instance, or role name.
+
+=cut
+
+sub has_attribute_ok ($$;$) {
+    my ($thing, $attr_name, $message) = @_;
+
+    my $meta       = find_meta($thing);
+    my $thing_name = $meta->name;
+    $message     ||= "$thing_name has an attribute named $attr_name";
+
+    return $tb->ok(($meta->has_attribute($attr_name) ? 1 : 0), $message)
+        if $meta->isa('Moose::Meta::Role');
+
+    return $tb->ok(1, $message)
+        if $meta->find_attribute_by_name($attr_name);
+
+    return $tb->ok(0, $message);
 }
 
 =test has_method_ok $thing, @methods
@@ -276,7 +299,8 @@ __END__
 =head1 DESCRIPTION
 
 This package contains a number of additional tests that can be employed
-against Moose classes/roles.  It is intended to replace L<Test::Moose>.
+against Moose classes/roles.  It is intended to replace L<Test::Moose> in your
+tests, and reexports any tests that it has and we do not, yet.
 
 =head1 SEE ALSO
 

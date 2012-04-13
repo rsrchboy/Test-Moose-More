@@ -47,7 +47,7 @@ note 'validate w/valid class';
     test_out $_ok->('TestClass does not do TestRole::Two');
     test_out $_ok->("TestClass has method $_")
         for qw{ foo method1 has_bar };
-    test_out $_ok->('The object does has an attribute named bar');
+    test_out $_ok->('TestClass has an attribute named bar');
     validate_class 'TestClass' => (
         isa        => [ 'Moose::Object'           ],
         attributes => [ 'bar'                     ],
