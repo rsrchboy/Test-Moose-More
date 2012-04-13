@@ -2,6 +2,10 @@ Revision history for Test-Moose-More
 
 {{$NEXT}}
 
+0.008     2012-04-13 13:52:33 America/Los_Angeles
+- add has_attribute_ok, and extended to deal with attributes in roles, as the
+  prior method seems to have stopped working.
+
 0.007     2012-04-11 17:52:41 America/Los_Angeles
 - add does_not_ok()
 - add 'does_not' option to validate_thing()/etc

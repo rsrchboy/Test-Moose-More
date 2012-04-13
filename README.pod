@@ -8,7 +8,7 @@ Test::Moose::More - More tools for testing Moose packages
 
 =head1 VERSION
 
-This document describes version 0.007 of Test::Moose::More - released April 11, 2012 as part of Test-Moose-More.
+This document describes version 0.008 of Test::Moose::More - released April 13, 2012 as part of Test-Moose-More.
 
 =head1 SYNOPSIS
 
@@ -23,7 +23,8 @@ This document describes version 0.007 of Test::Moose::More - released April 11, 
 =head1 DESCRIPTION
 
 This package contains a number of additional tests that can be employed
-against Moose classes/roles.  It is intended to replace L<Test::Moose>.
+against Moose classes/roles.  It is intended to replace L<Test::Moose> in your
+tests, and reexports any tests that it has and we do not, yet.
 
 =head1 FUNCTIONS
 
@@ -53,6 +54,11 @@ name or instance of the class you wish to check.
 
 Note that the message will be taken verbatim unless it contains C<%s>
 somewhere; this will be replaced with the name of the role being tested for.
+
+=head2 has_attribute_ok $thing, $attribute_name, [ $message ]
+
+Checks C<$thing> for an attribute named C<$attribute_name>; C<$thing> may be a
+class name, instance, or role name.
 
 =head2 has_method_ok $thing, @methods
 
