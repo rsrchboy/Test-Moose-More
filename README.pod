@@ -8,7 +8,7 @@ Test::Moose::More - More tools for testing Moose packages
 
 =head1 VERSION
 
-This document describes version 0.008 of Test::Moose::More - released April 13, 2012 as part of Test-Moose-More.
+This document describes version 0.009 of Test::Moose::More - released April 26, 2012 as part of Test-Moose-More.
 
 =head1 SYNOPSIS
 

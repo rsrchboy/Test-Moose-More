@@ -2,6 +2,10 @@ Revision history for Test-Moose-More
 
 {{$NEXT}}
 
+0.009     2012-04-26 22:34:16 America/Los_Angeles
+- initial (undocumented) attribute meta-validation via validate_*().
+  Undocumented until we settle on a coherent way to do this across the board.
+
 0.008     2012-04-13 13:52:33 America/Los_Angeles
 - add has_attribute_ok, and extended to deal with attributes in roles, as the
   prior method seems to have stopped working.
