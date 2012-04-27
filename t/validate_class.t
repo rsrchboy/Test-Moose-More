@@ -15,6 +15,8 @@ use warnings;
 
     has foo => (is => 'ro');
 
+    has baz => (traits => ['TestRole::Two'], is => 'ro');
+
     sub method1 { }
 
     has bar => (
@@ -91,4 +93,18 @@ note 'validate invalid class';
     test_test 'validate_class works correctly for invalid classes';
 }
 
+note 'validate w/attribute validation';
+{
+    my ($_ok, $_nok) = counters();
+    test_out $_ok->('TestClass has a metaclass');
+    test_out $_ok->('TestClass is a Moose class');
+    test_out $_ok->('TestClass has an attribute named bar');
+    test_out $_ok->('TestClass has an attribute named baz');
+    test_out $_ok->(q{TestClass's attribute baz does TestRole::Two});
+    test_out $_ok->('TestClass has an attribute named foo');
+    validate_class 'TestClass' => (
+        attributes => [ 'bar', baz => { does => [ 'TestRole::Two' ] }, 'foo' ],
+    );
+    test_test 'validate_class works correctly for attribute meta checking';
+}
 done_testing;
