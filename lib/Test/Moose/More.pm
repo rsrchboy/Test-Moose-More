@@ -7,7 +7,9 @@ use warnings;
 
 use Sub::Exporter -setup => {
     exports => [ qw{
-        has_method_ok is_role is_class
+        is_role is_class
+        has_method_ok
+        requires_method_ok
         check_sugar_ok check_sugar_removed_ok
         validate_class validate_role
         meta_ok does_ok does_not_ok
@@ -150,7 +152,32 @@ sub has_method_ok {
     my $name = $meta->name;
 
     ### @methods
-    $tb->ok(!!$meta->has_method($_), "$name has method $_") for @methods;
+    $tb->ok(!!$meta->has_method($_), "$name has method $_")
+        for @methods;
+
+    return;
+}
+
+=test requires_method_ok $thing, @methods
+
+Queries $thing's metaclass to see if $thing requires the methods named in
+@methods.
+
+Note that this really only makes sense if $thing is a role.
+
+=cut
+
+sub requires_method_ok {
+    my ($thing, @methods) = @_;
+
+    ### $thing
+    my $meta = find_meta($thing);
+    my $name = $meta->name;
+
+    ### @methods
+    $tb->ok(!!$meta->requires_method($_), "$name requires method $_")
+        for @methods;
+
     return;
 }
 
