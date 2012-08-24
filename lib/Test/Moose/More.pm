@@ -244,55 +244,76 @@ sub check_sugar_ok {
 }
 
 
-=test validate_class
+=test validate_thing
 
-validate_class 'Some::Class' => (
+Runs a bunch of tests against the given C<$thing>, as defined:
 
-    attributes => [ ... ],
-    methods    => [ ... ],
-    isa        => [ ... ],
+    validate_class $thing => (
 
-    # ensures class does these roles
-    does       => [ ... ],
+        attributes => [ ... ],
+        methods    => [ ... ],
+        isa        => [ ... ],
 
-    # ensures class does not do these roles
-    does_not   => [ ... ],
-);
+        # ensures $thing does these roles
+        does       => [ ... ],
+
+        # ensures $thing does not do these roles
+        does_not   => [ ... ],
+    );
+
+C<$thing> can be the name of a role or class, an object instance, or a
+metaclass.
 
 =test validate_role
 
-The same as validate_class(), but for roles.
+The same as validate_thing(), but ensures C<$thing> is a role, and allows for
+additional role-specific tests.
 
-=test validate_thing
+    validate_role $thing => (
 
-The same as validate_class() and validate_role(), except without the class or
-role validation.
+        required_methods => [ ... ],
+
+        # ...and all other options from validate_thing()
+
+=test validate_class
+
+The same as validate_thing(), but ensures C<$thing> is a class, and allows for
+additional class-specific tests.
 
 =cut
 
 sub validate_thing {
-    my ($class, %args) = @_;
+    my ($thing, %args) = @_;
 
     local $Test::Builder::Level = $Test::Builder::Level + 1;
 
     ### roles...
-    do { does_ok($class, $_) for @{$args{does}} }
+    do { does_ok($thing, $_) for @{$args{does}} }
         if exists $args{does};
-    do { does_not_ok($class, $_) for @{$args{does_not}} }
+    do { does_not_ok($thing, $_) for @{$args{does_not}} }
         if exists $args{does_not};
 
     ### methods...
-    do { has_method_ok($class, $_) for @{$args{methods}} }
+    do { has_method_ok($thing, $_) for @{$args{methods}} }
         if exists $args{methods};
 
     ### attributes...
+    ATTRIBUTE_LOOP:
     for my $attribute (@{Data::OptList::mkopt($args{attributes} || [])}) {
 
         my ($name, $opts) = @$attribute;
-        has_attribute_ok($class, $name);
-        local $THING_NAME = "${class}'s attribute $name";
-        validate_thing(find_meta($class)->get_attribute($name), %$opts)
-            if $opts;
+        has_attribute_ok($thing, $name);
+
+        if ($opts) {
+
+            SKIP: {
+                skip 'Cannot examine attribute metaclass in roles', 1
+                    if (find_meta($thing)->isa('Moose::Meta::Role'));
+
+                    local $THING_NAME = "${thing}'s attribute $name";
+                    validate_thing(find_meta($thing)->get_attribute($name), %$opts);
+            }
+        }
     }
 
     return;
@@ -311,12 +332,15 @@ sub validate_class {
 }
 
 sub validate_role {
-    my ($class, %args) = @_;
+    my ($role, %args) = @_;
 
     local $Test::Builder::Level = $Test::Builder::Level + 1;
-    return unless is_role $class;
+    return unless is_role $role;
 
-    return validate_thing $class => %args;
+    requires_method_ok($role => @{ $args{required_methods} })
+        if defined $args{required_methods};
+
+    return validate_thing $role => %args;
 }
 
 !!42;
