@@ -2,13 +2,15 @@
 
 =encoding utf-8
 
+=for :stopwords Chris Weyl
+
 =head1 NAME
 
 Test::Moose::More - More tools for testing Moose packages
 
 =head1 VERSION
 
-This document describes version 0.009 of Test::Moose::More - released April 26, 2012 as part of Test-Moose-More.
+This document describes version 0.010 of Test::Moose::More - released August 24, 2012 as part of Test-Moose-More.
 
 =head1 SYNOPSIS
 
@@ -64,6 +66,13 @@ class name, instance, or role name.
 
 Queries $thing's metaclass to see if $thing has the methods named in @methods.
 
+=head2 requires_method_ok $thing, @methods
+
+Queries $thing's metaclass to see if $thing requires the methods named in
+@methods.
+
+Note that this really only makes sense if $thing is a role.
+
 =head2 is_role $thing
 
 Passes if $thing's metaclass is a L<Moose::Meta::Role>.
@@ -81,29 +90,41 @@ given package.
 
 Checks and makes sure a class/etc can still do all the standard Moose sugar.
 
-=head2 validate_class
+=head2 validate_thing
 
-validate_class 'Some::Class' => (
+Runs a bunch of tests against the given C<$thing>, as defined:
 
-    attributes => [ ... ],
-    methods    => [ ... ],
-    isa        => [ ... ],
+    validate_class $thing => (
 
-    # ensures class does these roles
-    does       => [ ... ],
+        attributes => [ ... ],
+        methods    => [ ... ],
+        isa        => [ ... ],
 
-    # ensures class does not do these roles
-    does_not   => [ ... ],
-);
+        # ensures $thing does these roles
+        does       => [ ... ],
+
+        # ensures $thing does not do these roles
+        does_not   => [ ... ],
+    );
+
+C<$thing> can be the name of a role or class, an object instance, or a
+metaclass.
 
 =head2 validate_role
 
-The same as validate_class(), but for roles.
+The same as validate_thing(), but ensures C<$thing> is a role, and allows for
+additional role-specific tests.
 
-=head2 validate_thing
+    validate_role $thing => (
 
-The same as validate_class() and validate_role(), except without the class or
-role validation.
+        required_methods => [ ... ],
+
+        # ...and all other options from validate_thing()
+
+=head2 validate_class
+
+The same as validate_thing(), but ensures C<$thing> is a class, and allows for
+additional class-specific tests.
 
 =head1 SEE ALSO
 
