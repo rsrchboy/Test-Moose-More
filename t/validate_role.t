@@ -9,7 +9,6 @@ use warnings;
 {
     package TestRole;
     use Moose::Role;
-    use MooseX::AttributeShortcuts;
 
     with 'TestRole::One';
 
@@ -23,9 +22,11 @@ use warnings;
 
     has bar => (
 
-        traits => ['Array'],
-        isa    => 'ArrayRef',
-        is     => 'lazy',
+        traits  => ['Array'],
+        isa     => 'ArrayRef',
+        is      => 'ro',
+        lazy    => 1,
+        builder => '_build_bar',
 
         handles => {
 
