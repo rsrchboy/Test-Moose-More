@@ -2,6 +2,9 @@ Revision history for Test-Moose-More
 
 {{$NEXT}}
 
+0.011     2012-08-26 22:32:59 America/Los_Angeles
+	* drop AttributeShortcuts req from t/, or we may run into build issues
+
 0.010     2012-08-24 15:01:48 America/Los_Angeles
 	* add has_required_methods_ok()
 	* add required_methods() to validate_role(), and test
