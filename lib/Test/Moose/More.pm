@@ -11,6 +11,7 @@ use Sub::Exporter -setup => {
         has_method_ok
         requires_method_ok
         check_sugar_ok check_sugar_removed_ok
+        validate_attribute
         validate_class validate_role
         meta_ok does_ok does_not_ok
         with_immutable
@@ -23,7 +24,10 @@ use Test::Builder;
 use Test::More;
 use Test::Moose 'with_immutable';
 use Scalar::Util 'blessed';
+use Perl6::Junction 'any';
+use Moose::Autobox;
 use Moose::Util 'does_role', 'find_meta';
+use Moose::Util::TypeConstraints;
 use Data::OptList;
 
 # debugging...
@@ -311,7 +315,8 @@ sub validate_thing {
                     if (find_meta($thing)->isa('Moose::Meta::Role'));
 
                     local $THING_NAME = "${thing}'s attribute $name";
-                    validate_thing(find_meta($thing)->get_attribute($name), %$opts);
+                    #validate_thing(find_meta($thing)->get_attribute($name), %$opts);
+                    _validate_attribute(find_meta($thing)->get_attribute($name), %$opts);
             }
         }
     }
@@ -342,6 +347,84 @@ sub validate_role {
 
     return validate_thing $role => %args;
 }
+
+
+=test validate_attribute
+
+Run checks against an attribute.  Not yet documented or tested exhaustively.
+
+=cut
+
+sub validate_attribute {
+    my ($thing, $name, %opts) = @_;
+
+    local $Test::Builder::Level = $Test::Builder::Level + 1;
+    has_attribute_ok($thing, $name);
+    my $att = find_meta($thing)->get_attribute($name)
+        or return;
+
+    return _validate_attribute($att, %opts);
+}
+
+sub _validate_attribute {
+    my ($att, %opts) = @_;
+
+    my @check_opts =
+        qw{ reader writer accessor predicate default builder clearer };
+    my @unhandled_opts = qw{ isa does handles };
+
+    local $Test::Builder::Level = $Test::Builder::Level + 1;
+    my $name = $att->name;
+
+    # XXX do we really want to do this?
+    if (my $is = delete $opts{is}) {
+        $opts{accessor} = $name if $is eq 'rw' && ! exists $opts{accessor};
+        $opts{reader}   = $name if $is eq 'ro' && ! exists $opts{reader};
+    }
+
+    my $check = sub {
+        my $property = shift || $_;
+        my $value    = delete $opts{$property};
+        my $has      = "has_$property";
+
+        defined $value
+            ? ok($att->$has,  "attribute $name has a $property")
+            : ok(!$att->$has, "attribute $name does not have a $property")
+            ;
+        is($att->$property, $value, "$name: $property correct")
+    };
+
+    $check->($_) for grep { any(@check_opts) eq $_ } keys %opts;
+
+    do { $tb->skip("cannot test '$_' options yet", 1); delete $opts{$_} }
+        for grep { exists $opts{$_} } qw{ isa does handles };
+
+    if (exists $opts{init_arg}) {
+
+        $opts{init_arg}
+            ?  $check->('init_arg')
+            : ok(!$att->has_init_arg, "$name has no init_arg")
+            ;
+        delete $opts{init_arg};
+    }
+
+    if (exists $opts{lazy}) {
+
+        #my $lazy = delete $opts{lazy};
+        #$lazy
+        delete $opts{lazy}
+            ? ok($att->is_lazy,  "attribute $name is lazy")
+            : ok(!$att->is_lazy, "attribute $name is not lazy")
+            ;
+    }
+
+    fail "unknown attribute option: $_"
+        for sort keys %opts;
+
+    return;
+}
+
+1;
 
 !!42;
 
