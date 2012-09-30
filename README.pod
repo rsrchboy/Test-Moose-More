@@ -10,7 +10,7 @@ Test::Moose::More - More tools for testing Moose packages
 
 =head1 VERSION
 
-This document describes version 0.012 of Test::Moose::More - released September 29, 2012 as part of Test-Moose-More.
+This document describes version 0.013 of Test::Moose::More - released September 30, 2012 as part of Test-Moose-More.
 
 =head1 SYNOPSIS
 
@@ -128,7 +128,15 @@ additional class-specific tests.
 
 =head2 validate_attribute
 
-Run checks against an attribute.  Not yet documented or tested exhaustively.
+Run checks against an attribute.
+
+Not yet documented or tested exhaustively.
+
+=head2 attribute_options_ok
+
+Validates that an attribute is set up as expected.
+
+Not yet documented or tested exhaustively.
 
 =head1 SEE ALSO
 
@@ -144,13 +152,13 @@ L<Test::Moose>
 
 =head1 SOURCE
 
-The development version is on github at L<http://github.com/RsrchBoy/test-moose-more>
-and may be cloned from L<git://github.com/RsrchBoy/test-moose-more.git>
+The development version is on github at L<http://github.com/RsrchBoy/Test-Moose-More>
+and may be cloned from L<git://github.com/RsrchBoy/Test-Moose-More.git>
 
 =head1 BUGS
 
 Please report any bugs or feature requests on the bugtracker website
-https://github.com/RsrchBoy/test-moose-more/issues
+https://github.com/RsrchBoy/Test-Moose-More/issues
 
 When submitting a bug or request, please include a test-file or a
 patch to an existing test-file that illustrates the bug or desired

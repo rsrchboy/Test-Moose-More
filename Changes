@@ -2,6 +2,15 @@ Revision history for Test-Moose-More
 
 {{$NEXT}}
 
+0.013     2012-09-30 13:59:22 PST8PDT
+	* TRIAL release
+	* mark traits as a valid attribute option to test for, but not currently checked
+	  (skipped, that is).
+	* Handle validating an attribute as a "thing" and its options at the same time
+	  by interperting all keys of options to check that start with '-' as a key for
+	  validate_thing().  This should allow the validate_*'s to pass off to
+	  validate_attribute() without much violence.
+
 0.012     2012-09-29 23:18:12 PST8PDT
 	* TRIAL release
 	* add first pass at validate_attribute(), adapted from
