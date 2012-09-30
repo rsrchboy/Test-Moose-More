@@ -11,11 +11,12 @@ use Sub::Exporter -setup => {
         has_method_ok
         requires_method_ok
         check_sugar_ok check_sugar_removed_ok
+        has_attribute_ok
+        attribute_options_ok
         validate_attribute
         validate_class validate_role
         meta_ok does_ok does_not_ok
         with_immutable
-        has_attribute_ok
     } ],
     groups  => { default => [ ':all' ] },
 };
@@ -315,9 +316,7 @@ sub validate_thing {
                     if (find_meta($thing)->isa('Moose::Meta::Role'));
 
                     local $THING_NAME = "${thing}'s attribute $name";
-                    # XXX yeaaaaahh.
-                    validate_thing(find_meta($thing)->get_attribute($name), %$opts);
-                    #_validate_attribute(find_meta($thing)->get_attribute($name), %$opts);
+                    _validate_attribute(find_meta($thing)->get_attribute($name), %$opts);
             }
         }
     }
@@ -352,7 +351,15 @@ sub validate_role {
 
 =test validate_attribute
 
-Run checks against an attribute.  Not yet documented or tested exhaustively.
+Run checks against an attribute.
+
+Not yet documented or tested exhaustively.
+
+=test attribute_options_ok
+
+Validates that an attribute is set up as expected.
+
+Not yet documented or tested exhaustively.
 
 =cut
 
@@ -370,9 +377,37 @@ sub validate_attribute {
 sub _validate_attribute {
     my ($att, %opts) = @_;
 
+    local $Test::Builder::Level = $Test::Builder::Level + 1;
+    my %thing_opts =
+        map  { $_ => delete $opts{"-$_"} }
+        map  { s/^-//; $_                }
+        grep { /^-/                      }
+        keys %opts
+        ;
+
+    validate_thing $att => %thing_opts
+        if keys %thing_opts;
+
+    return _attribute_options_ok($att, %opts);
+}
+
+sub attribute_options_ok {
+    my ($thing, $name, %opts) = @_;
+
+    local $Test::Builder::Level = $Test::Builder::Level + 1;
+    has_attribute_ok($thing, $name);
+    my $att = find_meta($thing)->get_attribute($name)
+        or return;
+
+    return _attribute_options_ok($att, %opts);
+}
+
+sub _attribute_options_ok {
+    my ($att, %opts) = @_;
+
     my @check_opts =
         qw{ reader writer accessor predicate default builder clearer };
-    my @unhandled_opts = qw{ isa does handles };
+    my @unhandled_opts = qw{ isa does handles traits };
 
     local $Test::Builder::Level = $Test::Builder::Level + 1;
     my $name = $att->name;
@@ -398,7 +433,7 @@ sub _validate_attribute {
     $check->($_) for grep { any(@check_opts) eq $_ } keys %opts;
 
     do { $tb->skip("cannot test '$_' options yet", 1); delete $opts{$_} }
-        for grep { exists $opts{$_} } qw{ isa does handles };
+        for grep { exists $opts{$_} } @unhandled_opts;
 
     if (exists $opts{init_arg}) {
 
@@ -411,8 +446,6 @@ sub _validate_attribute {
 
     if (exists $opts{lazy}) {
 
-        #my $lazy = delete $opts{lazy};
-        #$lazy
         delete $opts{lazy}
             ? ok($att->is_lazy,  "attribute $name is lazy")
             : ok(!$att->is_lazy, "attribute $name is not lazy")

@@ -104,7 +104,7 @@ note 'validate w/attribute validation';
     test_out $_ok->(q{TestClass's attribute baz does TestRole::Two});
     test_out $_ok->('TestClass has an attribute named foo');
     validate_class 'TestClass' => (
-        attributes => [ 'bar', baz => { does => [ 'TestRole::Two' ] }, 'foo' ],
+        attributes => [ 'bar', baz => { -does => [ 'TestRole::Two' ] }, 'foo' ],
     );
     test_test 'validate_class works correctly for attribute meta checking';
 }
