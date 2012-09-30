@@ -315,8 +315,9 @@ sub validate_thing {
                     if (find_meta($thing)->isa('Moose::Meta::Role'));
 
                     local $THING_NAME = "${thing}'s attribute $name";
-                    #validate_thing(find_meta($thing)->get_attribute($name), %$opts);
-                    _validate_attribute(find_meta($thing)->get_attribute($name), %$opts);
+                    # XXX yeaaaaahh.
+                    validate_thing(find_meta($thing)->get_attribute($name), %$opts);
+                    #_validate_attribute(find_meta($thing)->get_attribute($name), %$opts);
             }
         }
     }
