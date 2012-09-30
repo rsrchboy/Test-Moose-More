@@ -10,7 +10,7 @@ Test::Moose::More - More tools for testing Moose packages
 
 =head1 VERSION
 
-This document describes version 0.011 of Test::Moose::More - released August 26, 2012 as part of Test-Moose-More.
+This document describes version 0.012 of Test::Moose::More - released September 29, 2012 as part of Test-Moose-More.
 
 =head1 SYNOPSIS
 
@@ -125,6 +125,10 @@ additional role-specific tests.
 
 The same as validate_thing(), but ensures C<$thing> is a class, and allows for
 additional class-specific tests.
+
+=head2 validate_attribute
+
+Run checks against an attribute.  Not yet documented or tested exhaustively.
 
 =head1 SEE ALSO
 
