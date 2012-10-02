@@ -382,7 +382,7 @@ sub _validate_attribute {
         map  { $_ => delete $opts{"-$_"} }
         map  { s/^-//; $_                }
         grep { /^-/                      }
-        keys %opts
+        sort keys %opts
         ;
 
     validate_thing $att => %thing_opts
@@ -412,6 +412,8 @@ sub _attribute_options_ok {
     local $Test::Builder::Level = $Test::Builder::Level + 1;
     my $name = $att->name;
 
+    my $thing_name = _thing_name($name, $att);
+
     # XXX do we really want to do this?
     if (my $is = delete $opts{is}) {
         $opts{accessor} = $name if $is eq 'rw' && ! exists $opts{accessor};
@@ -424,13 +426,13 @@ sub _attribute_options_ok {
         my $has      = "has_$property";
 
         defined $value
-            ? ok($att->$has,  "attribute $name has a $property")
-            : ok(!$att->$has, "attribute $name does not have a $property")
+            ? ok($att->$has,  "$thing_name has a $property")
+            : ok(!$att->$has, "$thing_name does not have a $property")
             ;
-        is($att->$property, $value, "$name: $property correct")
+        is($att->$property, $value, "$thing_name option $property correct")
     };
 
-    $check->($_) for grep { any(@check_opts) eq $_ } keys %opts;
+    $check->($_) for grep { any(@check_opts) eq $_ } sort keys %opts;
 
     do { $tb->skip("cannot test '$_' options yet", 1); delete $opts{$_} }
         for grep { exists $opts{$_} } @unhandled_opts;
@@ -439,7 +441,7 @@ sub _attribute_options_ok {
 
         $opts{init_arg}
             ?  $check->('init_arg')
-            : ok(!$att->has_init_arg, "$name has no init_arg")
+            : ok(!$att->has_init_arg, "$thing_name has no init_arg")
             ;
         delete $opts{init_arg};
     }
@@ -447,8 +449,8 @@ sub _attribute_options_ok {
     if (exists $opts{lazy}) {
 
         delete $opts{lazy}
-            ? ok($att->is_lazy,  "attribute $name is lazy")
-            : ok(!$att->is_lazy, "attribute $name is not lazy")
+            ? ok($att->is_lazy,  "$thing_name is lazy")
+            : ok(!$att->is_lazy, "$thing_name is not lazy")
             ;
     }
 
