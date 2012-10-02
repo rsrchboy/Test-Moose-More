@@ -4,15 +4,16 @@ my ($_ok, $_nok, $_skip) = counters();
 
 sub counters {
     my $level = shift @_ || 0;
+    $level *= 4;
     my $i = 0;
 
-    my $indent = !$i ? q{} : $i x ' ';
+    my $indent = !$level ? q{} : (' ' x $level);
 
     return (
-        sub {     'ok ' . $i++ . " - $_[0]"      },
-        sub { 'not ok ' . $i++ . " - $_[0]"      },
-        sub {     'ok ' . $i++ . " # skip $_[0]" },
-        sub { "1..$i"                            },
+        sub { $indent .     'ok ' . ++$i . " - $_[0]"      },
+        sub { $indent . 'not ok ' . ++$i . " - $_[0]"      },
+        sub { $indent .     'ok ' . ++$i . " # skip $_[0]" },
+        sub { $indent . "1..$i"                            },
     );
 }
 

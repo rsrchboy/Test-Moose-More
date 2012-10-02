@@ -101,11 +101,26 @@ note 'validate w/attribute validation';
     test_out $_ok->('TestClass is a Moose class');
     test_out $_ok->('TestClass has an attribute named bar');
     test_out $_ok->('TestClass has an attribute named baz');
-    test_out $_ok->(q{TestClass's attribute baz does TestRole::Two});
+    do {
+        my ($_ok, $_nok, $_skip, $_plan) = counters(1);
+        test_out $_ok->(q{TestClass's attribute baz does TestRole::Two});
+        test_out $_ok->(q{TestClass's attribute baz has a reader});
+        test_out $_ok->(q{TestClass's attribute baz option reader correct});
+        test_out $_plan->();
+    };
+    test_out $_ok->(q{[subtest] checking TestClass's attribute baz});
     test_out $_ok->('TestClass has an attribute named foo');
     validate_class 'TestClass' => (
-        attributes => [ 'bar', baz => { -does => [ 'TestRole::Two' ] }, 'foo' ],
+        attributes => [
+            'bar',
+            baz => {
+                -does => [ 'TestRole::Two' ],
+                reader => 'baz',
+            },
+            'foo',
+        ],
     );
     test_test 'validate_class works correctly for attribute meta checking';
 }
+
 done_testing;
