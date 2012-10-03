@@ -12,7 +12,7 @@ use Test::More;
 use Test::Moose::More;
 use Scalar::Util 'blessed';
 
-require 't/funcs.pm' unless eval { require funcs };
+use TAP::SimpleOutput 'counters';
 
 my @THINGS = (TestClass->new(), qw{ TestClass TestRole });
 my @FAILS  = (qw{ TestClass::Fail TestRole::Fail });

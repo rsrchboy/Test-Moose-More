@@ -40,7 +40,7 @@ use Test::Builder::Tester; # tests => 1;
 use Test::More;
 use Test::Moose::More;
 
-require 't/funcs.pm' unless eval { require funcs };
+use TAP::SimpleOutput 'counters';
 
 note 'validate w/valid role';
 {

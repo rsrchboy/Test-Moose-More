@@ -17,7 +17,7 @@ use Test::Builder::Tester;
 use Test::More;
 use Test::Moose::More;
 
-require 't/funcs.pm' unless eval { require funcs };
+use TAP::SimpleOutput 'counters';
 
 my $ROLE  = 'TestRole::Role';
 my @ROLES = qw{ TestRole::Role TestRole::Role2 };
