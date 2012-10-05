@@ -2,6 +2,12 @@ Revision history for Test-Moose-More
 
 {{$NEXT}}
 
+0.014     2012-10-04 20:28:49 PST8PDT
+	* TRIAL release
+	* better tests for our new validate_attribute and attribute_options_ok
+	* use subtests when checking attributes in validate_class
+	* drop t/funcs.pm in favor of TAP::SimpleOutput
+
 0.013     2012-09-30 13:59:22 PST8PDT
 	* TRIAL release
 	* mark traits as a valid attribute option to test for, but not currently checked
