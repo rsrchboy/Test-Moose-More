@@ -355,13 +355,15 @@ sub validate_role {
 
 Run checks against an attribute.
 
-Not yet documented or tested exhaustively.
+Not yet documented or tested exhaustively; please see t/validate_attribute.t
+for usage details until released in a non TRIAL form.
 
 =test attribute_options_ok
 
 Validates that an attribute is set up as expected.
 
-Not yet documented or tested exhaustively.
+Not yet documented or tested exhaustively; please see t/validate_attribute.t
+for usage details until released in a non TRIAL form.
 
 =cut
 
