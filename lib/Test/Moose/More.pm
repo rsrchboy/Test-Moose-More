@@ -353,17 +353,51 @@ sub validate_role {
 
 =test validate_attribute
 
-Run checks against an attribute.
+validate_attribute() allows you to test how an attribute looks once built and
+attached to a class.
+
+Let's say you have an attribute defined like this:
+
+    has foo => (
+        traits  => [ 'TestRole' ],
+        is      => 'ro',
+        isa     => 'Int',
+        builder => '_build_foo',
+        lazy    => 1,
+    );
+
+You can use validate_attribute() to ensure that it's built out in the way you
+expect:
+
+    validate_attribute TestClass => foo => (
+        -does => [ 'TestRole' ],
+        -isa  => [ 'Moose::Meta::Attribute' ], # for demonstration's sake
+        traits   => [ 'TestRole' ],
+        isa      => 'Int',
+        does     => 'Bar',
+        handles  => { },
+        reader   => 'foo',
+        builder  => '_build_foo',
+        default  => undef,
+        init_arg => 'foo',
+        lazy     => 1,
+    );
+
 
 Not yet documented or tested exhaustively; please see t/validate_attribute.t
-for usage details until released in a non TRIAL form.
+for details at the moment.  This test routine is likely to change in
+implementation and scope, with every effort to maintain backwards
+compatibility.
 
 =test attribute_options_ok
 
-Validates that an attribute is set up as expected.
+Validates that an attribute is set up as expected; like validate_attribute(),
+but only concerns itself with attribute options.
 
 Not yet documented or tested exhaustively; please see t/validate_attribute.t
-for usage details until released in a non TRIAL form.
+for details at the moment.  This test routine is likely to change in
+implementation and scope, with every effort to maintain backwards
+compatibility.
 
 =cut
 
