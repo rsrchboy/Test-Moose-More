@@ -8,6 +8,7 @@ use warnings;
 use Sub::Exporter -setup => {
     exports => [ qw{
         is_role is_class
+        is_anon is_not_anon
         has_method_ok
         requires_method_ok
         check_sugar_ok check_sugar_removed_ok
@@ -209,6 +210,34 @@ sub _is_moosey {
     return unless !!$meta;
 
     return $tb->ok($meta->isa("Moose::Meta::$type"), "$thing_name is a Moose " . lc $type);
+}
+
+=test is_anon $thing
+
+Passes if $thing is "anonymous".
+
+=test is_not_anon $thing
+
+Passes if $thing is not "anonymous".
+
+=cut
+
+sub is_anon {
+    my ($thing, $message) = @_;
+
+    my $thing_meta = find_meta($thing);
+    $message ||= _thing_name($thing, $thing_meta) . ' is anonymous';
+
+    return $tb->ok(!!$thing_meta->is_anon, $message);
+}
+
+sub is_not_anon {
+    my ($thing, $message) = @_;
+
+    my $thing_meta = find_meta($thing);
+    $message ||= _thing_name($thing, $thing_meta) . ' is not anonymous';
+
+    return $tb->ok(!$thing_meta->is_anon, $message);
 }
 
 =test check_sugar_removed_ok $thing
