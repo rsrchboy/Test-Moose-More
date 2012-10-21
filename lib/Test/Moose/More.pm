@@ -423,7 +423,8 @@ sub _validate_attribute {
         sort keys %opts
         ;
 
-    validate_thing $att => %thing_opts
+    ### %thing_opts
+    validate_class $att => %thing_opts
         if keys %thing_opts;
 
     return _attribute_options_ok($att, %opts);

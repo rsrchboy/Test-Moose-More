@@ -29,6 +29,9 @@ note 'validate attribute validation';
 {
     my ($_ok, $_nok, $_skip) = counters();
     test_out $_ok->('TestClass has an attribute named foo');
+    test_out $_ok->(q{Moose::Meta::Class::__ANON__::SERIAL::1 has a metaclass});
+    test_out $_ok->(q{Moose::Meta::Class::__ANON__::SERIAL::1 is a Moose class});
+    test_out $_ok->('The object isa Moose::Meta::Attribute');
     test_out $_ok->('Moose::Meta::Class::__ANON__::SERIAL::1 does TestRole');
     test_out $_ok->('foo has a builder');
     test_out $_ok->('foo option builder correct');
