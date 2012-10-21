@@ -2,6 +2,11 @@ Revision history for Test-Moose-More
 
 {{$NEXT}}
 
+0.015     2012-10-20 17:00:59 PST8PDT
+	* NO CODE CHANGES from 0.014.  We should be at a good point where the
+	  newer attribute checking tests are useable and won't need to change in
+	  any incompatible ways (hopefully!).
+
 0.014     2012-10-04 20:28:49 PST8PDT
 	* TRIAL release
 	* better tests for our new validate_attribute and attribute_options_ok
