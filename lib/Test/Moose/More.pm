@@ -321,6 +321,10 @@ sub validate_thing {
 
     local $Test::Builder::Level = $Test::Builder::Level + 1;
 
+    ### anonymous...
+    $args{anonymous} ? is_anon $thing : is_not_anon $thing
+        if exists $args{anonymous};
+
     ### roles...
     do { does_ok($thing, $_) for @{$args{does}} }
         if exists $args{does};

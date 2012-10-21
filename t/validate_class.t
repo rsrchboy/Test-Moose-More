@@ -1,6 +1,8 @@
 use strict;
 use warnings;
 
+use Moose::Util 'with_traits';
+
 { package TestRole;           use Moose::Role;                       }
 { package TestRole::Two;      use Moose::Role;                       }
 { package TestClass::Invalid; use Moose;       with 'TestRole::Two'; }
@@ -46,12 +48,14 @@ note 'validate w/valid class';
     test_out $_ok->('TestClass has a metaclass');
     test_out $_ok->('TestClass is a Moose class');
     test_out $_ok->('The class isa Moose::Object');
+    test_out $_ok->('TestClass is not anonymous');
     test_out $_ok->('TestClass does TestRole');
     test_out $_ok->('TestClass does not do TestRole::Two');
     test_out $_ok->("TestClass has method $_")
         for qw{ foo method1 has_bar };
     test_out $_ok->('TestClass has an attribute named bar');
     validate_class 'TestClass' => (
+        anonymous  => 0,
         isa        => [ 'Moose::Object'           ],
         attributes => [ 'bar'                     ],
         does       => [ 'TestRole'                ],
@@ -59,6 +63,53 @@ note 'validate w/valid class';
         methods    => [ qw{ foo method1 has_bar } ],
     );
     test_test 'validate_class works correctly for valid classes';
+}
+
+subtest 'validate w/valid class -- standalone run' => sub {
+
+    validate_class 'TestClass' => (
+        anonymous  => 0,
+        isa        => [ 'Moose::Object'           ],
+        attributes => [ 'bar'                     ],
+        does       => [ 'TestRole'                ],
+        does_not   => [ 'TestRole::Two'           ],
+        methods    => [ qw{ foo method1 has_bar } ],
+    );
+};
+
+note 'simple validation w/anonymous_class';
+{
+
+    my $anon = with_traits 'TestClass' => 'TestRole::Two';
+
+    my ($_ok, $_nok) = counters();
+    test_out $_ok->("$anon has a metaclass");
+    test_out $_ok->("$anon is a Moose class");
+    test_out $_ok->("$anon is anonymous");
+    test_out $_ok->("$anon does TestRole::Two");
+    validate_class $anon => (
+        anonymous => 1,
+        does => [ qw{ TestRole::Two } ],
+    );
+    test_test 'simple validation w/anonymous_class';
+}
+
+note 'simple is-anonymous validation w/anonymous_class';
+{
+
+    my $anon = with_traits 'TestClass' => 'TestRole::Two';
+
+    my ($_ok, $_nok) = counters();
+    test_out $_ok->("$anon has a metaclass");
+    test_out $_ok->("$anon is a Moose class");
+    test_out $_nok->("$anon is not anonymous");
+    test_fail 2;
+    test_out $_ok->("$anon does TestRole::Two");
+    validate_class $anon => (
+        anonymous => 0,
+        does => [ qw{ TestRole::Two } ],
+    );
+    test_test 'simple not-anonymous validation w/anonymous_class';
 }
 
 note 'validate w/non-moose package';
