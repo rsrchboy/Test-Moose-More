@@ -10,7 +10,7 @@ Test::Moose::More - More tools for testing Moose packages
 
 =head1 VERSION
 
-This document describes version 0.015 of Test::Moose::More - released October 20, 2012 as part of Test-Moose-More.
+This document describes version 0.016 of Test::Moose::More - released October 21, 2012 as part of Test-Moose-More.
 
 =head1 SYNOPSIS
 
@@ -80,6 +80,14 @@ Passes if $thing's metaclass is a L<Moose::Meta::Role>.
 =head2 is_class $thing
 
 Passes if $thing's metaclass is a L<Moose::Meta::Class>.
+
+=head2 is_anon $thing
+
+Passes if $thing is "anonymous".
+
+=head2 is_not_anon $thing
+
+Passes if $thing is not "anonymous".
 
 =head2 check_sugar_removed_ok $thing
 

@@ -2,6 +2,11 @@ Revision history for Test-Moose-More
 
 {{$NEXT}}
 
+0.016     2012-10-21 15:03:32 PST8PDT
+	* add is_anon(), is_not_anon()
+	* allow anonymous => 1|0 in validate_thing() (though not documented)
+	* use validate_class() when checking attributes with validate_class()
+
 0.015     2012-10-20 17:00:59 PST8PDT
 	* NO CODE CHANGES from 0.014.  We should be at a good point where the
 	  newer attribute checking tests are useable and won't need to change in
