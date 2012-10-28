@@ -20,12 +20,13 @@ use TAP::SimpleOutput 'counters';
     use namespace::autoclean;
 
     has foo => (
-        traits  => [ 'TestRole' ],
-        is      => 'ro',
-        isa     => 'Int',
-        builder => '_build_foo',
-        lazy    => 1,
-        thinger => 'foo',
+        traits   => [ 'TestRole' ],
+        required => 1,
+        is       => 'ro',
+        isa      => 'Int',
+        builder  => '_build_foo',
+        lazy     => 1,
+        thinger  => 'foo',
     );
 }
 
@@ -39,6 +40,7 @@ note 'validate attribute validation';
     test_out $_ok->(q{Moose::Meta::Class::__ANON__::SERIAL::1 is a Moose class});
     test_out $_ok->('The object isa Moose::Meta::Attribute');
     test_out $_ok->('Moose::Meta::Class::__ANON__::SERIAL::1 does TestRole');
+    test_out $_ok->('foo is required');
     test_out $_ok->('foo has a builder');
     test_out $_ok->('foo option builder correct');
     test_out $_ok->('foo does not have a default');
@@ -68,6 +70,7 @@ note 'validate attribute validation';
         default  => undef,
         init_arg => 'foo',
         lazy     => 1,
+        required => 1,
         thinger  => 'foo',
         binger   => 'bar',
     );
@@ -89,6 +92,7 @@ subtest 'a standalone run of validate_attribute' => sub {
         builder  => '_build_foo',
         default  => undef,
         init_arg => 'foo',
+        required => 1,
         lazy     => 1,
         thinger  => 'foo',
     );

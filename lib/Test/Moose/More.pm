@@ -414,6 +414,7 @@ expect:
         default  => undef,
         init_arg => 'foo',
         lazy     => 1,
+        required => undef,
     );
 
 
@@ -503,6 +504,14 @@ sub _attribute_options_ok {
             ;
         is($att->$property, $value, "$thing_name option $property correct")
     };
+
+    if (my $is_required = delete $opts{required}) {
+
+        $is_required
+            ? ok($att->is_required,  "$thing_name is required")
+            : ok(!$att->is_required, "$thing_name is not required")
+            ;
+    }
 
     $check->($_) for grep { any(@check_opts) eq $_ } sort keys %opts;
 
