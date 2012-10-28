@@ -10,7 +10,7 @@ Test::Moose::More - More tools for testing Moose packages
 
 =head1 VERSION
 
-This document describes version 0.016 of Test::Moose::More - released October 21, 2012 as part of Test-Moose-More.
+This document describes version 0.017 of Test::Moose::More - released October 28, 2012 as part of Test-Moose-More.
 
 =head1 SYNOPSIS
 
@@ -164,6 +164,7 @@ expect:
         default  => undef,
         init_arg => 'foo',
         lazy     => 1,
+        required => undef,
     );
 
 Not yet documented or tested exhaustively; please see t/validate_attribute.t

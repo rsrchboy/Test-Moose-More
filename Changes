@@ -2,6 +2,13 @@ Revision history for Test-Moose-More
 
 {{$NEXT}}
 
+0.017     2012-10-28 15:38:16 PST8PDT
+	* Instead of failing on "unknown attribute options" when performing
+	  attribute validation checks, first look to see if they're actually an
+	  attribute on the attribute metaclass; this is a fairly common situation
+	  when attribute traits are used.
+	* Check if an attribute is required or not.
+
 0.016     2012-10-21 15:03:32 PST8PDT
 	* add is_anon(), is_not_anon()
 	* allow anonymous => 1|0 in validate_thing() (though not documented)
