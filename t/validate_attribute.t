@@ -6,7 +6,13 @@ use Test::More;
 use Test::Moose::More;
 use TAP::SimpleOutput 'counters';
 
-{ package TestRole; use Moose::Role; use namespace::autoclean; }
+{
+    package TestRole;
+    use Moose::Role;
+    use namespace::autoclean;
+
+    has thinger => (is => 'ro', predicate => 'has_thinger');
+}
 {
     package TestClass;
 
@@ -14,13 +20,13 @@ use TAP::SimpleOutput 'counters';
     use namespace::autoclean;
 
     has foo => (
-        traits => [ 'TestRole' ],
-        is => 'ro',
-        isa => 'Int',
+        traits  => [ 'TestRole' ],
+        is      => 'ro',
+        isa     => 'Int',
         builder => '_build_foo',
-        lazy => 1,
+        lazy    => 1,
+        thinger => 'foo',
     );
-
 }
 
 # initial tests, covering the most straight-forward cases (IMHO)
@@ -46,6 +52,10 @@ note 'validate attribute validation';
     test_out $_ok->('foo has a init_arg');
     test_out $_ok->('foo option init_arg correct');
     test_out $_ok->('foo is lazy');
+    test_out $_nok->('unknown attribute option: binger');
+    test_fail 3;
+    test_out $_ok->('foo has a thinger');
+    test_out $_ok->('foo option thinger correct');
     validate_attribute TestClass => foo => (
         -does => [ 'TestRole' ],
         -isa  => [ 'Moose::Meta::Attribute' ],
@@ -58,6 +68,8 @@ note 'validate attribute validation';
         default  => undef,
         init_arg => 'foo',
         lazy     => 1,
+        thinger  => 'foo',
+        binger   => 'bar',
     );
     test_test 'validate_attribute works correctly';
 }
@@ -65,6 +77,7 @@ note 'validate attribute validation';
 
 subtest 'a standalone run of validate_attribute' => sub {
 
+    note 'of necessity, these exclude the "failing" tests';
     validate_attribute TestClass => foo => (
         -does => [ 'TestRole' ],
         -isa  => [ 'Moose::Meta::Attribute' ],
@@ -77,6 +90,7 @@ subtest 'a standalone run of validate_attribute' => sub {
         default  => undef,
         init_arg => 'foo',
         lazy     => 1,
+        thinger  => 'foo',
     );
 };
 
@@ -97,6 +111,10 @@ note 'attribute_options_ok validation';
     test_out $_ok->('foo has a init_arg');
     test_out $_ok->('foo option init_arg correct');
     test_out $_ok->('foo is lazy');
+    test_out $_nok->('unknown attribute option: binger');
+    test_fail 3;
+    test_out $_ok->('foo has a thinger');
+    test_out $_ok->('foo option thinger correct');
     attribute_options_ok TestClass => foo => (
         traits   => [ 'TestRole' ],
         isa      => 'Int',
@@ -107,12 +125,15 @@ note 'attribute_options_ok validation';
         default  => undef,
         init_arg => 'foo',
         lazy     => 1,
+        thinger  => 'foo',
+        binger   => 'bar',
     );
     test_test 'attribute_options_ok works as expected';
 }
 
 subtest 'a standalone run of attribute_options_ok' => sub {
 
+    note 'of necessity, these exclude the "failing" tests';
     attribute_options_ok TestClass => foo => (
         traits   => [ 'TestRole' ],
         isa      => 'Int',

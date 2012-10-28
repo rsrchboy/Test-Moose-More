@@ -526,8 +526,16 @@ sub _attribute_options_ok {
             ;
     }
 
-    fail "unknown attribute option: $_"
-        for sort keys %opts;
+    for my $opt (sort keys %opts) {
+
+        do { fail "unknown attribute option: $opt"; next }
+            unless $att->meta->find_attribute_by_name($opt);
+
+        $check->($opt);
+    }
+
+    #fail "unknown attribute option: $_"
+        #for sort keys %opts;
 
     return;
 }
