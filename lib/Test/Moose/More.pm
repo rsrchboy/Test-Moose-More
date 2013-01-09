@@ -535,6 +535,14 @@ sub _attribute_options_ok {
             ;
     }
 
+    if (exists $opts{coerce}) {
+
+        delete $opts{coerce}
+            ? ok( $att->should_coerce, "$thing_name should coerce")
+            : ok(!$att->should_coerce, "$thing_name should not coerce")
+            ;
+    }
+
     for my $opt (sort keys %opts) {
 
         do { fail "unknown attribute option: $opt"; next }
