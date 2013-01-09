@@ -2,6 +2,9 @@ Revision history for Test-Moose-More
 
 {{$NEXT}}
 
+0.018     2013-01-09 07:48:01 PST8PDT
+	* test if an attribute should coerce or not
+
 0.017     2012-10-28 15:38:16 PST8PDT
 	* Instead of failing on "unknown attribute options" when performing
 	  attribute validation checks, first look to see if they're actually an
