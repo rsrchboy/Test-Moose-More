@@ -2,6 +2,10 @@ Revision history for Test-Moose-More
 
 {{$NEXT}}
 
+0.019     2013-01-21 07:35:07 PST-0800
+	* no code changes, netadata fixup only -- stop requiring
+	  Moose::Deprecated, as it is no longer indexed.
+
 0.018     2013-01-09 07:48:01 PST8PDT
 	* test if an attribute should coerce or not
 
