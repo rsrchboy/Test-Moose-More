@@ -1,7 +1,5 @@
 Revision history for Test-Moose-More
 
-{{$NEXT}}
-
 0.020     2013-08-01 07:33:57 PDT-0700
 	* Drop Perl6::Junction in favor of Syntax::Keyword::Junction Same
 	  thing -- essentially, AFAICT -- except that we don't get 'smartmatch
