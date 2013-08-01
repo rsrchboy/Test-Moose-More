@@ -26,7 +26,7 @@ use Test::Builder;
 use Test::More;
 use Test::Moose 'with_immutable';
 use Scalar::Util 'blessed';
-use Perl6::Junction 'any';
+use Syntax::Keyword::Junction 'any';
 use Moose::Autobox;
 use Moose::Util 'does_role', 'find_meta';
 use Moose::Util::TypeConstraints;
