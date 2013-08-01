@@ -2,6 +2,11 @@ Revision history for Test-Moose-More
 
 {{$NEXT}}
 
+0.020     2013-08-01 07:33:57 PDT-0700
+	* Drop Perl6::Junction in favor of Syntax::Keyword::Junction Same
+	  thing -- essentially, AFAICT -- except that we don't get 'smartmatch
+	  operator is experimental' warnings in 5.18 :)
+
 0.019     2013-01-21 07:35:07 PST-0800
 	* no code changes, netadata fixup only -- stop requiring
 	  Moose::Deprecated, as it is no longer indexed.
