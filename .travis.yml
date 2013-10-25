@@ -20,6 +20,10 @@ before_install:
    - git config user.name 'Travis-CI'
    - git config user.email 'travis@nowhere.dne'
 
+   # gotta love failing pod tests blowing everything up...
+   - cpanm -q TAP::Harness::Restricted || { cat ~/.cpanm/build.log ; false ; }
+   - export HARNESS_SUBCLASS=TAP::Harness::Restricted
+
    # Moose installs in parallel quite nicely.
    - HARNESS_OPTIONS=j8:c cpanm -q Moose       || { cat ~/.cpanm/build.log ; false ; }
    - HARNESS_OPTIONS=j8:c cpanm -q Dist::Zilla || { cat ~/.cpanm/build.log ; false ; }
@@ -35,4 +39,5 @@ install:
 
 script:
    - export DZSIGN=archive
+   - unset HARNESS_SUBCLASS
    - dzil test --release --author
