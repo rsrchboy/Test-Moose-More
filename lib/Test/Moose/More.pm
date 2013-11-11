@@ -578,7 +578,7 @@ __END__
 
 This package contains a number of additional tests that can be employed
 against Moose classes/roles.  It is intended to replace L<Test::Moose> in your
-tests, and reexports any tests that it has and we do not, yet.
+tests, and re-exports any tests that it has and we do not, yet.
 
 =head1 SEE ALSO
 
