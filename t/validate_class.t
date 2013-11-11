@@ -51,7 +51,7 @@ note 'validate w/valid class';
     my ($_ok, $_nok) = counters();
     test_out $_ok->('TestClass has a metaclass');
     test_out $_ok->('TestClass is a Moose class');
-    test_out $_ok->('The class isa Moose::Object');
+    test_out $_ok->('TestClass isa Moose::Object');
     test_out $_ok->('TestClass is not anonymous');
     test_out $_ok->('TestClass does TestRole');
     test_out $_ok->('TestClass does not do TestRole::Two');

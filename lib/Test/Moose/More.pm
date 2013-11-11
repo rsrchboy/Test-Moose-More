@@ -365,7 +365,8 @@ sub validate_class {
     local $Test::Builder::Level = $Test::Builder::Level + 1;
     return unless is_class $class;
 
-    do { isa_ok($class, $_) for @{$args{isa}} }
+    my $name = ref $class || $class;
+    do { ok($class->isa($_), "$name isa $_") for @{$args{isa}} }
         if exists $args{isa};
 
     return validate_thing $class => %args;
