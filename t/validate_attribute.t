@@ -4,7 +4,7 @@ use warnings;
 use Test::Builder::Tester;
 use Test::More;
 use Test::Moose::More;
-use TAP::SimpleOutput 'counters';
+use TAP::SimpleOutput 0.002 'counters';
 
 {
     package TestRole;

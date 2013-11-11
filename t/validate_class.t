@@ -44,7 +44,7 @@ use aliased 'Perl::Version' => 'PV';
 use constant NEEDS_SUBTEST_HEADER
     => do { PV->new(Test::More->VERSION) >= PV->new('0.98_05') };
 
-use TAP::SimpleOutput 'counters';
+use TAP::SimpleOutput 0.002 'counters';
 
 note 'validate w/valid class';
 {
