@@ -2,6 +2,9 @@ Revision history for Test-Moose-More
 
 {{$NEXT}}
 
+0.022     2013-11-10 23:16:32 PST-0800
+	* ...and add an explicit dependency on TAP::SimpleOutput 0.002
+
 0.021     2013-11-10 23:13:27 PST-0800
 	* Handle Test::More's new output for subtests in 0.98_05+
 	* Dodge isa_ok()'s output change by rolling our own
