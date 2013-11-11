@@ -40,6 +40,10 @@ use Test::Builder::Tester; # tests => 1;
 use Test::More;
 use Test::Moose::More;
 
+use aliased 'Perl::Version' => 'PV';
+use constant NEEDS_SUBTEST_HEADER
+    => do { PV->new(Test::More->VERSION) >= PV->new('0.98_05') };
+
 use TAP::SimpleOutput 'counters';
 
 note 'validate w/valid class';
@@ -152,16 +156,18 @@ note 'validate w/attribute validation';
     test_out $_ok->('TestClass is a Moose class');
     test_out $_ok->('TestClass has an attribute named bar');
     test_out $_ok->('TestClass has an attribute named baz');
-    do {
-        my ($_ok, $_nok, $_skip, $_plan) = counters(1);
+    my $st_name = do {
+        my ($_ok, $_nok, $_skip, $_plan, undef, $_any) = counters(1, my $name = q{[subtest] checking TestClass's attribute baz});
+        test_out $_any->("# Subtest: $name") if NEEDS_SUBTEST_HEADER;
         test_out $_ok->(q{Moose::Meta::Class::__ANON__::SERIAL::1 has a metaclass});
         test_out $_ok->(q{Moose::Meta::Class::__ANON__::SERIAL::1 is a Moose class});
         test_out $_ok->(q{TestClass's attribute baz does TestRole::Two});
         test_out $_ok->(q{TestClass's attribute baz has a reader});
         test_out $_ok->(q{TestClass's attribute baz option reader correct});
         test_out $_plan->();
+        $name;
     };
-    test_out $_ok->(q{[subtest] checking TestClass's attribute baz});
+    test_out $_ok->($st_name);
     test_out $_ok->('TestClass has an attribute named foo');
     validate_class 'TestClass' => (
         attributes => [
