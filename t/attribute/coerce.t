@@ -5,6 +5,13 @@ use Test::Builder::Tester;
 use Test::More;
 use Test::Moose::More;
 use TAP::SimpleOutput 'counters';
+use Moose::Util::TypeConstraints;
+
+subtype 'Testing.Str',
+    as 'Str';
+coerce 'Testing.Str',
+    from 'Str',
+    via { $_ };
 
 {
     package TestRole;
@@ -12,9 +19,9 @@ use TAP::SimpleOutput 'counters';
     use Moose::Deprecated -api_version => '1.07'; # don't complain
     use namespace::autoclean;
 
-    has yes_coerce  => (is => 'ro', isa => 'Str', coerce => 1);
-    has no_coerce   => (is => 'ro', isa => 'Str', coerce => 0);
-    has null_coerce => (is => 'ro', isa => 'Str');
+    has yes_coerce  => (is => 'ro', isa => 'Testing.Str', coerce => 1);
+    has no_coerce   => (is => 'ro', isa => 'Testing.Str', coerce => 0);
+    has null_coerce => (is => 'ro', isa => 'Testing.Str');
 }
 {
     package TestClass;
@@ -22,9 +29,9 @@ use TAP::SimpleOutput 'counters';
     use Moose::Deprecated -api_version => '1.07'; # don't complain
     use namespace::autoclean;
 
-    has yes_coerce  => (is => 'ro', isa => 'Str', coerce => 1);
-    has no_coerce   => (is => 'ro', isa => 'Str', coerce => 0);
-    has null_coerce => (is => 'ro', isa => 'Str');
+    has yes_coerce  => (is => 'ro', isa => 'Testing.Str', coerce => 1);
+    has no_coerce   => (is => 'ro', isa => 'Testing.Str', coerce => 0);
+    has null_coerce => (is => 'ro', isa => 'Testing.Str');
 }
 
 note 'finds coercion correctly';
