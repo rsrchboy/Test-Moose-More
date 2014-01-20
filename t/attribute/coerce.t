@@ -6,15 +6,19 @@ use Test::More;
 use Test::Moose::More;
 use TAP::SimpleOutput 'counters';
 
+use Moose::Util::TypeConstraints;
+subtype 'AllCaps', as 'Str', where { !m/[a-z]/ }, message { 'String contains some lower-case chars' };
+coerce 'AllCaps', from 'Str', via { tr/[a-z]/A-Z]/ };
+
 {
     package TestRole;
     use Moose::Role;
     use Moose::Deprecated -api_version => '1.07'; # don't complain
     use namespace::autoclean;
 
-    has yes_coerce  => (is => 'ro', isa => 'Str', coerce => 1);
-    has no_coerce   => (is => 'ro', isa => 'Str', coerce => 0);
-    has null_coerce => (is => 'ro', isa => 'Str');
+    has yes_coerce  => (is => 'ro', isa => 'AllCaps', coerce => 1);
+    has no_coerce   => (is => 'ro', isa => 'AllCaps', coerce => 0);
+    has null_coerce => (is => 'ro', isa => 'AllCaps');
 }
 {
     package TestClass;
@@ -22,9 +26,9 @@ use TAP::SimpleOutput 'counters';
     use Moose::Deprecated -api_version => '1.07'; # don't complain
     use namespace::autoclean;
 
-    has yes_coerce  => (is => 'ro', isa => 'Str', coerce => 1);
-    has no_coerce   => (is => 'ro', isa => 'Str', coerce => 0);
-    has null_coerce => (is => 'ro', isa => 'Str');
+    has yes_coerce  => (is => 'ro', isa => 'AllCaps', coerce => 1);
+    has no_coerce   => (is => 'ro', isa => 'AllCaps', coerce => 0);
+    has null_coerce => (is => 'ro', isa => 'AllCaps');
 }
 
 note 'finds coercion correctly';
