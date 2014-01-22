@@ -1,6 +1,7 @@
 Revision history for Test-Moose-More
 
 {{$NEXT}}
+        * fix test error with Moose-2.1200 by adding missing coercions
 
 0.022     2013-11-10 23:16:32 PST-0800
 	* ...and add an explicit dependency on TAP::SimpleOutput 0.002
