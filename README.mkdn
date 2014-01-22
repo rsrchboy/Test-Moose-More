@@ -4,7 +4,7 @@ Test::Moose::More - More tools for testing Moose packages
 
 # VERSION
 
-This document describes version 0.022 of Test::Moose::More - released November 10, 2013 as part of Test-Moose-More.
+This document describes version 0.023 of Test::Moose::More - released January 21, 2014 as part of Test-Moose-More.
 
 # SYNOPSIS
 
@@ -199,6 +199,10 @@ feature.
 # AUTHOR
 
 Chris Weyl <cweyl@alumni.drew.edu>
+
+# CONTRIBUTOR
+
+Karen Etheridge <ether@cpan.org>
 
 # COPYRIGHT AND LICENSE
 

@@ -26,6 +26,7 @@ on 'test' => sub {
   requires "aliased" => "0";
   requires "constant" => "0";
   requires "namespace::autoclean" => "0";
+  requires "perl" => "5.006";
 };
 
 on 'configure' => sub {
