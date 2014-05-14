@@ -342,7 +342,7 @@ sub validate_thing {
         my ($name, $opts) = @$attribute;
         has_attribute_ok($thing, $name);
 
-        if ($opts) {
+        if ($opts && (my $att = find_meta($thing)->get_attribute($name))) {
 
             SKIP: {
                 skip 'Cannot examine attribute metaclass in roles', 1
@@ -350,7 +350,7 @@ sub validate_thing {
 
                 local $THING_NAME = "${thing}'s attribute $name";
                 $tb->subtest("[subtest] checking $THING_NAME" => sub {
-                    _validate_attribute(find_meta($thing)->get_attribute($name), %$opts);
+                    _validate_attribute($att, %$opts);
                 });
             }
         }
