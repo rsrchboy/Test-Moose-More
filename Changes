@@ -2,8 +2,12 @@ Revision history for Test-Moose-More
 
 {{$NEXT}}
 
+0.024     2014-05-14 11:58:47 PDT-0700
+	* validate_thing() now does not try to run subtests against attributes it
+	  does not find
+
 0.023     2014-01-21 22:39:47 PST-0800
-        * fix test error with Moose-2.1200 by adding missing coercions
+	* fix test error with Moose-2.1200 by adding missing coercions
 
 0.022     2013-11-10 23:16:32 PST-0800
 	* ...and add an explicit dependency on TAP::SimpleOutput 0.002

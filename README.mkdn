@@ -4,7 +4,7 @@ Test::Moose::More - More tools for testing Moose packages
 
 # VERSION
 
-This document describes version 0.023 of Test::Moose::More - released January 21, 2014 as part of Test-Moose-More.
+This document describes version 0.024 of Test::Moose::More - released May 14, 2014 as part of Test-Moose-More.
 
 # SYNOPSIS
 
@@ -184,8 +184,8 @@ Please see those modules/websites for more information related to this module.
 
 # SOURCE
 
-The development version is on github at [http://github.com/RsrchBoy/Test-Moose-More](http://github.com/RsrchBoy/Test-Moose-More)
-and may be cloned from [git://github.com/RsrchBoy/Test-Moose-More.git](git://github.com/RsrchBoy/Test-Moose-More.git)
+The development version is on github at [http://https://github.com/RsrchBoy/Test-Moose-More](http://https://github.com/RsrchBoy/Test-Moose-More)
+and may be cloned from [git://https://github.com/RsrchBoy/Test-Moose-More.git](git://https://github.com/RsrchBoy/Test-Moose-More.git)
 
 # BUGS
 
@@ -199,6 +199,23 @@ feature.
 # AUTHOR
 
 Chris Weyl <cweyl@alumni.drew.edu>
+
+## I'm a material boy in a material world
+
+<div>
+    <a href="https://www.gittip.com/RsrchBoy/"><img src="https://raw.githubusercontent.com/gittip/www.gittip.com/master/www/assets/%25version/logo.png" /></a>
+    <a href="http://bit.ly/rsrchboys-wishlist"><img src="http://wps.io/wp-content/uploads/2014/05/amazon_wishlist.resized.png" /></a>
+    <a href="https://flattr.com/submit/auto?user_id=RsrchBoy&url=https%3A%2F%2Fgithub.com%2FRsrchBoy%2FTest-Moose-More&title=RsrchBoy's%20CPAN%20Test-Moose-More&tags=%22RsrchBoy's%20Test-Moose-More%20in%20the%20CPAN%22"><img src="http://api.flattr.com/button/flattr-badge-large.png" /></a>
+</div>
+
+Please note **I do not expect to be gittip'ed or flattr'ed for this work**,
+rather **it is simply a very pleasant surprise**. I largely create and release
+works like this because I need them or I find it enjoyable; however, don't let
+that stop you if you feel like it ;)
+
+[Flattr this](https://flattr.com/submit/auto?user_id=RsrchBoy&url=https%3A%2F%2Fgithub.com%2FRsrchBoy%2FTest-Moose-More&title=RsrchBoy&#x27;s%20CPAN%20Test-Moose-More&tags=%22RsrchBoy&#x27;s%20Test-Moose-More%20in%20the%20CPAN%22),
+[gittip me](https://www.gittip.com/RsrchBoy/), or indulge my
+[Amazon Wishlist](http://bit.ly/rsrchboys-wishlist)...  If you so desire.
 
 # CONTRIBUTOR
 
