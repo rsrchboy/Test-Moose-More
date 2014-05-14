@@ -1,7 +1,5 @@
 Revision history for Test-Moose-More
 
-{{$NEXT}}
-
 0.024     2014-05-14 11:58:47 PDT-0700
 	* validate_thing() now does not try to run subtests against attributes it
 	  does not find
