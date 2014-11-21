@@ -151,14 +151,22 @@ note 'validate invalid class';
 
 note 'validate w/attribute validation';
 {
-    my ($_ok, $_nok) = counters();
+    my ($_ok, $_nok, undef, undef, undef, $__any) = counters();
     test_out $_ok->('TestClass has a metaclass');
     test_out $_ok->('TestClass is a Moose class');
     test_out $_ok->('TestClass has an attribute named bar');
     test_out $_ok->('TestClass has an attribute named baz');
+    my $__ok = $_ok;
     my $st_name = do {
         my ($_ok, $_nok, $_skip, $_plan, undef, $_any) = counters(1, my $name = q{[subtest] checking TestClass's attribute baz});
-        test_out $_any->("# Subtest: $name") if NEEDS_SUBTEST_HEADER;
+        if (NEEDS_SUBTEST_HEADER) {
+            if ($INC{'Test/Stream.pm'}) {
+                test_out $__any->("# Subtest: $name")
+            }
+            else {
+                test_out $_any->("# Subtest: $name")
+            }
+        }
         test_out $_ok->(q{Moose::Meta::Class::__ANON__::SERIAL::1 has a metaclass});
         test_out $_ok->(q{Moose::Meta::Class::__ANON__::SERIAL::1 is a Moose class});
         test_out $_ok->(q{TestClass's attribute baz does TestRole::Two});
