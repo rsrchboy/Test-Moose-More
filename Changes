@@ -1,7 +1,5 @@
 Revision history for Test-Moose-More
 
-{{$NEXT}}
-
 0.025     2014-11-21 11:29:28 PST-0800
 	* Merge pull request #13 to handle the latest Test::More alphas.
 	  Thanks, @exodist!
