@@ -4,7 +4,7 @@ Test::Moose::More - More tools for testing Moose packages
 
 # VERSION
 
-This document describes version 0.024 of Test::Moose::More - released May 14, 2014 as part of Test-Moose-More.
+This document describes version 0.025 of Test::Moose::More - released November 21, 2014 as part of Test-Moose-More.
 
 # SYNOPSIS
 
@@ -217,9 +217,10 @@ that stop you if you feel like it ;)
 [gittip me](https://www.gittip.com/RsrchBoy/), or indulge my
 [Amazon Wishlist](http://bit.ly/rsrchboys-wishlist)...  If you so desire.
 
-# CONTRIBUTOR
+# CONTRIBUTORS
 
-Karen Etheridge <ether@cpan.org>
+- Chad Granum <chad.granum@dreamhost.com>
+- Karen Etheridge <ether@cpan.org>
 
 # COPYRIGHT AND LICENSE
 
