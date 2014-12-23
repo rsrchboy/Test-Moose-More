@@ -158,7 +158,7 @@ note 'validate w/attribute validation';
     test_out $_ok->('TestClass has an attribute named baz');
     my $__ok = $_ok;
     my $st_name = do {
-        my ($_ok, $_nok, $_skip, $_plan, undef, $_any) = counters(1, my $name = q{[subtest] checking TestClass's attribute baz});
+        my ($_ok, $_nok, $_skip, $_plan, undef, $_any) = counters(1, my $name = q{checking TestClass's attribute baz});
         if (NEEDS_SUBTEST_HEADER) {
             if ($INC{'Test/Stream.pm'}) {
                 test_out $__any->("# Subtest: $name")

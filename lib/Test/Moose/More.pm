@@ -349,7 +349,7 @@ sub validate_thing {
                     if (find_meta($thing)->isa('Moose::Meta::Role'));
 
                 local $THING_NAME = "${thing}'s attribute $name";
-                $tb->subtest("[subtest] checking $THING_NAME" => sub {
+                $tb->subtest("checking $THING_NAME" => sub {
                     _validate_attribute($att, %$opts);
                 });
             }
