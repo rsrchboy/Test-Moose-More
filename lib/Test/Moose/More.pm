@@ -494,6 +494,8 @@ sub _attribute_options_ok {
         $opts{reader}   = $name if $is eq 'ro' && ! exists $opts{reader};
     }
 
+    # helper to check an attribute option we expect to be a string, !exist, or
+    # undef
     my $check = sub {
         my $property = shift || $_;
         my $value    = delete $opts{$property};
