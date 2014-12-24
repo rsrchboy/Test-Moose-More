@@ -4,7 +4,7 @@ Test::Moose::More - More tools for testing Moose packages
 
 # VERSION
 
-This document describes version 0.025 of Test::Moose::More - released November 21, 2014 as part of Test-Moose-More.
+This document describes version 0.025\_01 of Test::Moose::More - released December 23, 2014 as part of Test-Moose-More.
 
 # SYNOPSIS
 

@@ -1,6 +1,8 @@
 Revision history for Test-Moose-More
 
 {{$NEXT}}
+
+0.025_01  2014-12-23 23:48:18 PST-0800
 	* Handle role attributes in a kinder, gentler way
 	* Set our test level correctly when validating attributes
 
