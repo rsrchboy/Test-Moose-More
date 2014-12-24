@@ -499,6 +499,9 @@ sub _attribute_options_ok {
         my $value    = delete $opts{$property};
         my $has      = "has_$property";
 
+        # deeper and deeper down the rabbit hole...
+        local $Test::Builder::Level = $Test::Builder::Level + 1;
+
         defined $value
             ? ok($att->$has,  "$thing_name has a $property")
             : ok(!$att->$has, "$thing_name does not have a $property")
