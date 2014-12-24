@@ -128,6 +128,19 @@ class name, instance, or role name.
 
 =cut
 
+# helper to dig for an attribute
+sub _find_attribute {
+    my ($thing, $attr_name) = @_;
+
+    my $meta = find_meta($thing);
+
+    # if $thing is a role, find_attribute_by_name() is not available to us
+    return $meta->isa('Moose::Meta::Role')
+        ? $meta->get_attribute($attr_name)
+        : $meta->find_attribute_by_name($attr_name)
+        ;
+}
+
 sub has_attribute_ok ($$;$) {
     my ($thing, $attr_name, $message) = @_;
 
