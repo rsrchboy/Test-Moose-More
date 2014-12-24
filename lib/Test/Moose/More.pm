@@ -148,13 +148,7 @@ sub has_attribute_ok ($$;$) {
     my $thing_name = $meta->name;
     $message     ||= "$thing_name has an attribute named $attr_name";
 
-    return $tb->ok(($meta->has_attribute($attr_name) ? 1 : 0), $message)
-        if $meta->isa('Moose::Meta::Role');
-
-    return $tb->ok(1, $message)
-        if $meta->find_attribute_by_name($attr_name);
-
-    return $tb->ok(0, $message);
+    return $tb->ok(!!_find_attribute($thing => $attr_name), $message);
 }
 
 =test has_method_ok $thing, @methods
