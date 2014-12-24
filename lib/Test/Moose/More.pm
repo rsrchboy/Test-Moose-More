@@ -484,6 +484,39 @@ sub attribute_options_ok {
 sub _attribute_options_ok {
     my ($att, %opts) = @_;
 
+    goto \&_role_attribute_options_ok
+        if $att->isa('Moose::Meta::Role::Attribute');
+    goto \&_class_attribute_options_ok;
+}
+
+sub _role_attribute_options_ok {
+    my ($att, %opts) = @_;
+
+    local $Test::Builder::Level = $Test::Builder::Level + 1;
+    my $name                    = $att->name;
+    my $thing_name              = _thing_name($name, $att);
+
+    # this much works, at least
+    if (exists $opts{coerce}) {
+
+        delete $opts{coerce}
+            ? ok( $att->should_coerce, "$thing_name should coerce")
+            : ok(!$att->should_coerce, "$thing_name should not coerce")
+            ;
+    }
+
+    ### for now, skip role attributes: blessed $att
+    return $tb->skip('cannot yet test role attribute layouts')
+        if keys %opts;
+}
+
+sub _class_attribute_options_ok {
+    my ($att, %opts) = @_;
+
+    ### for now, skip role attributes: blessed $att
+    return $tb->skip('cannot yet test role attribute layouts')
+        if $att->isa('Moose::Meta::Role::Attribute');
+
     my @check_opts =
         qw{ reader writer accessor predicate default builder clearer };
     my @unhandled_opts = qw{ isa does handles traits };
