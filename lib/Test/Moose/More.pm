@@ -447,9 +447,8 @@ sub validate_attribute {
     my ($thing, $name, %opts) = @_;
 
     local $Test::Builder::Level = $Test::Builder::Level + 1;
-    has_attribute_ok($thing, $name);
-    my $att = find_meta($thing)->get_attribute($name)
-        or return;
+    return unless has_attribute_ok($thing, $name);
+    my $att = _find_attribute($thing => $name);
 
     return _validate_attribute($att, %opts);
 }
