@@ -1,7 +1,5 @@
 Revision history for Test-Moose-More
 
-{{$NEXT}}
-
 0.027     2015-03-10 20:16:38 PDT-0700
 	* Drop autobox usage (thanks, @ether!)
 
