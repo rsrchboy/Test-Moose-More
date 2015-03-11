@@ -27,7 +27,6 @@ use Test::More;
 use Test::Moose 'with_immutable';
 use Scalar::Util 'blessed';
 use Syntax::Keyword::Junction 'any';
-use Moose::Autobox;
 use Moose::Util 'does_role', 'find_meta';
 use Moose::Util::TypeConstraints;
 use Data::OptList;
