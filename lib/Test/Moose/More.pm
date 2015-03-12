@@ -7,16 +7,19 @@ use warnings;
 
 use Sub::Exporter -setup => {
     exports => [ qw{
-        is_role is_class
-        is_anon is_not_anon
-        has_method_ok
-        requires_method_ok
-        check_sugar_ok check_sugar_removed_ok
-        has_attribute_ok
         attribute_options_ok
+        check_sugar_ok
+        check_sugar_removed_ok
+        has_attribute_ok
+        has_method_ok
+        is_anon
+        is_class
+        is_not_anon
+        is_role
+        meta_ok does_ok does_not_ok
+        requires_method_ok
         validate_attribute
         validate_class validate_role
-        meta_ok does_ok does_not_ok
         with_immutable
     } ],
     groups  => { default => [ ':all' ] },
