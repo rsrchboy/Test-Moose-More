@@ -323,7 +323,7 @@ sub check_sugar_ok {
 
 Runs a bunch of tests against the given C<$thing>, as defined:
 
-    validate_class $thing => (
+    validate_thing $thing => (
 
         attributes => [ ... ],
         methods    => [ ... ],
