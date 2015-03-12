@@ -14,7 +14,9 @@ use Sub::Exporter -setup => {
         has_method_ok
         is_anon
         is_class
+        is_immutable_ok
         is_not_anon
+        is_not_immutable_ok
         is_role
         meta_ok does_ok does_not_ok
         requires_method_ok
@@ -194,6 +196,36 @@ sub requires_method_ok {
         for @methods;
 
     return;
+}
+
+=test is_immutable_ok $thing
+
+Passes if $thing is immutable.
+
+=test is_not_immutable_ok $thing
+
+Passes if $thing is not immutable; that is, is mutable.
+
+=cut
+
+sub is_immutable_ok {
+    my ($thing) = @_;
+
+    ### $thing
+    my $meta = find_meta($thing);
+    my $name = $meta->name;
+
+    return $tb->ok($meta->is_immutable, "$name is immutable");
+}
+
+sub is_not_immutable_ok {
+    my ($thing) = @_;
+
+    ### $thing
+    my $meta = find_meta($thing);
+    my $name = $meta->name;
+
+    return $tb->ok(!$meta->is_immutable, "$name is not immutable");
 }
 
 =test is_role $thing
