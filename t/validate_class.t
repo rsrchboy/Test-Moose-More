@@ -52,6 +52,7 @@ note 'validate w/valid class';
     test_out $_ok->('TestClass has a metaclass');
     test_out $_ok->('TestClass is a Moose class');
     test_out $_ok->('TestClass isa Moose::Object');
+    test_out $_ok->('TestClass is not immutable');
     test_out $_ok->('TestClass is not anonymous');
     test_out $_ok->('TestClass does TestRole');
     test_out $_ok->('TestClass does not do TestRole::Two');
@@ -60,6 +61,7 @@ note 'validate w/valid class';
     test_out $_ok->('TestClass has an attribute named bar');
     validate_class 'TestClass' => (
         anonymous  => 0,
+        immutable  => 0,
         isa        => [ 'Moose::Object'           ],
         attributes => [ 'bar'                     ],
         does       => [ 'TestRole'                ],
@@ -73,6 +75,7 @@ subtest 'validate w/valid class -- standalone run' => sub {
 
     validate_class 'TestClass' => (
         anonymous  => 0,
+        immutable  => 0,
         isa        => [ 'Moose::Object'           ],
         attributes => [ 'bar'                     ],
         does       => [ 'TestRole'                ],

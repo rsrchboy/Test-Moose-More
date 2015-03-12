@@ -410,6 +410,12 @@ sub validate_class {
     do { ok($class->isa($_), "$name isa $_") for @{$args{isa}} }
         if exists $args{isa};
 
+    # check our mutability
+    do { is_immutable_ok $class }
+        if exists $args{immutable} && $args{immutable};
+    do { is_not_immutable_ok $class }
+        if exists $args{immutable} && !$args{immutable};
+
     return validate_thing $class => %args;
 }
 
