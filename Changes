@@ -1,7 +1,5 @@
 Revision history for Test-Moose-More
 
-{{$NEXT}}
-
 0.028     2015-03-12 19:28:22 PDT-0700
 	* Add is_{,not_}immutable_ok tests
 	* Add 'immutable' check to validate_class
