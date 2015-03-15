@@ -10,6 +10,8 @@ use Sub::Exporter::Progressive -setup => {
         attribute_options_ok
         check_sugar_ok
         check_sugar_removed_ok
+        does_not_ok
+        does_ok
         has_attribute_ok
         has_method_ok
         is_anon_ok
@@ -18,7 +20,7 @@ use Sub::Exporter::Progressive -setup => {
         is_not_anon_ok
         is_not_immutable_ok
         is_role_ok
-        meta_ok does_ok does_not_ok
+        meta_ok
         requires_method_ok
         validate_attribute
         validate_class
