@@ -5,7 +5,7 @@ package Test::Moose::More;
 use strict;
 use warnings;
 
-use Sub::Exporter -setup => {
+use Sub::Exporter::Progressive -setup => {
     exports => [ qw{
         attribute_options_ok
         check_sugar_ok
