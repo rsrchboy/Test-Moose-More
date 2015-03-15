@@ -339,6 +339,20 @@ Runs a bunch of tests against the given C<$thing>, as defined:
 C<$thing> can be the name of a role or class, an object instance, or a
 metaclass.
 
+The attributes list specified here is in the form of a list of names, each optionally
+followed by a hashref of options to test the attribute for; this hashref takes the
+same arguments L</validate_attribute> does.  e.g.:
+
+    validate_thing $thing => (
+
+        attributes => [
+            'foo',
+            'bar',
+            baz => { is => 'ro', ... },
+            'bip',
+        ],
+    );
+
 =test validate_role
 
 The same as validate_thing(), but ensures C<$thing> is a role, and allows for
@@ -349,11 +363,29 @@ additional role-specific tests.
         required_methods => [ ... ],
 
         # ...and all other options from validate_thing()
+    );
 
 =test validate_class
 
 The same as validate_thing(), but ensures C<$thing> is a class, and allows for
 additional class-specific tests.
+
+    validate_thing $thing => (
+
+        isa  => [ ... ],
+
+        attributes => [ ... ],
+        methods    => [ ... ],
+        isa        => [ ... ],
+
+        # ensures $thing does these roles
+        does       => [ ... ],
+
+        # ensures $thing does not do these roles
+        does_not   => [ ... ],
+
+        # ...and all other options from validate_thing()
+    );
 
 =cut
 
@@ -451,8 +483,12 @@ You can use validate_attribute() to ensure that it's built out in the way you
 expect:
 
     validate_attribute TestClass => foo => (
+
+        # tests the attribute metaclass instance to ensure it does the roles
         -does => [ 'TestRole' ],
+        # tests the attribute metaclass instance's inheritance
         -isa  => [ 'Moose::Meta::Attribute' ], # for demonstration's sake
+
         traits   => [ 'TestRole' ],
         isa      => 'Int',
         does     => 'Bar',
@@ -465,6 +501,10 @@ expect:
         required => undef,
     );
 
+Options passed to validate_attribute() prefixed with '-' test the attribute's metaclass
+instance rather than a setting on the attribute; that is, '-does' ensures that the
+metaclass does a particular role (e.g. L<MooseX::AttributeShortcuts>), while 'does' tests
+the setting of the attribute to require the value do a given role.
 
 Not yet documented or tested exhaustively; please see t/validate_attribute.t
 for details at the moment.  This test routine is likely to change in
