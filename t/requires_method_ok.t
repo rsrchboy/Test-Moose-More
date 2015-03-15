@@ -18,7 +18,7 @@ test_out "ok 1 - $THING requires method foo";
 requires_method_ok $THING, 'foo';
 test_test 'requires_method_ok works correctly with methods';
 
-# is_role vs plain-old-package
+# is_role_ok vs plain-old-package
 test_out "not ok 1 - $THING requires method bar";
 test_fail(1);
 requires_method_ok $THING, 'bar';

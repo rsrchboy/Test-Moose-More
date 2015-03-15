@@ -15,11 +15,13 @@ use Sub::Exporter -setup => {
         is_anon
         is_anon_ok
         is_class
+        is_class_ok
         is_immutable_ok
         is_not_anon
         is_not_anon_ok
         is_not_immutable_ok
         is_role
+        is_role_ok
         meta_ok does_ok does_not_ok
         requires_method_ok
         validate_attribute
@@ -230,20 +232,24 @@ sub is_not_immutable_ok {
     return $tb->ok(!$meta->is_immutable, "$name is not immutable");
 }
 
-=test is_role $thing
+=test is_role_ok $thing
 
 Passes if $thing's metaclass is a L<Moose::Meta::Role>.
 
-=test is_class $thing
+=test is_class_ok $thing
 
 Passes if $thing's metaclass is a L<Moose::Meta::Class>.
 
 =cut
 
-sub is_role  { unshift @_, 'Role';  goto \&_is_moosey }
-sub is_class { unshift @_, 'Class'; goto \&_is_moosey }
+# NOTE: deprecate at some point late 2015
+sub is_role  { goto \&is_role_ok  }
+sub is_class { goto \&is_class_ok }
 
-sub _is_moosey {
+sub is_role_ok  { unshift @_, 'Role';  goto \&_is_moosey_ok }
+sub is_class_ok { unshift @_, 'Class'; goto \&_is_moosey_ok }
+
+sub _is_moosey_ok {
     my ($type, $thing) =  @_;
 
     my $thing_name = ref $thing || $thing;
@@ -442,7 +448,7 @@ sub validate_class {
     my ($class, %args) = @_;
 
     local $Test::Builder::Level = $Test::Builder::Level + 1;
-    return unless is_class $class;
+    return unless is_class_ok $class;
 
     my $name = ref $class || $class;
     do { ok($class->isa($_), "$name isa $_") for @{$args{isa}} }
@@ -461,7 +467,7 @@ sub validate_role {
     my ($role, %args) = @_;
 
     local $Test::Builder::Level = $Test::Builder::Level + 1;
-    return unless is_role $role;
+    return unless is_role_ok $role;
 
     requires_method_ok($role => @{ $args{required_methods} })
         if defined $args{required_methods};
@@ -697,8 +703,8 @@ __END__
 
     use Test::Moose::More;
 
-    is_class 'Some::Class';
-    is_role  'Some::Role';
+    is_class_ok 'Some::Class';
+    is_role_ok  'Some::Role';
     has_method_ok 'Some::Class', 'foo';
 
     # ... etc
