@@ -23,8 +23,8 @@ note 'simple anon class';
     my ($_ok, $_nok, $_skip) = counters();
     test_out $_nok->("$anon_class is not anonymous");
     test_fail 1;
-    is_not_anon $anon_class;
-    test_test 'is_not_anon works correctly on anon class';
+    is_not_anon_ok $anon_class;
+    test_test 'is_not_anon_ok works correctly on anon class';
 }
 
 note 'simple anon role';
@@ -32,24 +32,24 @@ note 'simple anon role';
     my ($_ok, $_nok, $_skip) = counters();
     test_out $_nok->("$anon_role is not anonymous");
     test_fail 1;
-    is_not_anon $anon_role;
-    test_test 'is_not_anon works correctly on anon role';
+    is_not_anon_ok $anon_role;
+    test_test 'is_not_anon_ok works correctly on anon role';
 }
 
 note 'simple !anon class';
 {
     my ($_ok, $_nok, $_skip) = counters();
     test_out $_ok->('TestClass is not anonymous');
-    is_not_anon 'TestClass';
-    test_test 'is_not_anon works correctly on !anon class';
+    is_not_anon_ok 'TestClass';
+    test_test 'is_not_anon_ok works correctly on !anon class';
 }
 
 note 'simple !anon role';
 {
     my ($_ok, $_nok, $_skip) = counters();
     test_out $_ok->('TestRole is not anonymous');
-    is_not_anon 'TestRole';
-    test_test 'is_not_anon works correctly on !anon role';
+    is_not_anon_ok 'TestRole';
+    test_test 'is_not_anon_ok works correctly on !anon role';
 }
 
 done_testing;

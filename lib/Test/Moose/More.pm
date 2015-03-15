@@ -13,9 +13,11 @@ use Sub::Exporter -setup => {
         has_attribute_ok
         has_method_ok
         is_anon
+        is_anon_ok
         is_class
         is_immutable_ok
         is_not_anon
+        is_not_anon_ok
         is_not_immutable_ok
         is_role
         meta_ok does_ok does_not_ok
@@ -253,17 +255,21 @@ sub _is_moosey {
     return $tb->ok($meta->isa("Moose::Meta::$type"), "$thing_name is a Moose " . lc $type);
 }
 
-=test is_anon $thing
+=test is_anon_ok $thing
 
 Passes if $thing is "anonymous".
 
-=test is_not_anon $thing
+=test is_not_anon_ok $thing
 
 Passes if $thing is not "anonymous".
 
 =cut
 
-sub is_anon {
+# NOTE: deprecate at some point late 2015
+sub is_anon     { goto \&is_anon_ok     }
+sub is_not_anon { goto \&is_not_anon_ok }
+
+sub is_anon_ok {
     my ($thing, $message) = @_;
 
     my $thing_meta = find_meta($thing);
@@ -272,7 +278,7 @@ sub is_anon {
     return $tb->ok(!!$thing_meta->is_anon, $message);
 }
 
-sub is_not_anon {
+sub is_not_anon_ok {
     my ($thing, $message) = @_;
 
     my $thing_meta = find_meta($thing);
@@ -395,7 +401,7 @@ sub validate_thing {
     local $Test::Builder::Level = $Test::Builder::Level + 1;
 
     ### anonymous...
-    $args{anonymous} ? is_anon $thing : is_not_anon $thing
+    $args{anonymous} ? is_anon_ok $thing : is_not_anon_ok $thing
         if exists $args{anonymous};
 
     ### roles...
