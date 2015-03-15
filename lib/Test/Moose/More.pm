@@ -12,21 +12,23 @@ use Sub::Exporter -setup => {
         check_sugar_removed_ok
         has_attribute_ok
         has_method_ok
-        is_anon
         is_anon_ok
-        is_class
         is_class_ok
         is_immutable_ok
-        is_not_anon
         is_not_anon_ok
         is_not_immutable_ok
-        is_role
         is_role_ok
         meta_ok does_ok does_not_ok
         requires_method_ok
         validate_attribute
-        validate_class validate_role
+        validate_class
+        validate_role
         with_immutable
+
+        is_anon
+        is_class
+        is_not_anon
+        is_role
     } ],
     groups  => { default => [ ':all' ] },
 };
