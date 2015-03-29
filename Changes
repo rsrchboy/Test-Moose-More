@@ -1,7 +1,5 @@
 Revision history for Test-Moose-More
 
-{{$NEXT}}
-
 0.029     2015-03-29 15:24:40 PDT-0700
 	* No code changes -- 0.028_01 doesn't seem to have broken anything, so
 	  release as non-dev.
