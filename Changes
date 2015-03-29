@@ -2,6 +2,10 @@ Revision history for Test-Moose-More
 
 {{$NEXT}}
 
+0.029     2015-03-29 15:24:40 PDT-0700
+	* No code changes -- 0.028_01 doesn't seem to have broken anything, so
+	  release as non-dev.
+
 0.028_01  2015-03-14 21:03:50 PDT-0700
 	* Sub::Exporter -> Sub::Exporter::Progressive
 	* normalize test names to end with '_ok' (e.g. is_{role,class} ->
