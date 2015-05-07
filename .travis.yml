@@ -10,57 +10,38 @@ sudo: false
 
 language: perl
 perl:
-   - "5.8"
-   - "5.10"
-   - "5.12"
-   - "5.14"
-   - "5.16"
-   - "5.18"
-   - "5.20"
+    - "5.8"
+    - "5.10"
+    - "5.12"
+    - "5.14"
+    - "5.16"
+    - "5.18"
+    - "5.20"
+    - "5.21"
 
 matrix:
-   allow_failures:
-      - perl: "5.8"
+    allow_failures:
+        - perl: "5.8"
+        - perl: "5.21"
 
 branches:
     except:
         - "release/cpan"
 
-env:
-   global:
-      - CPANM_OPTS="-q --skip-satisfied --notest --no-man-pages"
+#env:
+   #global:
+      #- CPANM_OPTS="-q --skip-satisfied --notest --no-man-pages"
 
 before_install:
-   # git bits sometimes needed...
-   - git config user.name 'Travis-CI'
-   - git config user.email 'travis@nowhere.dne'
-
-   # pull down our cache
-   - export PB_LIB="dzil-cache"
-   - export PB_TARBALL="$PERLBREW_PERL@$PB_LIB.tar.bz2"
-   - perlbrew lib create $PB_LIB
-   - wget -O $PB_TARBALL "https://github.com/RsrchBoy/travis-p5-cache/blob/$PERLBREW_PERL@$PB_LIB/master/$PB_TARBALL?raw=true"
-   - test -f "$PB_TARBALL" && tar -C $PERLBREW_HOME/libs -jvxf $PB_TARBALL | wc -l
-   - perlbrew switch $PERLBREW_PERL@$PB_LIB
-   - rm $PB_TARBALL
-   # gotta love failing pod tests blowing everything up...
-   - cpanm $CPANM_OPTS TAP::Harness::Restricted || { cat ~/.cpanm/build.log ; false ; }
-   - export HARNESS_SUBCLASS=TAP::Harness::Restricted
-
-   # Moose installs in parallel quite nicely.
-   - HARNESS_OPTIONS=j8:c cpanm $CPANM_OPTS Moose       || { cat ~/.cpanm/build.log ; false ; }
-   - HARNESS_OPTIONS=j8:c cpanm $CPANM_OPTS Dist::Zilla || { cat ~/.cpanm/build.log ; false ; }
-
-   # for DZP LinkCheck
-   - cpanm $CPANM_OPTS CPANPLUS || { cat ~/.cpanm/build.log ; false ; }
-   - cpanp x
+    - git clone --depth=1 --branch=master https://github.com/RsrchBoy/travis-p5-cache.git ../p5
+    - source ../p5/init
+    - ../p5/before-install.dzil
 
 install:
-   # not so much install our package as all its prereqs
-   - dzil authordeps --missing        | cpanm $CPANM_OPTS        || { cat ~/.cpanm/build.log ; false ; }
-   - dzil listdeps --author --missing | cpanm -q --skip-satisfied || { cat ~/.cpanm/build.log ; false ; }
+    - ../p5/install.dzil
 
 script:
-   - export DZSIGN=archive
-   - unset HARNESS_SUBCLASS
-   - dzil test --all
+    - ../p5/script.dzil
+
+after_success:
+    - ../p5/after_success
