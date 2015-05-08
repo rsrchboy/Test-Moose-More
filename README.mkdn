@@ -1,10 +1,14 @@
+[![Build Status](https://travis-ci.org/RsrchBoy/Test-Moose-More.svg?branch=master)](https://travis-ci.org/RsrchBoy/Test-Moose-More)
+[![Kwalitee status](http://cpants.cpanauthors.org/dist/Test-Moose-More.png)](http://cpants.charsbar.org/dist/overview/Test-Moose-More)
+[![Coverage Status](https://coveralls.io/repos/RsrchBoy/Test-Moose-More/badge.png?branch=master)](https://coveralls.io/r/RsrchBoy/Test-Moose-More?branch=master)
+
 # NAME
 
 Test::Moose::More - More tools for testing Moose packages
 
 # VERSION
 
-This document describes version 0.029 of Test::Moose::More - released March 29, 2015 as part of Test-Moose-More.
+This document describes version 0.030 of Test::Moose::More - released May 07, 2015 as part of Test-Moose-More.
 
 # SYNOPSIS
 
@@ -231,11 +235,6 @@ Please see those modules/websites for more information related to this module.
 
 - [Test::Moose](https://metacpan.org/pod/Test::Moose)
 
-# SOURCE
-
-The development version is on github at [http://https://github.com/RsrchBoy/Test-Moose-More](http://https://github.com/RsrchBoy/Test-Moose-More)
-and may be cloned from [git://https://github.com/RsrchBoy/Test-Moose-More.git](git://https://github.com/RsrchBoy/Test-Moose-More.git)
-
 # BUGS
 
 Please report any bugs or feature requests on the bugtracker website
@@ -252,7 +251,7 @@ Chris Weyl <cweyl@alumni.drew.edu>
 ## I'm a material boy in a material world
 
 <div>
-    <a href="https://www.gittip.com/RsrchBoy/"><img src="https://raw.githubusercontent.com/gittip/www.gittip.com/master/www/assets/%25version/logo.png" /></a>
+    <a href="https://gratipay.com/RsrchBoy/"><img src="http://img.shields.io/gratipay/RsrchBoy.svg" /></a>
     <a href="http://bit.ly/rsrchboys-wishlist"><img src="http://wps.io/wp-content/uploads/2014/05/amazon_wishlist.resized.png" /></a>
     <a href="https://flattr.com/submit/auto?user_id=RsrchBoy&url=https%3A%2F%2Fgithub.com%2FRsrchBoy%2FTest-Moose-More&title=RsrchBoy's%20CPAN%20Test-Moose-More&tags=%22RsrchBoy's%20Test-Moose-More%20in%20the%20CPAN%22"><img src="http://api.flattr.com/button/flattr-badge-large.png" /></a>
 </div>
@@ -262,9 +261,9 @@ rather **it is simply a very pleasant surprise**. I largely create and release
 works like this because I need them or I find it enjoyable; however, don't let
 that stop you if you feel like it ;)
 
-[Flattr this](https://flattr.com/submit/auto?user_id=RsrchBoy&url=https%3A%2F%2Fgithub.com%2FRsrchBoy%2FTest-Moose-More&title=RsrchBoy&#x27;s%20CPAN%20Test-Moose-More&tags=%22RsrchBoy&#x27;s%20Test-Moose-More%20in%20the%20CPAN%22),
-[gittip me](https://www.gittip.com/RsrchBoy/), or indulge my
-[Amazon Wishlist](http://bit.ly/rsrchboys-wishlist)...  If you so desire.
+[Flattr](https://flattr.com/submit/auto?user_id=RsrchBoy&url=https%3A%2F%2Fgithub.com%2FRsrchBoy%2FTest-Moose-More&title=RsrchBoy&#x27;s%20CPAN%20Test-Moose-More&tags=%22RsrchBoy&#x27;s%20Test-Moose-More%20in%20the%20CPAN%22),
+[Gratipay](https://gratipay.com/RsrchBoy/), or indulge my
+[Amazon Wishlist](http://bit.ly/rsrchboys-wishlist)...  If and \*only\* if you so desire.
 
 # CONTRIBUTORS
 
