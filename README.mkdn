@@ -8,7 +8,7 @@ Test::Moose::More - More tools for testing Moose packages
 
 # VERSION
 
-This document describes version 0.030 of Test::Moose::More - released May 07, 2015 as part of Test-Moose-More.
+This document describes version 0.030 of Test::Moose::More - released June 28, 2015 as part of Test-Moose-More.
 
 # SYNOPSIS
 
@@ -63,6 +63,21 @@ class name, instance, or role name.
 ## has\_method\_ok $thing, @methods
 
 Queries $thing's metaclass to see if $thing has the methods named in @methods.
+
+## role\_wraps\_around\_method\_ok $role, @methods
+
+Queries $role's metaclass to see if $role wraps the methods named in
+@methods with an around method modifier.
+
+## role\_wraps\_before\_method\_ok $role, @methods
+
+Queries $role's metaclass to see if $role wraps the methods named in
+@methods with an before method modifier.
+
+## role\_wraps\_after\_method\_ok $role, @methods
+
+Queries $role's metaclass to see if $role wraps the methods named in
+@methods with an after method modifier.
 
 ## requires\_method\_ok $thing, @methods
 
@@ -155,7 +170,7 @@ additional role-specific tests.
 The same as validate\_thing(), but ensures `$thing` is a class, and allows for
 additional class-specific tests.
 
-    validate_thing $thing => (
+    validate_class $thing => (
 
         isa  => [ ... ],
 

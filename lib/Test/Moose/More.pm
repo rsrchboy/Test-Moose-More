@@ -27,6 +27,10 @@ use Sub::Exporter::Progressive -setup => {
         validate_role
         with_immutable
 
+        role_wraps_around_method_ok
+        role_wraps_before_method_ok
+        role_wraps_after_method_ok
+
         is_anon
         is_class
         is_not_anon
@@ -178,6 +182,43 @@ sub has_method_ok {
 
     ### @methods
     $tb->ok(!!$meta->has_method($_), "$name has method $_")
+        for @methods;
+
+    return;
+}
+
+=test role_wraps_around_method_ok $role, @methods
+
+Queries $role's metaclass to see if $role wraps the methods named in
+@methods with an around method modifier.
+
+=test role_wraps_before_method_ok $role, @methods
+
+Queries $role's metaclass to see if $role wraps the methods named in
+@methods with an before method modifier.
+
+=test role_wraps_after_method_ok $role, @methods
+
+Queries $role's metaclass to see if $role wraps the methods named in
+@methods with an after method modifier.
+
+=cut
+
+sub role_wraps_around_method_ok { unshift @_, 'around'; goto \&_role_wraps }
+sub role_wraps_before_method_ok { unshift @_, 'before'; goto \&_role_wraps }
+sub role_wraps_after_method_ok  { unshift @_, 'after';  goto \&_role_wraps }
+
+sub _role_wraps {
+    my ($style, $thing, @methods) = @_;
+
+    my $meta_method = "get_${style}_method_modifiers";
+
+    ### $thing
+    my $meta = find_meta($thing);
+    my $name = $meta->name;
+
+    ### @methods
+    $tb->ok(!!$meta->$meta_method($_), "$name wraps $style method $_")
         for @methods;
 
     return;
