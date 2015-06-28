@@ -386,7 +386,7 @@ additional role-specific tests.
 The same as validate_thing(), but ensures C<$thing> is a class, and allows for
 additional class-specific tests.
 
-    validate_thing $thing => (
+    validate_class $thing => (
 
         isa  => [ ... ],
 
