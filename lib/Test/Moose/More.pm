@@ -1,4 +1,16 @@
+#
+# This file is part of Test-Moose-More
+#
+# This software is Copyright (c) 2012 by Chris Weyl.
+#
+# This is free software, licensed under:
+#
+#   The GNU Lesser General Public License, Version 2.1, February 1999
+#
 package Test::Moose::More;
+our $AUTHORITY = 'cpan:RSRCHBOY';
+# git description: 0.029-6-gc9f19b1
+$Test::Moose::More::VERSION = '0.030';
 
 # ABSTRACT: More tools for testing Moose packages
 
@@ -73,12 +85,6 @@ sub _thing_name {
     return $desc;
 }
 
-=test meta_ok $thing
-
-Tests $thing to see if it has a metaclass; $thing may be the class name or
-instance of the class you wish to check.
-
-=cut
 
 sub meta_ok ($;$) {
     my ($thing, $message) = @_;
@@ -89,15 +95,6 @@ sub meta_ok ($;$) {
     return $tb->ok(!!$thing_meta, $message);
 }
 
-=test does_ok $thing, < $role | \@roles >, [ $message ]
-
-Checks to see if $thing does the given roles.  $thing may be the class name or
-instance of the class you wish to check.
-
-Note that the message will be taken verbatim unless it contains C<%s>
-somewhere; this will be replaced with the name of the role being tested for.
-
-=cut
 
 sub does_ok {
     my ($thing, $roles, $message) = @_;
@@ -113,15 +110,6 @@ sub does_ok {
     return;
 }
 
-=test does_not_ok $thing, < $role | \@roles >, [ $message ]
-
-Checks to see if $thing does not do the given roles.  $thing may be the class
-name or instance of the class you wish to check.
-
-Note that the message will be taken verbatim unless it contains C<%s>
-somewhere; this will be replaced with the name of the role being tested for.
-
-=cut
 
 sub does_not_ok {
     my ($thing, $roles, $message) = @_;
@@ -137,12 +125,6 @@ sub does_not_ok {
     return;
 }
 
-=test has_attribute_ok $thing, $attribute_name, [ $message ]
-
-Checks C<$thing> for an attribute named C<$attribute_name>; C<$thing> may be a
-class name, instance, or role name.
-
-=cut
 
 # helper to dig for an attribute
 sub _find_attribute {
@@ -167,11 +149,6 @@ sub has_attribute_ok ($$;$) {
     return $tb->ok(!!_find_attribute($thing => $attr_name), $message);
 }
 
-=test has_method_ok $thing, @methods
-
-Queries $thing's metaclass to see if $thing has the methods named in @methods.
-
-=cut
 
 sub has_method_ok {
     my ($thing, @methods) = @_;
@@ -187,22 +164,6 @@ sub has_method_ok {
     return;
 }
 
-=test role_wraps_around_method_ok $role, @methods
-
-Queries $role's metaclass to see if $role wraps the methods named in
-@methods with an around method modifier.
-
-=test role_wraps_before_method_ok $role, @methods
-
-Queries $role's metaclass to see if $role wraps the methods named in
-@methods with an before method modifier.
-
-=test role_wraps_after_method_ok $role, @methods
-
-Queries $role's metaclass to see if $role wraps the methods named in
-@methods with an after method modifier.
-
-=cut
 
 sub role_wraps_around_method_ok { unshift @_, 'around'; goto \&_role_wraps }
 sub role_wraps_before_method_ok { unshift @_, 'before'; goto \&_role_wraps }
@@ -224,14 +185,6 @@ sub _role_wraps {
     return;
 }
 
-=test requires_method_ok $thing, @methods
-
-Queries $thing's metaclass to see if $thing requires the methods named in
-@methods.
-
-Note that this really only makes sense if $thing is a role.
-
-=cut
 
 sub requires_method_ok {
     my ($thing, @methods) = @_;
@@ -247,15 +200,6 @@ sub requires_method_ok {
     return;
 }
 
-=test is_immutable_ok $thing
-
-Passes if $thing is immutable.
-
-=test is_not_immutable_ok $thing
-
-Passes if $thing is not immutable; that is, is mutable.
-
-=cut
 
 sub is_immutable_ok {
     my ($thing) = @_;
@@ -277,15 +221,6 @@ sub is_not_immutable_ok {
     return $tb->ok(!$meta->is_immutable, "$name is not immutable");
 }
 
-=test is_role_ok $thing
-
-Passes if $thing's metaclass is a L<Moose::Meta::Role>.
-
-=test is_class_ok $thing
-
-Passes if $thing's metaclass is a L<Moose::Meta::Class>.
-
-=cut
 
 # NOTE: deprecate at some point late 2015
 sub is_role  { goto \&is_role_ok  }
@@ -306,15 +241,6 @@ sub _is_moosey_ok {
     return $tb->ok($meta->isa("Moose::Meta::$type"), "$thing_name is a Moose " . lc $type);
 }
 
-=test is_anon_ok $thing
-
-Passes if $thing is "anonymous".
-
-=test is_not_anon_ok $thing
-
-Passes if $thing is not "anonymous".
-
-=cut
 
 # NOTE: deprecate at some point late 2015
 sub is_anon     { goto \&is_anon_ok     }
@@ -338,16 +264,6 @@ sub is_not_anon_ok {
     return $tb->ok(!$thing_meta->is_anon, $message);
 }
 
-=test check_sugar_removed_ok $thing
-
-Ensures that all the standard Moose sugar is no longer directly callable on a
-given package.
-
-=func known_sugar
-
-Returns a list of all the known standard Moose sugar (has, extends, etc).
-
-=cut
 
 sub known_sugar { qw{ has around augment inner before after blessed confess } }
 
@@ -360,11 +276,6 @@ sub check_sugar_removed_ok {
     return;
 }
 
-=test check_sugar_ok $thing
-
-Checks and makes sure a class/etc can still do all the standard Moose sugar.
-
-=cut
 
 sub check_sugar_ok {
     my $t = shift @_;
@@ -376,75 +287,6 @@ sub check_sugar_ok {
 }
 
 
-=test validate_thing
-
-Runs a bunch of tests against the given C<$thing>, as defined:
-
-    validate_thing $thing => (
-
-        attributes => [ ... ],
-        methods    => [ ... ],
-        isa        => [ ... ],
-
-        # ensures $thing does these roles
-        does       => [ ... ],
-
-        # ensures $thing does not do these roles
-        does_not   => [ ... ],
-    );
-
-C<$thing> can be the name of a role or class, an object instance, or a
-metaclass.
-
-The attributes list specified here is in the form of a list of names, each optionally
-followed by a hashref of options to test the attribute for; this hashref takes the
-same arguments L</validate_attribute> does.  e.g.:
-
-    validate_thing $thing => (
-
-        attributes => [
-            'foo',
-            'bar',
-            baz => { is => 'ro', ... },
-            'bip',
-        ],
-    );
-
-=test validate_role
-
-The same as validate_thing(), but ensures C<$thing> is a role, and allows for
-additional role-specific tests.
-
-    validate_role $thing => (
-
-        required_methods => [ ... ],
-
-        # ...and all other options from validate_thing()
-    );
-
-=test validate_class
-
-The same as validate_thing(), but ensures C<$thing> is a class, and allows for
-additional class-specific tests.
-
-    validate_class $thing => (
-
-        isa  => [ ... ],
-
-        attributes => [ ... ],
-        methods    => [ ... ],
-        isa        => [ ... ],
-
-        # ensures $thing does these roles
-        does       => [ ... ],
-
-        # ensures $thing does not do these roles
-        does_not   => [ ... ],
-
-        # ...and all other options from validate_thing()
-    );
-
-=cut
 
 sub validate_thing {
     my ($thing, %args) = @_;
@@ -521,64 +363,6 @@ sub validate_role {
 }
 
 
-=test validate_attribute
-
-validate_attribute() allows you to test how an attribute looks once built and
-attached to a class.
-
-Let's say you have an attribute defined like this:
-
-    has foo => (
-        traits  => [ 'TestRole' ],
-        is      => 'ro',
-        isa     => 'Int',
-        builder => '_build_foo',
-        lazy    => 1,
-    );
-
-You can use validate_attribute() to ensure that it's built out in the way you
-expect:
-
-    validate_attribute TestClass => foo => (
-
-        # tests the attribute metaclass instance to ensure it does the roles
-        -does => [ 'TestRole' ],
-        # tests the attribute metaclass instance's inheritance
-        -isa  => [ 'Moose::Meta::Attribute' ], # for demonstration's sake
-
-        traits   => [ 'TestRole' ],
-        isa      => 'Int',
-        does     => 'Bar',
-        handles  => { },
-        reader   => 'foo',
-        builder  => '_build_foo',
-        default  => undef,
-        init_arg => 'foo',
-        lazy     => 1,
-        required => undef,
-    );
-
-Options passed to validate_attribute() prefixed with '-' test the attribute's metaclass
-instance rather than a setting on the attribute; that is, '-does' ensures that the
-metaclass does a particular role (e.g. L<MooseX::AttributeShortcuts>), while 'does' tests
-the setting of the attribute to require the value do a given role.
-
-Not yet documented or tested exhaustively; please see t/validate_attribute.t
-for details at the moment.  This test routine is likely to change in
-implementation and scope, with every effort to maintain backwards
-compatibility.
-
-=test attribute_options_ok
-
-Validates that an attribute is set up as expected; like validate_attribute(),
-but only concerns itself with attribute options.
-
-Not yet documented or tested exhaustively; please see t/validate_attribute.t
-for details at the moment.  This test routine is likely to change in
-implementation and scope, with every effort to maintain backwards
-compatibility.
-
-=cut
 
 sub validate_attribute {
     my ($thing, $name, %opts) = @_;
@@ -744,7 +528,21 @@ sub _class_attribute_options_ok {
 
 __END__
 
-=for Pod::Coverage is_anon is_class is_not_anon is_role
+=pod
+
+=encoding UTF-8
+
+=for :stopwords Chris Weyl Chad Etheridge Granum Karen
+
+=for :stopwords Wishlist flattr flattr'ed gittip gittip'ed
+
+=head1 NAME
+
+Test::Moose::More - More tools for testing Moose packages
+
+=head1 VERSION
+
+This document describes version 0.030 of Test::Moose::More - released June 28, 2015 as part of Test-Moose-More.
 
 =head1 SYNOPSIS
 
@@ -762,8 +560,292 @@ This package contains a number of additional tests that can be employed
 against Moose classes/roles.  It is intended to replace L<Test::Moose> in your
 tests, and re-exports any tests that it has and we do not, yet.
 
+=head1 FUNCTIONS
+
+=head2 known_sugar
+
+Returns a list of all the known standard Moose sugar (has, extends, etc).
+
+=head1 TEST_FUNCTIONS
+
+=head2 meta_ok $thing
+
+Tests $thing to see if it has a metaclass; $thing may be the class name or
+instance of the class you wish to check.
+
+=head2 does_ok $thing, < $role | \@roles >, [ $message ]
+
+Checks to see if $thing does the given roles.  $thing may be the class name or
+instance of the class you wish to check.
+
+Note that the message will be taken verbatim unless it contains C<%s>
+somewhere; this will be replaced with the name of the role being tested for.
+
+=head2 does_not_ok $thing, < $role | \@roles >, [ $message ]
+
+Checks to see if $thing does not do the given roles.  $thing may be the class
+name or instance of the class you wish to check.
+
+Note that the message will be taken verbatim unless it contains C<%s>
+somewhere; this will be replaced with the name of the role being tested for.
+
+=head2 has_attribute_ok $thing, $attribute_name, [ $message ]
+
+Checks C<$thing> for an attribute named C<$attribute_name>; C<$thing> may be a
+class name, instance, or role name.
+
+=head2 has_method_ok $thing, @methods
+
+Queries $thing's metaclass to see if $thing has the methods named in @methods.
+
+=head2 role_wraps_around_method_ok $role, @methods
+
+Queries $role's metaclass to see if $role wraps the methods named in
+@methods with an around method modifier.
+
+=head2 role_wraps_before_method_ok $role, @methods
+
+Queries $role's metaclass to see if $role wraps the methods named in
+@methods with an before method modifier.
+
+=head2 role_wraps_after_method_ok $role, @methods
+
+Queries $role's metaclass to see if $role wraps the methods named in
+@methods with an after method modifier.
+
+=head2 requires_method_ok $thing, @methods
+
+Queries $thing's metaclass to see if $thing requires the methods named in
+@methods.
+
+Note that this really only makes sense if $thing is a role.
+
+=head2 is_immutable_ok $thing
+
+Passes if $thing is immutable.
+
+=head2 is_not_immutable_ok $thing
+
+Passes if $thing is not immutable; that is, is mutable.
+
+=head2 is_role_ok $thing
+
+Passes if $thing's metaclass is a L<Moose::Meta::Role>.
+
+=head2 is_class_ok $thing
+
+Passes if $thing's metaclass is a L<Moose::Meta::Class>.
+
+=head2 is_anon_ok $thing
+
+Passes if $thing is "anonymous".
+
+=head2 is_not_anon_ok $thing
+
+Passes if $thing is not "anonymous".
+
+=head2 check_sugar_removed_ok $thing
+
+Ensures that all the standard Moose sugar is no longer directly callable on a
+given package.
+
+=head2 check_sugar_ok $thing
+
+Checks and makes sure a class/etc can still do all the standard Moose sugar.
+
+=head2 validate_thing
+
+Runs a bunch of tests against the given C<$thing>, as defined:
+
+    validate_thing $thing => (
+
+        attributes => [ ... ],
+        methods    => [ ... ],
+        isa        => [ ... ],
+
+        # ensures $thing does these roles
+        does       => [ ... ],
+
+        # ensures $thing does not do these roles
+        does_not   => [ ... ],
+    );
+
+C<$thing> can be the name of a role or class, an object instance, or a
+metaclass.
+
+The attributes list specified here is in the form of a list of names, each optionally
+followed by a hashref of options to test the attribute for; this hashref takes the
+same arguments L</validate_attribute> does.  e.g.:
+
+    validate_thing $thing => (
+
+        attributes => [
+            'foo',
+            'bar',
+            baz => { is => 'ro', ... },
+            'bip',
+        ],
+    );
+
+=head2 validate_role
+
+The same as validate_thing(), but ensures C<$thing> is a role, and allows for
+additional role-specific tests.
+
+    validate_role $thing => (
+
+        required_methods => [ ... ],
+
+        # ...and all other options from validate_thing()
+    );
+
+=head2 validate_class
+
+The same as validate_thing(), but ensures C<$thing> is a class, and allows for
+additional class-specific tests.
+
+    validate_class $thing => (
+
+        isa  => [ ... ],
+
+        attributes => [ ... ],
+        methods    => [ ... ],
+        isa        => [ ... ],
+
+        # ensures $thing does these roles
+        does       => [ ... ],
+
+        # ensures $thing does not do these roles
+        does_not   => [ ... ],
+
+        # ...and all other options from validate_thing()
+    );
+
+=head2 validate_attribute
+
+validate_attribute() allows you to test how an attribute looks once built and
+attached to a class.
+
+Let's say you have an attribute defined like this:
+
+    has foo => (
+        traits  => [ 'TestRole' ],
+        is      => 'ro',
+        isa     => 'Int',
+        builder => '_build_foo',
+        lazy    => 1,
+    );
+
+You can use validate_attribute() to ensure that it's built out in the way you
+expect:
+
+    validate_attribute TestClass => foo => (
+
+        # tests the attribute metaclass instance to ensure it does the roles
+        -does => [ 'TestRole' ],
+        # tests the attribute metaclass instance's inheritance
+        -isa  => [ 'Moose::Meta::Attribute' ], # for demonstration's sake
+
+        traits   => [ 'TestRole' ],
+        isa      => 'Int',
+        does     => 'Bar',
+        handles  => { },
+        reader   => 'foo',
+        builder  => '_build_foo',
+        default  => undef,
+        init_arg => 'foo',
+        lazy     => 1,
+        required => undef,
+    );
+
+Options passed to validate_attribute() prefixed with '-' test the attribute's metaclass
+instance rather than a setting on the attribute; that is, '-does' ensures that the
+metaclass does a particular role (e.g. L<MooseX::AttributeShortcuts>), while 'does' tests
+the setting of the attribute to require the value do a given role.
+
+Not yet documented or tested exhaustively; please see t/validate_attribute.t
+for details at the moment.  This test routine is likely to change in
+implementation and scope, with every effort to maintain backwards
+compatibility.
+
+=head2 attribute_options_ok
+
+Validates that an attribute is set up as expected; like validate_attribute(),
+but only concerns itself with attribute options.
+
+Not yet documented or tested exhaustively; please see t/validate_attribute.t
+for details at the moment.  This test routine is likely to change in
+implementation and scope, with every effort to maintain backwards
+compatibility.
+
+=for Pod::Coverage is_anon is_class is_not_anon is_role
+
 =head1 SEE ALSO
 
+Please see those modules/websites for more information related to this module.
+
+=over 4
+
+=item *
+
 L<Test::Moose>
+
+=back
+
+=head1 BUGS
+
+Please report any bugs or feature requests on the bugtracker website
+https://github.com/RsrchBoy/Test-Moose-More/issues
+
+When submitting a bug or request, please include a test-file or a
+patch to an existing test-file that illustrates the bug or desired
+feature.
+
+=head1 AUTHOR
+
+Chris Weyl <cweyl@alumni.drew.edu>
+
+=head2 I'm a material boy in a material world
+
+=begin html
+
+<a href="https://gratipay.com/RsrchBoy/"><img src="http://img.shields.io/gratipay/RsrchBoy.svg" /></a>
+<a href="http://bit.ly/rsrchboys-wishlist"><img src="http://wps.io/wp-content/uploads/2014/05/amazon_wishlist.resized.png" /></a>
+<a href="https://flattr.com/submit/auto?user_id=RsrchBoy&url=https%3A%2F%2Fgithub.com%2FRsrchBoy%2FTest-Moose-More&title=RsrchBoy's%20CPAN%20Test-Moose-More&tags=%22RsrchBoy's%20Test-Moose-More%20in%20the%20CPAN%22"><img src="http://api.flattr.com/button/flattr-badge-large.png" /></a>
+
+=end html
+
+Please note B<I do not expect to be gittip'ed or flattr'ed for this work>,
+rather B<it is simply a very pleasant surprise>. I largely create and release
+works like this because I need them or I find it enjoyable; however, don't let
+that stop you if you feel like it ;)
+
+L<Flattr|https://flattr.com/submit/auto?user_id=RsrchBoy&url=https%3A%2F%2Fgithub.com%2FRsrchBoy%2FTest-Moose-More&title=RsrchBoy's%20CPAN%20Test-Moose-More&tags=%22RsrchBoy's%20Test-Moose-More%20in%20the%20CPAN%22>,
+L<Gratipay|https://gratipay.com/RsrchBoy/>, or indulge my
+L<Amazon Wishlist|http://bit.ly/rsrchboys-wishlist>...  If and *only* if you so desire.
+
+=head1 CONTRIBUTORS
+
+=for stopwords Chad Granum Karen Etheridge
+
+=over 4
+
+=item *
+
+Chad Granum <chad.granum@dreamhost.com>
+
+=item *
+
+Karen Etheridge <ether@cpan.org>
+
+=back
+
+=head1 COPYRIGHT AND LICENSE
+
+This software is Copyright (c) 2012 by Chris Weyl.
+
+This is free software, licensed under:
+
+  The GNU Lesser General Public License, Version 2.1, February 1999
 
 =cut

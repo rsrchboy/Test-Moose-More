@@ -1,7 +1,5 @@
 Revision history for Test-Moose-More
 
-{{$NEXT}}
-
 0.030     2015-06-28 01:01:58 PDT-0700
 	* Add method modifier checks for roles.
 
