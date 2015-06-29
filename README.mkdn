@@ -8,7 +8,7 @@ Test::Moose::More - More tools for testing Moose packages
 
 # VERSION
 
-This document describes version 0.030 of Test::Moose::More - released June 28, 2015 as part of Test-Moose-More.
+This document describes version 0.031 of Test::Moose::More - released June 29, 2015 as part of Test-Moose-More.
 
 # SYNOPSIS
 
@@ -129,6 +129,9 @@ Runs a bunch of tests against the given `$thing`, as defined:
         methods    => [ ... ],
         isa        => [ ... ],
 
+        # ensures sugar is/is-not present
+        sugar      => 0,
+
         # ensures $thing does these roles
         does       => [ ... ],
 
@@ -177,6 +180,9 @@ additional class-specific tests.
         attributes => [ ... ],
         methods    => [ ... ],
         isa        => [ ... ],
+
+        # ensures sugar is/is-not present
+        sugar      => 0,
 
         # ensures $thing does these roles
         does       => [ ... ],
