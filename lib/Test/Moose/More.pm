@@ -25,6 +25,7 @@ use Sub::Exporter::Progressive -setup => {
         validate_attribute
         validate_class
         validate_role
+        validate_thing
         with_immutable
 
         role_wraps_around_method_ok
