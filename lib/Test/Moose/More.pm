@@ -349,9 +349,9 @@ Returns a list of all the known standard Moose sugar (has, extends, etc).
 
 =cut
 
-sub known_sugar { qw{ has around augment inner before after blessed confess } }
+sub known_sugar() { qw{ has around augment inner before after blessed confess } }
 
-sub check_sugar_removed_ok {
+sub check_sugar_removed_ok($) {
     my $t = shift @_;
 
     # check some (not all) Moose sugar to make sure it has been cleared
@@ -366,7 +366,7 @@ Checks and makes sure a class/etc can still do all the standard Moose sugar.
 
 =cut
 
-sub check_sugar_ok {
+sub check_sugar_ok($) {
     my $t = shift @_;
 
     # check some (not all) Moose sugar to make sure it has been cleared
