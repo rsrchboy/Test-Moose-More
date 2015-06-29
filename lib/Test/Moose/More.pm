@@ -387,6 +387,9 @@ Runs a bunch of tests against the given C<$thing>, as defined:
         methods    => [ ... ],
         isa        => [ ... ],
 
+        # ensures sugar is/is-not present
+        sugar      => 0,
+
         # ensures $thing does these roles
         does       => [ ... ],
 
@@ -436,6 +439,9 @@ additional class-specific tests.
         methods    => [ ... ],
         isa        => [ ... ],
 
+        # ensures sugar is/is-not present
+        sugar      => 0,
+
         # ensures $thing does these roles
         does       => [ ... ],
 
@@ -455,6 +461,10 @@ sub validate_thing {
     ### anonymous...
     $args{anonymous} ? is_anon_ok $thing : is_not_anon_ok $thing
         if exists $args{anonymous};
+
+    ### sugar checking...
+    $args{sugar} ? check_sugar_ok $thing : check_sugar_removed_ok $thing
+        if exists $args{sugar};
 
     ### roles...
     do { does_ok($thing, $_) for @{$args{does}} }
