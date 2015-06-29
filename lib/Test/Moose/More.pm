@@ -25,6 +25,7 @@ use Sub::Exporter::Progressive -setup => {
         validate_attribute
         validate_class
         validate_role
+        validate_thing
         with_immutable
 
         role_wraps_around_method_ok
@@ -349,9 +350,9 @@ Returns a list of all the known standard Moose sugar (has, extends, etc).
 
 =cut
 
-sub known_sugar { qw{ has around augment inner before after blessed confess } }
+sub known_sugar() { qw{ has around augment inner before after blessed confess } }
 
-sub check_sugar_removed_ok {
+sub check_sugar_removed_ok($) {
     my $t = shift @_;
 
     # check some (not all) Moose sugar to make sure it has been cleared
@@ -366,7 +367,7 @@ Checks and makes sure a class/etc can still do all the standard Moose sugar.
 
 =cut
 
-sub check_sugar_ok {
+sub check_sugar_ok($) {
     my $t = shift @_;
 
     # check some (not all) Moose sugar to make sure it has been cleared
@@ -385,6 +386,9 @@ Runs a bunch of tests against the given C<$thing>, as defined:
         attributes => [ ... ],
         methods    => [ ... ],
         isa        => [ ... ],
+
+        # ensures sugar is/is-not present
+        sugar      => 0,
 
         # ensures $thing does these roles
         does       => [ ... ],
@@ -435,6 +439,9 @@ additional class-specific tests.
         methods    => [ ... ],
         isa        => [ ... ],
 
+        # ensures sugar is/is-not present
+        sugar      => 0,
+
         # ensures $thing does these roles
         does       => [ ... ],
 
@@ -454,6 +461,10 @@ sub validate_thing {
     ### anonymous...
     $args{anonymous} ? is_anon_ok $thing : is_not_anon_ok $thing
         if exists $args{anonymous};
+
+    ### sugar checking...
+    $args{sugar} ? check_sugar_ok $thing : check_sugar_removed_ok $thing
+        if exists $args{sugar};
 
     ### roles...
     do { does_ok($thing, $_) for @{$args{does}} }
