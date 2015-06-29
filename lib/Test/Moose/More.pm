@@ -306,6 +306,23 @@ sub _is_moosey_ok {
     return $tb->ok($meta->isa("Moose::Meta::$type"), "$thing_name is a Moose " . lc $type);
 }
 
+=test is_parameterized_ok $role
+
+Passes if $role's is a parameterized role -- that is, its metaclass inherits
+from L<MooseX::Role::Parameterized>.
+
+=cut
+
+sub is_parameterized_ok {
+    my ($role) = shift @_;
+
+    my $meta       = find_meta($thing);
+    my $thing_name = _thing_name($role, $meta); # $meta->name;
+    $message     ||= "$thing_name is a parameterized role";
+
+    return $tb->ok(!!$meta->isa('MooseX::Role::Parameterized'), $message);
+}
+
 =test is_anon_ok $thing
 
 Passes if $thing is "anonymous".
