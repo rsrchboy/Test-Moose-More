@@ -528,7 +528,25 @@ sub validate_role {
     requires_method_ok($role => @{ $args{required_methods} })
         if defined $args{required_methods};
 
-    return validate_thing $role => %args;
+    # just validate the role.
+    return validate_thing $role => %args
+        unless $args{-compose};
+
+    # validate the role, then compose it and validate that.
+    validate_thing $role => %args;
+    my $anon = Moose::Meta::Class->create_anon_class(
+        roles => [$role],
+        methods => { map { $_ => sub {} } @{ $args{required_methods} || [] } },
+    );
+
+    $args{methods}
+        = defined $args{methods}
+        ? [ @{$args{methods}}, @{$args{required_methods} || []} ]
+        : [ @{$args{required_methods}                    || []} ]
+        ;
+
+    delete $args{required_methods};
+    return validate_class $anon->name => %args;
 }
 
 
