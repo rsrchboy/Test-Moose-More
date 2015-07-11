@@ -223,6 +223,10 @@ additional class-specific tests.
         # ...and all other options from validate_thing()
     );
 
+- immutable => 0|1
+
+    Checks the class to see if it is/isn't immutable.
+
 ## validate\_attribute
 
 validate\_attribute() allows you to test how an attribute looks once built and
