@@ -458,6 +458,36 @@ additional role-specific tests.
 
 =begin :list
 
+* -compose => 0|1
+
+When true, attempt to compose the role into an anonymous class, then use it to
+run L</validate_class>.  The options we're given are passed to validate_class()
+directly, except that any C<required_methods> entry is removed and its contents
+pushed onto C<methods>.  (A stub method for each entry in C<required_methods>
+will also be created in the new class.)
+
+e.g.:
+
+
+    ok 1 - TestRole has a metaclass
+    ok 2 - TestRole is a Moose role
+    ok 3 - TestRole requires method blargh
+    ok 4 - TestRole does TestRole
+    ok 5 - TestRole does not do TestRole::Two
+    ok 6 - TestRole has method method1
+    ok 7 - TestRole has an attribute named bar
+        # Subtest: role composed into Moose::Meta::Class::__ANON__::SERIAL::1
+        ok 1 - Moose::Meta::Class::__ANON__::SERIAL::1 has a metaclass
+        ok 2 - Moose::Meta::Class::__ANON__::SERIAL::1 is a Moose class
+        ok 3 - Moose::Meta::Class::__ANON__::SERIAL::1 does TestRole
+        ok 4 - Moose::Meta::Class::__ANON__::SERIAL::1 does not do TestRole::Two
+        ok 5 - Moose::Meta::Class::__ANON__::SERIAL::1 has method method1
+        ok 6 - Moose::Meta::Class::__ANON__::SERIAL::1 has method blargh
+        ok 7 - Moose::Meta::Class::__ANON__::SERIAL::1 has an attribute named bar
+        1..7
+    ok 8 - role composed into Moose::Meta::Class::__ANON__::SERIAL::1
+    1..8
+
 * required_methods => [ ... ]
 
 A list of methods the role requires a consuming class to supply.
@@ -569,30 +599,34 @@ sub validate_role {
     my ($role, %args) = @_;
 
     local $Test::Builder::Level = $Test::Builder::Level + 1;
-    return unless is_role_ok $role;
 
+    # basic role validation
+    return unless is_role_ok $role;
     requires_method_ok($role => @{ $args{required_methods} })
         if defined $args{required_methods};
+    $args{-compose}
+        ?        validate_thing $role => %args
+        : return validate_thing $role => %args
+        ;
 
-    # just validate the role.
-    return validate_thing $role => %args
-        unless $args{-compose};
-
-    # validate the role, then compose it and validate that.
-    validate_thing $role => %args;
+    # compose it and validate that class.
     my $anon = Moose::Meta::Class->create_anon_class(
         roles => [$role],
         methods => { map { $_ => sub {} } @{ $args{required_methods} || [] } },
     );
 
+    # take anything in required_methods and put it in methods for this test
     $args{methods}
         = defined $args{methods}
         ? [ @{$args{methods}}, @{$args{required_methods} || []} ]
         : [ @{$args{required_methods}                    || []} ]
         ;
-
     delete $args{required_methods};
-    return validate_class $anon->name => %args;
+
+    # aaaand a subtest wrapper to make it easier to read...
+    return $tb->subtest('role composed into ' . $anon->name
+        => sub { validate_class $anon->name => %args },
+    );
 }
 
 
