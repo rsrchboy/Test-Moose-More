@@ -1,6 +1,8 @@
 use strict;
 use warnings;
 
+# FIXME yup, these aren't real tests, really.
+
 { package TestRole::One;      use Moose::Role; }
 { package TestRole::Two;      use Moose::Role; }
 
@@ -41,14 +43,12 @@ use Test::Moose::More;
 use TAP::SimpleOutput 'counters';
 
 validate_role 'TestRole' => (
-    -compose   => 1,
-    attributes => [ 'bar'                     ],
-    does       => [ 'TestRole'                ],
-    does_not   => [ 'TestRole::Two'           ],
-    # XXX cannot check for accessor methods in a role at the moment
-    #methods    => [ qw{ foo method1 has_bar } ],
-    methods    => [ qw{ method1 } ],
-    required_methods => [ qw{ blargh } ],
+    -compose         => 1,
+    attributes       => [ 'bar'           ],
+    does             => [ 'TestRole'      ],
+    does_not         => [ 'TestRole::Two' ],
+    methods          => [ qw{ method1 }   ],
+    required_methods => [ qw{ blargh }    ],
 );
 
 done_testing;
