@@ -592,20 +592,10 @@ instance rather than a setting on the attribute; that is, '-does' ensures that t
 metaclass does a particular role (e.g. L<MooseX::AttributeShortcuts>), while 'does' tests
 the setting of the attribute to require the value do a given role.
 
-Not yet documented or tested exhaustively; please see t/validate_attribute.t
-for details at the moment.  This test routine is likely to change in
-implementation and scope, with every effort to maintain backwards
-compatibility.
-
 =test attribute_options_ok
 
 Validates that an attribute is set up as expected; like validate_attribute(),
 but only concerns itself with attribute options.
-
-Not yet documented or tested exhaustively; please see t/validate_attribute.t
-for details at the moment.  This test routine is likely to change in
-implementation and scope, with every effort to maintain backwards
-compatibility.
 
 =cut
 
