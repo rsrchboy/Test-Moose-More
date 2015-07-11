@@ -400,6 +400,26 @@ Runs a bunch of tests against the given C<$thing>, as defined:
 C<$thing> can be the name of a role or class, an object instance, or a
 metaclass.
 
+=begin :list
+
+* isa => [ ... ]
+
+A list of superclasses thing should have.
+
+* anonymous => 0|1
+
+Check to see if the class is/isn't anonymous.
+
+* does => [ ... ]
+
+A list of roles the thing should do.
+
+* does_not => [ ... ]
+
+A list of roles the thing should not do.
+
+* attributes => [ ... ]
+
 The attributes list specified here is in the form of a list of names, each optionally
 followed by a hashref of options to test the attribute for; this hashref takes the
 same arguments L</validate_attribute> does.  e.g.:
@@ -413,6 +433,16 @@ same arguments L</validate_attribute> does.  e.g.:
             'bip',
         ],
     );
+
+* methods => [ ... ]
+
+A list of methods the thing should have.
+
+* sugar => 0|1
+
+Ensure that thing can/cannot do the standard Moose sugar.
+
+=end :list
 
 =test validate_role
 
