@@ -456,6 +456,14 @@ additional role-specific tests.
         # ...and all other options from validate_thing()
     );
 
+=begin :list
+
+* required_methods => [ ... ]
+
+A list of methods the role requires a consuming class to supply.
+
+=end :list
+
 =test validate_class
 
 The same as validate_thing(), but ensures C<$thing> is a class, and allows for
