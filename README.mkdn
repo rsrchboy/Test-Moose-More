@@ -8,7 +8,7 @@ Test::Moose::More - More tools for testing Moose packages
 
 # VERSION
 
-This document describes version 0.032 of Test::Moose::More - released July 10, 2015 as part of Test-Moose-More.
+This document describes version 0.032 of Test::Moose::More - released July 11, 2015 as part of Test-Moose-More.
 
 # SYNOPSIS
 
@@ -193,6 +193,35 @@ additional role-specific tests.
 
         # ...and all other options from validate_thing()
     );
+
+- -compose => 0|1
+
+    When true, attempt to compose the role into an anonymous class, then use it to
+    run ["validate\_class"](#validate_class).  The options we're given are passed to validate\_class()
+    directly, except that any `required_methods` entry is removed and its contents
+    pushed onto `methods`.  (A stub method for each entry in `required_methods`
+    will also be created in the new class.)
+
+    e.g.:
+
+        ok 1 - TestRole has a metaclass
+        ok 2 - TestRole is a Moose role
+        ok 3 - TestRole requires method blargh
+        ok 4 - TestRole does TestRole
+        ok 5 - TestRole does not do TestRole::Two
+        ok 6 - TestRole has method method1
+        ok 7 - TestRole has an attribute named bar
+            # Subtest: role composed into Moose::Meta::Class::__ANON__::SERIAL::1
+            ok 1 - Moose::Meta::Class::__ANON__::SERIAL::1 has a metaclass
+            ok 2 - Moose::Meta::Class::__ANON__::SERIAL::1 is a Moose class
+            ok 3 - Moose::Meta::Class::__ANON__::SERIAL::1 does TestRole
+            ok 4 - Moose::Meta::Class::__ANON__::SERIAL::1 does not do TestRole::Two
+            ok 5 - Moose::Meta::Class::__ANON__::SERIAL::1 has method method1
+            ok 6 - Moose::Meta::Class::__ANON__::SERIAL::1 has method blargh
+            ok 7 - Moose::Meta::Class::__ANON__::SERIAL::1 has an attribute named bar
+            1..7
+        ok 8 - role composed into Moose::Meta::Class::__ANON__::SERIAL::1
+        1..8
 
 - required\_methods => \[ ... \]
 
