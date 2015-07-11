@@ -489,6 +489,14 @@ additional class-specific tests.
         # ...and all other options from validate_thing()
     );
 
+=begin :list
+
+* immutable => 0|1
+
+Checks the class to see if it is/isn't immutable.
+
+=end :list
+
 =cut
 
 sub validate_thing {
