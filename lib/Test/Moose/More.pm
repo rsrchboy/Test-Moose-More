@@ -45,7 +45,7 @@ use Test::More;
 use Test::Moose 'with_immutable';
 use Scalar::Util 'blessed';
 use Syntax::Keyword::Junction 'any';
-use Moose::Util 'does_role', 'find_meta';
+use Moose::Util 'resolve_metatrait_alias', 'does_role', 'find_meta';
 use Moose::Util::TypeConstraints;
 use Data::OptList;
 
@@ -699,6 +699,9 @@ sub _validate_attribute {
         grep { /^-/                      }
         sort keys %opts
         ;
+
+    $thing_opts{does} = [ map { resolve_metatrait_alias(Attribute => $_) } @{$thing_opts{does}} ]
+        if $thing_opts{does};
 
     ### %thing_opts
     validate_class $att => %thing_opts
