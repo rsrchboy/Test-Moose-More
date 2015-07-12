@@ -8,7 +8,7 @@ Test::Moose::More - More tools for testing Moose packages
 
 # VERSION
 
-This document describes version 0.032 of Test::Moose::More - released July 11, 2015 as part of Test-Moose-More.
+This document describes version 0.033 of Test::Moose::More - released July 12, 2015 as part of Test-Moose-More.
 
 # SYNOPSIS
 
@@ -32,7 +32,7 @@ tests, and re-exports any tests that it has and we do not, yet.
 
 Returns a list of all the known standard Moose sugar (has, extends, etc).
 
-# TEST\_FUNCTIONS
+# TEST FUNCTIONS
 
 ## meta\_ok $thing
 
