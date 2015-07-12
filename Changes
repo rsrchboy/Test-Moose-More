@@ -1,7 +1,5 @@
 Revision history for Test-Moose-More
 
-{{$NEXT}}
-
 0.032     2015-07-11 22:47:44 PDT-0700
 	* Better documentation for most of the validate_*() functions.
 	* Add a -compose option to validate_role(), to handle a common pattern
