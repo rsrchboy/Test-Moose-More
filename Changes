@@ -2,6 +2,14 @@ Revision history for Test-Moose-More
 
 {{$NEXT}}
 
+0.032     2015-07-11 22:47:44 PDT-0700
+	* Better documentation for most of the validate_*() functions.
+	* Add a -compose option to validate_role(), to handle a common pattern
+	  automagically.
+	* When checking attribute traits, we now attempt to resolve them with the
+	  appropriate functions from Moose::Util (so that things like native
+	  traits are found with a minimum of pain).
+
 0.031     2015-06-30 18:30:27 PDT-0700
 	* We now export validate_thing()
 	* Add subroutine parameters to the sugar functions.
