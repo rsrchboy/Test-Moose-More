@@ -677,6 +677,44 @@ the setting of the attribute to require the value do a given role.
 Validates that an attribute is set up as expected; like validate_attribute(),
 but only concerns itself with attribute options.
 
+Note that some of these options will skip if used against attributes defined in a role.
+
+=begin :list
+
+* is => ro|rw
+
+Tests for reader/writer options set as one would expect.
+
+* isa => ...
+
+Validates that the attribute requires its value to be a given type.
+
+* does => ...
+
+Validates that the attribute requires its value to do a given role.
+
+* builder => '...'
+
+Validates that the attribute expects the method name given to be its builder.
+
+* default => ...
+
+Validates that the attribute has the given default.
+
+* init_arg => '...'
+
+Validates that the attribute has the given initial argument name.
+
+* lazy => 0|1
+
+Validates that the attribute is/isn't lazy.
+
+* required => 0|1
+
+Validates that setting the attribute's value is/isn't required.
+
+=end :list
+
 =cut
 
 sub validate_attribute {
