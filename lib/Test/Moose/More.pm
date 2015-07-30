@@ -402,6 +402,11 @@ metaclass.
 
 =begin :list
 
+* -subtest => 'subtest name...'
+
+If set, all tests run will be wrapped in a subtest, the name of which will be
+whatever C<-subtest> is set to.
+
 * isa => [ ... ]
 
 A list of superclasses thing should have.
@@ -539,7 +544,25 @@ Checks the class to see if it is/isn't immutable.
 
 =cut
 
-sub validate_thing {
+sub validate_thing { _validate_subtest_wrapper(\&_validate_thing_guts, @_) }
+sub validate_class { _validate_subtest_wrapper(\&_validate_class_guts, @_) }
+sub validate_role  { _validate_subtest_wrapper(\&_validate_role_guts,  @_) }
+
+sub _validate_subtest_wrapper {
+    my ($func, $thing, %args) = @_;
+
+    # note incrementing by 2 because of our upper curried function
+    local $Test::Builder::Level = $Test::Builder::Level + 2;
+
+    # run tests w/o a subtest wrapper...
+    return $func->($thing => %args) 
+        unless $args{-subtest};
+
+    # ...or with one.
+    return $tb->subtest(delete $args{-subtest} => sub { $func->($thing => %args) });
+}
+
+sub _validate_thing_guts {
     my ($thing, %args) = @_;
 
     local $Test::Builder::Level = $Test::Builder::Level + 1;
@@ -584,23 +607,6 @@ sub validate_thing {
     }
 
     return;
-}
-
-sub validate_class { _validate_subtest_wrapper(\&_validate_class_guts, @_) }
-sub validate_role  { _validate_subtest_wrapper(\&_validate_role_guts,  @_) }
-
-sub _validate_subtest_wrapper {
-    my ($func, $thing, %args) = @_;
-
-    # note incrementing by 2 because of our upper curried function
-    local $Test::Builder::Level = $Test::Builder::Level + 2;
-
-    # run tests w/o a subtest wrapper...
-    return $func->($thing => %args) 
-        unless $args{-subtest};
-
-    # ...or with one.
-    return $tb->subtest(delete $args{-subtest} => sub { $func->($thing => %args) });
 }
 
 sub _validate_class_guts {
