@@ -663,8 +663,9 @@ sub _validate_role_guts {
     $args{does} = [ $role, @{ $args{does} || [] } ];
 
     # aaaand a subtest wrapper to make it easier to read...
-    return $tb->subtest('role composed into ' . $anon->name
-        => sub { validate_class $anon->name => %args },
+    return validate_class $anon->name => (
+        -subtest => 'role composed into ' . $anon->name,
+        %args,
     );
 }
 
