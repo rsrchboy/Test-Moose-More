@@ -555,7 +555,7 @@ sub _validate_subtest_wrapper {
     local $Test::Builder::Level = $Test::Builder::Level + 2;
 
     # run tests w/o a subtest wrapper...
-    return $func->($thing => %args) 
+    return $func->($thing => %args)
         unless $args{-subtest};
 
     # ...or with one.
@@ -921,6 +921,8 @@ sub _class_attribute_options_ok {
 !!42;
 
 __END__
+
+=for :stopwords subtest
 
 =for Pod::Coverage is_anon is_class is_not_anon is_role
 
