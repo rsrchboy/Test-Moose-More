@@ -1,6 +1,8 @@
 Revision history for Test-Moose-More
 
 {{$NEXT}}
+	* validate_role(), validate_class(), and validate_thing() now accept
+	  '-subtest', causing it to wrap all the tests they run under a subtest.
 
 0.033     2015-07-29 18:25:51 PDT-0700
 	* validate_role($role, -compose => 1, ...) will now add a sanity test that
