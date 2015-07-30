@@ -599,9 +599,10 @@ sub _validate_thing_guts {
                     if (find_meta($thing)->isa('Moose::Meta::Role'));
 
                 local $THING_NAME = "${thing}'s attribute $name";
-                $tb->subtest("checking $THING_NAME" => sub {
-                    _validate_attribute($att, %$opts);
-                });
+                _validate_attribute($att => (
+                    -subtest => "checking $THING_NAME",
+                    %$opts,
+                ));
             }
         }
     }
@@ -769,7 +770,8 @@ Validates that setting the attribute's value is/isn't required.
 =cut
 
 #sub validate_attribute { _validate_subtest_wrapper(\&_validate_attribute_guts, @_) }
-sub validate_attribute { _validate_subtest_wrapper(\&_validate_attribute_guts, [shift, shift], @_) }
+sub _validate_attribute { _validate_subtest_wrapper(\&__validate_attribute_guts, @_) }
+sub validate_attribute  { _validate_subtest_wrapper(\&_validate_attribute_guts, [shift, shift], @_) }
 
 sub _validate_attribute_guts {
 #sub validate_attribute {
@@ -784,7 +786,7 @@ sub _validate_attribute_guts {
     return _validate_attribute($att, %opts);
 }
 
-sub _validate_attribute {
+sub __validate_attribute_guts {
     my ($att, %opts) = @_;
 
     local $Test::Builder::Level = $Test::Builder::Level + 1;
