@@ -769,13 +769,10 @@ Validates that setting the attribute's value is/isn't required.
 
 =cut
 
-#sub validate_attribute { _validate_subtest_wrapper(\&_validate_attribute_guts, @_) }
-sub _validate_attribute { _validate_subtest_wrapper(\&__validate_attribute_guts, @_) }
-sub validate_attribute  { _validate_subtest_wrapper(\&_validate_attribute_guts, [shift, shift], @_) }
+sub _validate_attribute { _validate_subtest_wrapper(\&__validate_attribute_guts,                 @_) }
+sub validate_attribute  { _validate_subtest_wrapper( \&_validate_attribute_guts, [shift, shift], @_) }
 
 sub _validate_attribute_guts {
-#sub validate_attribute {
-    #my ($thing, $name, %opts) = @_;
     my ($thingname, %opts) = @_;
     my ($thing, $name) = @$thingname;
 
