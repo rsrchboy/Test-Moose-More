@@ -45,7 +45,7 @@ use TAP::SimpleOutput 'counters';
 validate_role 'TestRole' => (
     -compose         => 1,
     attributes       => [ bar => { -does => ['Array'] } ],
-    does             => [ 'TestRole'                    ],
+    does             => [ 'TestRole::One'               ],
     does_not         => [ 'TestRole::Two'               ],
     methods          => [ qw{ method1 }                 ],
     required_methods => [ qw{ blargh }                  ],

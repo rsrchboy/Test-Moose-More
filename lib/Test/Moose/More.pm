@@ -622,6 +622,8 @@ sub validate_role {
         : [ @{$args{required_methods}                    || []} ]
         ;
     delete $args{required_methods};
+    # and add a test for the role we're actually testing...
+    $args{does} = [ $role, @{ $args{does} || [] } ];
 
     # aaaand a subtest wrapper to make it easier to read...
     return $tb->subtest('role composed into ' . $anon->name
