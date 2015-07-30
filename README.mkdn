@@ -313,6 +313,14 @@ instance rather than a setting on the attribute; that is, '-does' ensures that t
 metaclass does a particular role (e.g. [MooseX::AttributeShortcuts](https://metacpan.org/pod/MooseX::AttributeShortcuts)), while 'does' tests
 the setting of the attribute to require the value do a given role.
 
+This function takes all the options ["attribute\_options\_ok"](#attribute_options_ok) takes, as well as
+the following:
+
+- -subtest => 'subtest name...'
+
+    If set, all tests run will be wrapped in a subtest, the name of which will be
+    whatever `-subtest` is set to.
+
 ## attribute\_options\_ok
 
 Validates that an attribute is set up as expected; like validate\_attribute(),
