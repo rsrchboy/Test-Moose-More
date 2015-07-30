@@ -711,6 +711,18 @@ instance rather than a setting on the attribute; that is, '-does' ensures that t
 metaclass does a particular role (e.g. L<MooseX::AttributeShortcuts>), while 'does' tests
 the setting of the attribute to require the value do a given role.
 
+This function takes all the options L</attribute_options_ok> takes, as well as
+the following:
+
+=begin :list
+
+* -subtest => 'subtest name...'
+
+If set, all tests run will be wrapped in a subtest, the name of which will be
+whatever C<-subtest> is set to.
+
+=end :list
+
 =test attribute_options_ok
 
 Validates that an attribute is set up as expected; like validate_attribute(),
@@ -756,8 +768,14 @@ Validates that setting the attribute's value is/isn't required.
 
 =cut
 
-sub validate_attribute {
-    my ($thing, $name, %opts) = @_;
+#sub validate_attribute { _validate_subtest_wrapper(\&_validate_attribute_guts, @_) }
+sub validate_attribute { _validate_subtest_wrapper(\&_validate_attribute_guts, [shift, shift], @_) }
+
+sub _validate_attribute_guts {
+#sub validate_attribute {
+    #my ($thing, $name, %opts) = @_;
+    my ($thingname, %opts) = @_;
+    my ($thing, $name) = @$thingname;
 
     local $Test::Builder::Level = $Test::Builder::Level + 1;
     return unless has_attribute_ok($thing, $name);
