@@ -42,6 +42,11 @@ use Test::Moose::More;
 
 use TAP::SimpleOutput 'counters';
 
+validate_role TestRole => (
+    -subtest => 'simple -subtest demo/validation',
+    methods  => [ qw{ method1 } ],
+);
+
 note 'validate w/valid role';
 {
     my ($_ok, $_nok) = counters();

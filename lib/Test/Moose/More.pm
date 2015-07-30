@@ -488,6 +488,11 @@ e.g.:
     ok 8 - role composed into Moose::Meta::Class::__ANON__::SERIAL::1
     1..8
 
+* -subtest => 'subtest name...'
+
+If set, all tests run will be wrapped in a subtest, the name of which will be
+whatever C<-subtest> is set to.
+
 * required_methods => [ ... ]
 
 A list of methods the role requires a consuming class to supply.
@@ -595,7 +600,11 @@ sub validate_class {
     return validate_thing $class => %args;
 }
 
-sub validate_role {
+# _validate_role_guts() is where the main logic of validate_role() lives;
+# we're broken out here so as to allow it all to be easily wrapped -- or not
+# -- in a subtest.
+
+sub _validate_role_guts {
     my ($role, %args) = @_;
 
     local $Test::Builder::Level = $Test::Builder::Level + 1;
@@ -631,6 +640,18 @@ sub validate_role {
     );
 }
 
+sub validate_role {
+    my ($role, %args) = @_;
+
+    local $Test::Builder::Level = $Test::Builder::Level + 1;
+
+    # run tests w/o a subtest wrapper...
+    return _validate_role_guts($role, %args)
+        unless $args{-subtest};
+
+    # ...or with one.
+    return $tb->subtest(delete $args{-subtest} => sub { _validate_role_guts $role => %args });
+}
 
 =test validate_attribute
 
