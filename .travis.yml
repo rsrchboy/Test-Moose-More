@@ -1,44 +1,23 @@
-# Travis config for @RsrchBoy's p5 packages.
-#
-# Kinda.
-#
-# GistID: 31e0e356a6233e5ee730
-# Chris Weyl <cweyl@alumni.drew.edu> 2015
-
-# use the docker/container based infrastructure
+# use the container-based infrastructure
 sudo: false
 
 language: perl
 perl:
-    - "5.8"
-    - "5.10"
-    - "5.12"
-    - "5.14"
-    - "5.16"
-    - "5.18"
-    - "5.20"
-    - "5.21"
-    - "5.22"
+   - "5.8"
+   - "5.10"
+   - "5.12"
+   - "5.14"
+   - "5.16"
+   - "5.18"
+   - "5.20"
+   - "5.21"
 
 matrix:
-    allow_failures:
-        - perl: "5.8"
-        - perl: "5.21"
-        - perl: "5.22"
-
-branches:
-    except:
-        - "release/cpan"
-
-#env:
-   #global:
-      #- CPANM_OPTS="-q --skip-satisfied --notest --no-man-pages"
+   allow_failures:
+      - perl: "5.8"
+      - perl: "5.21"
 
 before_install:
-    - git clone --depth=1 --branch=master https://github.com/RsrchBoy/travis-p5-cache.git ../p5
-    - source ../p5/init
-    - ../p5/before-install.dzil
-
-install:       ../p5/install.dzil
-script:        ../p5/script.dzil
-after_success: ../p5/after_success
+   # git bits sometimes needed...
+   - git config user.name 'Travis-CI'
+   - git config user.email 'travis@nowhere.dne'

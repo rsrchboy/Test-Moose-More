@@ -1,7 +1,5 @@
 Revision history for Test-Moose-More
 
-{{$NEXT}}
-
 0.034-TRIAL  2015-07-29 23:22:49 PDT-0700
 	* validate_role(), validate_class(), validate_thing(), and
 	  validate_attribute() now accept '-subtest', causing them to wrap all the
