@@ -526,6 +526,11 @@ additional class-specific tests.
 
 =begin :list
 
+* -subtest => 'subtest name...'
+
+If set, all tests run will be wrapped in a subtest, the name of which will be
+whatever C<-subtest> is set to.
+
 * immutable => 0|1
 
 Checks the class to see if it is/isn't immutable.
@@ -581,7 +586,24 @@ sub validate_thing {
     return;
 }
 
-sub validate_class {
+sub validate_class { _validate_subtest_wrapper(\&_validate_class_guts, @_) }
+sub validate_role  { _validate_subtest_wrapper(\&_validate_role_guts,  @_) }
+
+sub _validate_subtest_wrapper {
+    my ($func, $thing, %args) = @_;
+
+    # note incrementing by 2 because of our upper curried function
+    local $Test::Builder::Level = $Test::Builder::Level + 2;
+
+    # run tests w/o a subtest wrapper...
+    return $func->($thing => %args) 
+        unless $args{-subtest};
+
+    # ...or with one.
+    return $tb->subtest(delete $args{-subtest} => sub { $func->($thing => %args) });
+}
+
+sub _validate_class_guts {
     my ($class, %args) = @_;
 
     local $Test::Builder::Level = $Test::Builder::Level + 1;
@@ -638,19 +660,6 @@ sub _validate_role_guts {
     return $tb->subtest('role composed into ' . $anon->name
         => sub { validate_class $anon->name => %args },
     );
-}
-
-sub validate_role {
-    my ($role, %args) = @_;
-
-    local $Test::Builder::Level = $Test::Builder::Level + 1;
-
-    # run tests w/o a subtest wrapper...
-    return _validate_role_guts($role, %args)
-        unless $args{-subtest};
-
-    # ...or with one.
-    return $tb->subtest(delete $args{-subtest} => sub { _validate_role_guts $role => %args });
 }
 
 =test validate_attribute

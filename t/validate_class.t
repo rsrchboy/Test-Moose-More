@@ -71,6 +71,11 @@ note 'validate w/valid class';
     test_test 'validate_class works correctly for valid classes';
 }
 
+validate_class 'TestClass' => (
+    -subtest   => 'demo/validation of -subtest for validate_class()',
+    attributes => [ 'bar' ],
+);
+
 subtest 'validate w/valid class -- standalone run' => sub {
 
     validate_class 'TestClass' => (
