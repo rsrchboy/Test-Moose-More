@@ -1,7 +1,5 @@
 Revision history for Test-Moose-More
 
-{{$NEXT}}
-
 0.033     2015-07-29 18:25:51 PDT-0700
 	* validate_role($role, -compose => 1, ...) will now add a sanity test that
 	  the composed subclass actually does $role when composing the arguments
