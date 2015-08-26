@@ -8,7 +8,7 @@ Test::Moose::More - More tools for testing Moose packages
 
 # VERSION
 
-This document describes version 0.034 of Test::Moose::More - released July 29, 2015 as part of Test-Moose-More.
+This document describes version 0.035 of Test::Moose::More - released August 26, 2015 as part of Test-Moose-More.
 
 # SYNOPSIS
 
@@ -236,6 +236,24 @@ additional role-specific tests.
 - required\_methods => \[ ... \]
 
     A list of methods the role requires a consuming class to supply.
+
+- before => \[ ... \]
+
+    A list of methods the role expects to wrap before, on application to a class.
+
+    See ["before" in Moose](https://metacpan.org/pod/Moose#before) for information on before method modifiers.
+
+- around => \[ ... \]
+
+    A list of methods the role expects to wrap around, on application to a class.
+
+    See ["around" in Moose](https://metacpan.org/pod/Moose#around) for information on around method modifiers.
+
+- after => \[ ... \]
+
+    A list of methods the role expects to wrap after, on application to a class.
+
+    See ["after" in Moose](https://metacpan.org/pod/Moose#after) for information on after method modifiers.
 
 ## validate\_class
 
