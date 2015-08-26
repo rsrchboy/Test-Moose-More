@@ -20,6 +20,10 @@ use warnings;
 
     requires 'blargh';
 
+    before before_wrapped => sub { };
+    around around_wrapped => sub { };
+    after  after_wrapped  => sub { };
+
     has bar => (
 
         traits  => ['Array'],
@@ -53,6 +57,9 @@ note 'validate w/valid role';
     test_out $_ok->('TestRole has a metaclass');
     test_out $_ok->('TestRole is a Moose role');
     test_out $_ok->('TestRole requires method blargh');
+    test_out $_ok->("TestRole wraps before method before_wrapped");
+    test_out $_ok->("TestRole wraps around method around_wrapped");
+    test_out $_ok->("TestRole wraps after method after_wrapped");
     test_out $_ok->('TestRole does TestRole');
     test_out $_ok->('TestRole does not do TestRole::Two');
     test_out $_ok->("TestRole has method $_")
@@ -64,8 +71,11 @@ note 'validate w/valid role';
         does_not   => [ 'TestRole::Two'           ],
         # XXX cannot check for accessor methods in a role at the moment
         #methods    => [ qw{ foo method1 has_bar } ],
-        methods    => [ qw{ method1 } ],
+        methods     => [ qw{ method1 } ],
         required_methods => [ qw{ blargh } ],
+        before      => [ 'before_wrapped' ],
+        around      => [ 'around_wrapped' ],
+        after       => [  'after_wrapped' ],
     );
     test_test 'validate_role works correctly for valid roles';
 }

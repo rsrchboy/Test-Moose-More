@@ -502,6 +502,24 @@ whatever C<-subtest> is set to.
 
 A list of methods the role requires a consuming class to supply.
 
+* before => [ ... ]
+
+A list of methods the role expects to wrap before, on application to a class.
+
+See L<Moose/before> for information on before method modifiers.
+
+* around => [ ... ]
+
+A list of methods the role expects to wrap around, on application to a class.
+
+See L<Moose/around> for information on around method modifiers.
+
+* after => [ ... ]
+
+A list of methods the role expects to wrap after, on application to a class.
+
+See L<Moose/after> for information on after method modifiers.
+
 =end :list
 
 =test validate_class
@@ -640,8 +658,17 @@ sub _validate_role_guts {
 
     # basic role validation
     return unless is_role_ok $role;
+
     requires_method_ok($role => @{ $args{required_methods} })
         if defined $args{required_methods};
+
+    role_wraps_before_method_ok($role => @{ $args{before} })
+        if defined $args{before};
+    role_wraps_around_method_ok($role => @{ $args{around} })
+        if defined $args{around};
+    role_wraps_after_method_ok($role => @{ $args{after} })
+        if defined $args{after};
+
     $args{-compose}
         ?        validate_thing $role => %args
         : return validate_thing $role => %args
