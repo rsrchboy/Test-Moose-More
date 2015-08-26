@@ -1,7 +1,5 @@
 Revision history for Test-Moose-More
 
-{{$NEXT}}
-
 0.035     2015-08-26 12:40:38 PDT-0700
 	* validate_role() will now perform checks on a role to ensure the role
 	  intends to wrap methods on application.
