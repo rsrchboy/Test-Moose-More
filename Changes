@@ -1,7 +1,5 @@
 Revision history for Test-Moose-More
 
-{{$NEXT}}
-
 0.036-TRIAL  2016-01-20 20:48:30 CST-0600
 	* More test functions now honor "name" overrides, resulting in more
 	  sensible output when deeply testing using the validate_*() functions.
