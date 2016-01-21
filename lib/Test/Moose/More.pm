@@ -613,7 +613,7 @@ sub _validate_thing_guts {
                 skip 'Cannot examine attribute metaclass in roles', 1
                     if (find_meta($thing)->isa('Moose::Meta::Role'));
 
-                local $THING_NAME = "${thing}'s attribute $name";
+                local $THING_NAME = _thing_name($thing) . "'s attribute $name";
                 _validate_attribute($att => (
                     -subtest => "checking $THING_NAME",
                     %$opts,
