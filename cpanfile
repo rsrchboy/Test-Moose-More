@@ -24,6 +24,7 @@ on 'test' => sub {
   requires "Test::CheckDeps" => "0.010";
   requires "Test::More" => "0.94";
   requires "aliased" => "0";
+  requires "blib" => "1.01";
   requires "constant" => "0";
   requires "namespace::autoclean" => "0";
   requires "perl" => "5.006";

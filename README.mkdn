@@ -1,6 +1,6 @@
 [![Build Status](https://travis-ci.org/RsrchBoy/Test-Moose-More.svg?branch=master)](https://travis-ci.org/RsrchBoy/Test-Moose-More)
 [![Kwalitee status](http://cpants.cpanauthors.org/dist/Test-Moose-More.png)](http://cpants.charsbar.org/dist/overview/Test-Moose-More)
-[![Coverage Status](https://coveralls.io/repos/RsrchBoy/Test-Moose-More/badge.png?branch=master)](https://coveralls.io/r/RsrchBoy/Test-Moose-More?branch=master)
+[![Coverage Status](https://coveralls.io/repos/RsrchBoy/Test-Moose-More/badge.svg?branch=master)](https://coveralls.io/r/RsrchBoy/Test-Moose-More?branch=master)
 
 # NAME
 
@@ -8,7 +8,7 @@ Test::Moose::More - More tools for testing Moose packages
 
 # VERSION
 
-This document describes version 0.035 of Test::Moose::More - released August 26, 2015 as part of Test-Moose-More.
+This document describes version 0.036 of Test::Moose::More - released January 20, 2016 as part of Test-Moose-More.
 
 # SYNOPSIS
 
@@ -395,7 +395,7 @@ feature.
 
 # AUTHOR
 
-Chris Weyl <cweyl@alumni.drew.edu>
+Chris Weyl &lt;cweyl@alumni.drew.edu>
 
 ## I'm a material boy in a material world
 
@@ -416,8 +416,8 @@ that stop you if you feel like it ;)
 
 # CONTRIBUTORS
 
-- Chad Granum <chad.granum@dreamhost.com>
-- Karen Etheridge <ether@cpan.org>
+- Chad Granum &lt;chad.granum@dreamhost.com>
+- Karen Etheridge &lt;ether@cpan.org>
 
 # COPYRIGHT AND LICENSE
 

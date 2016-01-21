@@ -2,6 +2,10 @@ Revision history for Test-Moose-More
 
 {{$NEXT}}
 
+0.036-TRIAL  2016-01-20 20:48:30 CST-0600
+	* More test functions now honor "name" overrides, resulting in more
+	  sensible output when deeply testing using the validate_*() functions.
+
 0.035     2015-08-26 12:40:38 PDT-0700
 	* validate_role() will now perform checks on a role to ensure the role
 	  intends to wrap methods on application.
