@@ -161,10 +161,7 @@ sub _find_attribute {
 sub has_attribute_ok ($$;$) {
     my ($thing, $attr_name, $message) = @_;
 
-    my $meta       = find_meta($thing);
-    my $thing_name = $meta->name;
-    $message     ||= "$thing_name has an attribute named $attr_name";
-
+    $message ||= _thing_name($thing) . " has an attribute named $attr_name";
     return $tb->ok(!!_find_attribute($thing => $attr_name), $message);
 }
 
