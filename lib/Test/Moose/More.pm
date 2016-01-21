@@ -255,24 +255,24 @@ Passes if $thing is not immutable; that is, is mutable.
 
 =cut
 
-sub is_immutable_ok {
-    my ($thing) = @_;
+sub is_immutable_ok($;$) {
+    my ($thing, $message) = @_;
 
     ### $thing
     my $meta = find_meta($thing);
-    my $name = $meta->name;
 
-    return $tb->ok($meta->is_immutable, "$name is immutable");
+    $message ||= _thing_name($thing, $meta) . ' is immutable';
+    return $tb->ok($meta->is_immutable, $message);
 }
 
-sub is_not_immutable_ok {
-    my ($thing) = @_;
+sub is_not_immutable_ok($;$) {
+    my ($thing, $message) = @_;
 
     ### $thing
     my $meta = find_meta($thing);
-    my $name = $meta->name;
 
-    return $tb->ok(!$meta->is_immutable, "$name is not immutable");
+    $message ||= _thing_name($thing, $meta) . ' is not immutable';
+    return $tb->ok(!$meta->is_immutable, $message);
 }
 
 =test is_role_ok $thing
