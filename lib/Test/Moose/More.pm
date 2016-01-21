@@ -295,7 +295,7 @@ sub is_class_ok { unshift @_, 'Class'; goto \&_is_moosey_ok }
 sub _is_moosey_ok {
     my ($type, $thing) =  @_;
 
-    my $thing_name = ref $thing || $thing;
+    my $thing_name = _thing_name($thing);
 
     my $meta = find_meta($thing);
     $tb->ok(!!$meta, "$thing_name has a metaclass");

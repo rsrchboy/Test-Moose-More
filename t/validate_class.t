@@ -175,8 +175,8 @@ note 'validate w/attribute validation';
                 test_out $_any->("# Subtest: $name")
             }
         }
-        test_out $_ok->(q{Moose::Meta::Class::__ANON__::SERIAL::1 has a metaclass});
-        test_out $_ok->(q{Moose::Meta::Class::__ANON__::SERIAL::1 is a Moose class});
+        test_out $_ok->(q{TestClass's attribute baz has a metaclass});
+        test_out $_ok->(q{TestClass's attribute baz is a Moose class});
         test_out $_ok->(q{TestClass's attribute baz does TestRole::Two});
         test_out $_ok->(q{TestClass's attribute baz has a reader});
         test_out $_ok->(q{TestClass's attribute baz option reader correct});
