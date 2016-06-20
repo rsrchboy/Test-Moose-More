@@ -108,6 +108,7 @@ sub does_ok {
     $roles     = [ $roles ] unless ref $roles;
     $message ||= _thing_name($thing, $thing_meta) . ' does %s';
 
+    no warnings 'redundant';
     $tb->ok(!!$thing_meta->does_role($_), sprintf($message, $_))
         for @$roles;
 
@@ -132,6 +133,7 @@ sub does_not_ok {
     $roles     = [ $roles ] unless ref $roles;
     $message ||= _thing_name($thing, $thing_meta) . ' does not do %s';
 
+    no warnings 'redundant';
     $tb->ok(!$thing_meta->does_role($_), sprintf($message, $_))
         for @$roles;
 
