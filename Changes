@@ -1,7 +1,5 @@
 Revision history for Test-Moose-More
 
-{{$NEXT}}
-
 0.038     2016-06-22 13:46:27 CDT-0500
 	* Eliminate a warning under v5.22+ (github #12)
 
