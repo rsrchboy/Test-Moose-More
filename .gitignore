@@ -16,3 +16,4 @@ META.yml
 MYMETA.*
 .build/
 releases/
+*~
