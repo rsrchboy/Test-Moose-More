@@ -100,7 +100,7 @@ somewhere; this will be replaced with the name of the role being tested for.
 
 =cut
 
-sub does_ok {
+sub does_ok ($$;$) {
     my ($thing, $roles, $message) = @_;
 
     my $thing_meta = find_meta($thing);
@@ -125,7 +125,7 @@ somewhere; this will be replaced with the name of the role being tested for.
 
 =cut
 
-sub does_not_ok {
+sub does_not_ok ($$;$) {
     my ($thing, $roles, $message) = @_;
 
     my $thing_meta = find_meta($thing);
@@ -173,7 +173,7 @@ Queries $thing's metaclass to see if $thing has the methods named in @methods.
 
 =cut
 
-sub has_method_ok {
+sub has_method_ok ($@) {
     my ($thing, @methods) = @_;
 
     ### $thing
@@ -204,9 +204,9 @@ Queries $role's metaclass to see if $role wraps the methods named in
 
 =cut
 
-sub role_wraps_around_method_ok { unshift @_, 'around'; goto \&_role_wraps }
-sub role_wraps_before_method_ok { unshift @_, 'before'; goto \&_role_wraps }
-sub role_wraps_after_method_ok  { unshift @_, 'after';  goto \&_role_wraps }
+sub role_wraps_around_method_ok ($@) { unshift @_, 'around'; goto \&_role_wraps }
+sub role_wraps_before_method_ok ($@) { unshift @_, 'before'; goto \&_role_wraps }
+sub role_wraps_after_method_ok  ($@) { unshift @_, 'after';  goto \&_role_wraps }
 
 sub _role_wraps {
     my ($style, $thing, @methods) = @_;
@@ -233,7 +233,7 @@ Note that this really only makes sense if $thing is a role.
 
 =cut
 
-sub requires_method_ok {
+sub requires_method_ok ($@) {
     my ($thing, @methods) = @_;
 
     ### $thing
@@ -257,7 +257,7 @@ Passes if $thing is not immutable; that is, is mutable.
 
 =cut
 
-sub is_immutable_ok($;$) {
+sub is_immutable_ok ($;$) {
     my ($thing, $message) = @_;
 
     ### $thing
@@ -267,7 +267,7 @@ sub is_immutable_ok($;$) {
     return $tb->ok($meta->is_immutable, $message);
 }
 
-sub is_not_immutable_ok($;$) {
+sub is_not_immutable_ok ($;$) {
     my ($thing, $message) = @_;
 
     ### $thing
@@ -288,11 +288,11 @@ Passes if $thing's metaclass is a L<Moose::Meta::Class>.
 =cut
 
 # NOTE: deprecate at some point late 2015
-sub is_role  { goto \&is_role_ok  }
-sub is_class { goto \&is_class_ok }
+sub is_role  ($) { goto \&is_role_ok  }
+sub is_class ($) { goto \&is_class_ok }
 
-sub is_role_ok  { unshift @_, 'Role';  goto \&_is_moosey_ok }
-sub is_class_ok { unshift @_, 'Class'; goto \&_is_moosey_ok }
+sub is_role_ok  ($) { unshift @_, 'Role';  goto \&_is_moosey_ok }
+sub is_class_ok ($) { unshift @_, 'Class'; goto \&_is_moosey_ok }
 
 sub _is_moosey_ok {
     my ($type, $thing) =  @_;
@@ -317,10 +317,10 @@ Passes if $thing is not "anonymous".
 =cut
 
 # NOTE: deprecate at some point late 2015
-sub is_anon     { goto \&is_anon_ok     }
-sub is_not_anon { goto \&is_not_anon_ok }
+sub is_anon     ($) { goto \&is_anon_ok     }
+sub is_not_anon ($) { goto \&is_not_anon_ok }
 
-sub is_anon_ok {
+sub is_anon_ok ($) {
     my ($thing, $message) = @_;
 
     my $thing_meta = find_meta($thing);
@@ -329,7 +329,7 @@ sub is_anon_ok {
     return $tb->ok(!!$thing_meta->is_anon, $message);
 }
 
-sub is_not_anon_ok {
+sub is_not_anon_ok ($) {
     my ($thing, $message) = @_;
 
     my $thing_meta = find_meta($thing);
@@ -349,9 +349,9 @@ Returns a list of all the known standard Moose sugar (has, extends, etc).
 
 =cut
 
-sub known_sugar() { qw{ has around augment inner before after blessed confess } }
+sub known_sugar () { qw{ has around augment inner before after blessed confess } }
 
-sub check_sugar_removed_ok($) {
+sub check_sugar_removed_ok ($) {
     my $t = shift @_;
 
     # check some (not all) Moose sugar to make sure it has been cleared
@@ -366,7 +366,7 @@ Checks and makes sure a class/etc can still do all the standard Moose sugar.
 
 =cut
 
-sub check_sugar_ok($) {
+sub check_sugar_ok ($) {
     my $t = shift @_;
 
     # check some (not all) Moose sugar to make sure it has been cleared
@@ -561,9 +561,9 @@ Checks the class to see if it is/isn't immutable.
 
 =cut
 
-sub validate_thing { _validate_subtest_wrapper(\&_validate_thing_guts, @_) }
-sub validate_class { _validate_subtest_wrapper(\&_validate_class_guts, @_) }
-sub validate_role  { _validate_subtest_wrapper(\&_validate_role_guts,  @_) }
+sub validate_thing ($@) { _validate_subtest_wrapper(\&_validate_thing_guts, @_) }
+sub validate_class ($@) { _validate_subtest_wrapper(\&_validate_class_guts, @_) }
+sub validate_role  ($@) { _validate_subtest_wrapper(\&_validate_role_guts,  @_) }
 
 sub _validate_subtest_wrapper {
     my ($func, $thing, %args) = @_;
@@ -795,8 +795,8 @@ Validates that setting the attribute's value is/isn't required.
 
 =cut
 
-sub _validate_attribute { _validate_subtest_wrapper(\&__validate_attribute_guts,                 @_) }
-sub validate_attribute  { _validate_subtest_wrapper( \&_validate_attribute_guts, [shift, shift], @_) }
+sub _validate_attribute       { _validate_subtest_wrapper(\&__validate_attribute_guts,                 @_) }
+sub validate_attribute ($$@)  { _validate_subtest_wrapper( \&_validate_attribute_guts, [shift, shift], @_) }
 
 sub _validate_attribute_guts {
     my ($thingname, %opts) = @_;
@@ -830,7 +830,7 @@ sub __validate_attribute_guts {
     return _attribute_options_ok($att, %opts);
 }
 
-sub attribute_options_ok {
+sub attribute_options_ok ($$@) {
     my ($thing, $name, %opts) = @_;
 
     local $Test::Builder::Level = $Test::Builder::Level + 1;
