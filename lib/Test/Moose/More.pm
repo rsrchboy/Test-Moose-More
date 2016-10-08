@@ -868,13 +868,10 @@ sub _role_attribute_options_ok {
     my $thing_name              = _thing_name($name, $att);
 
     # this much works, at least
-    if (exists $opts{coerce}) {
-
-        delete $opts{coerce}
-            ? ok( $att->should_coerce, "$thing_name should coerce")
-            : ok(!$att->should_coerce, "$thing_name should not coerce")
-            ;
-    }
+    exists $opts{coerce} and delete $opts{coerce}
+        ? ok( $att->should_coerce, "$thing_name should coerce")
+        : ok(!$att->should_coerce, "$thing_name should not coerce")
+        ;
 
     ### for now, skip role attributes: blessed $att
     return $tb->skip('cannot yet test role attribute layouts')
@@ -942,21 +939,15 @@ sub _class_attribute_options_ok {
         delete $opts{init_arg};
     }
 
-    if (exists $opts{lazy}) {
+    exists $opts{lazy} and delete $opts{lazy}
+        ? ok($att->is_lazy,  "$thing_name is lazy")
+        : ok(!$att->is_lazy, "$thing_name is not lazy")
+        ;
 
-        delete $opts{lazy}
-            ? ok($att->is_lazy,  "$thing_name is lazy")
-            : ok(!$att->is_lazy, "$thing_name is not lazy")
-            ;
-    }
-
-    if (exists $opts{coerce}) {
-
-        delete $opts{coerce}
-            ? ok( $att->should_coerce, "$thing_name should coerce")
-            : ok(!$att->should_coerce, "$thing_name should not coerce")
-            ;
-    }
+    exists $opts{coerce} and delete $opts{coerce}
+        ? ok( $att->should_coerce, "$thing_name should coerce")
+        : ok(!$att->should_coerce, "$thing_name should not coerce")
+        ;
 
     for my $opt (sort keys %opts) {
 
