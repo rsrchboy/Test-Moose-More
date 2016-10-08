@@ -881,10 +881,6 @@ sub _role_attribute_options_ok {
 sub _class_attribute_options_ok {
     my ($att, %opts) = @_;
 
-    ### for now, skip role attributes: blessed $att
-    return $tb->skip('cannot yet test role attribute layouts')
-        if $att->isa('Moose::Meta::Role::Attribute');
-
     my @check_opts =
         qw{ reader writer accessor predicate default builder clearer };
     my @unhandled_opts = qw{ isa does handles traits };
