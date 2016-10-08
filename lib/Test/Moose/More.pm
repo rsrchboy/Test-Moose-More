@@ -303,7 +303,19 @@ sub _is_moosey_ok {
     $tb->ok(!!$meta, "$thing_name has a metaclass");
     return unless !!$meta;
 
-    return $tb->ok($meta->isa("Moose::Meta::$type"), "$thing_name is a Moose " . lc $type);
+    my $is_moosey = $meta->isa("Moose::Meta::$type");
+
+    # special check for class -- this will happen when, say, you're validating
+    # an attribute and it's a bog standard Moose::Meta::Attribute: strictly
+    # speaking its metaclass is Class::MOPish, but really,
+    # a Moose::Meta::Attribute is a Moose class.  Or arguably so.  Certainly
+    # in the context of what we're asking about here.  Better approaches to
+    # this welcomed as pull requests :)
+
+    $is_moosey ||= ($meta->name || q{}) =~ /^Moose::Meta::/
+        if $type eq 'Class';
+
+    return $tb->ok($is_moosey, "$thing_name is a Moose " . lc $type);
 }
 
 =test is_anon_ok $thing
