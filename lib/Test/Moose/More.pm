@@ -867,7 +867,11 @@ sub _role_attribute_options_ok {
     my $name                    = $att->name;
     my $thing_name              = _thing_name($name, $att);
 
-    # this much works, at least
+    exists $opts{required} and delete $opts{required}
+        ? ok($att->is_required,  "$thing_name is required")
+        : ok(!$att->is_required, "$thing_name is not required")
+        ;
+
     exists $opts{coerce} and delete $opts{coerce}
         ? ok( $att->should_coerce, "$thing_name should coerce")
         : ok(!$att->should_coerce, "$thing_name should not coerce")
@@ -913,13 +917,10 @@ sub _class_attribute_options_ok {
         is($att->$property, $value, "$thing_name option $property correct")
     };
 
-    if (my $is_required = delete $opts{required}) {
-
-        $is_required
-            ? ok($att->is_required,  "$thing_name is required")
-            : ok(!$att->is_required, "$thing_name is not required")
-            ;
-    }
+    exists $opts{required} and delete $opts{required}
+        ? ok($att->is_required,  "$thing_name is required")
+        : ok(!$att->is_required, "$thing_name is not required")
+        ;
 
     $check->($_) for grep { any(@check_opts) eq $_ } sort keys %opts;
 
