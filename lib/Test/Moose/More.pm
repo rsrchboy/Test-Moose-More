@@ -872,6 +872,11 @@ sub _role_attribute_options_ok {
         : ok(!$att->is_required, "$thing_name is not required")
         ;
 
+    exists $opts{lazy} and delete $opts{lazy}
+        ? ok($att->is_lazy,  "$thing_name is lazy")
+        : ok(!$att->is_lazy, "$thing_name is not lazy")
+        ;
+
     exists $opts{coerce} and delete $opts{coerce}
         ? ok( $att->should_coerce, "$thing_name should coerce")
         : ok(!$att->should_coerce, "$thing_name should not coerce")
