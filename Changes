@@ -1,6 +1,8 @@
 Revision history for Test-Moose-More
 
 {{$NEXT}}
+
+0.039-TRIAL  2016-10-10 18:38:44 CDT-0500
 	* Use prototypes consistently across our test functions.
 	* Moose metaclasses now pass is_class_ok().  *le sigh*
 	* Role attributes are now validated w.r.t.:

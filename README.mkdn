@@ -8,7 +8,7 @@ Test::Moose::More - More tools for testing Moose packages
 
 # VERSION
 
-This document describes version 0.038 of Test::Moose::More - released June 22, 2016 as part of Test-Moose-More.
+This document describes version 0.039 of Test::Moose::More - released October 10, 2016 as part of Test-Moose-More.
 
 # SYNOPSIS
 
@@ -387,7 +387,7 @@ Please see those modules/websites for more information related to this module.
 # BUGS
 
 Please report any bugs or feature requests on the bugtracker website
-https://github.com/RsrchBoy/Test-Moose-More/issues
+[https://github.com/RsrchBoy/Test-Moose-More/issues](https://github.com/RsrchBoy/Test-Moose-More/issues)
 
 When submitting a bug or request, please include a test-file or a
 patch to an existing test-file that illustrates the bug or desired
