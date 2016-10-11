@@ -6,10 +6,6 @@ use Test::More;
 use Test::Moose::More;
 use TAP::SimpleOutput 'counters';
 
-use Moose::Util::TypeConstraints;
-subtype 'AllCaps', as 'Str', where { !m/[a-z]/ }, message { 'String contains some lower-case chars' };
-coerce 'AllCaps', from 'Str', via { tr/[a-z]/A-Z]/ };
-
 {
     package TestRole;
     use Moose::Role;
@@ -31,7 +27,7 @@ coerce 'AllCaps', from 'Str', via { tr/[a-z]/A-Z]/ };
     has null_lazy => (is => 'ro', default => sub { });
 }
 
-note 'finds coercion correctly';
+note 'finds lazy correctly';
 for my $thing (qw{ TestClass TestRole }) {
     my ($_ok, $_nok, $_skip) = counters();
     my $name = 'yes_lazy';
@@ -55,7 +51,7 @@ for my $thing (qw{ TestClass TestRole }) {
     test_test "finds coercion correctly in $thing";
 }
 
-note 'finds no coercion correctly';
+note 'finds no lazy correctly';
 for my $thing (qw{ TestClass TestRole}) {
     my ($_ok, $_nok, $_skip) = counters();
     my $name = 'no_lazy';
