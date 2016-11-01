@@ -779,6 +779,12 @@ Note that some of these options will skip if used against attributes defined in 
 
 =begin :list
 
+* -subtest => 'subtest name...'
+
+If set, all tests run (save the first, "does this thing even have this
+attribute?" test) will be wrapped in a subtest, the name of which will be
+whatever C<-subtest> is set to.
+
 * is => ro|rw
 
 Tests for reader/writer options set as one would expect.
@@ -864,7 +870,7 @@ sub attribute_options_ok ($$@) {
     return unless has_attribute_ok($thing, $name);
     my $att = _find_attribute($thing => $name);
 
-    return _attribute_options_ok($att, %opts);
+    return _validate_subtest_wrapper(\&_attribute_options_ok => ($att, %opts));
 }
 
 sub _attribute_options_ok {
