@@ -178,7 +178,7 @@ sub has_method_ok ($@) {
 
     ### $thing
     my $meta = find_meta($thing);
-    my $name = $meta->name;
+    my $name = _thing_name($thing, $meta);
 
     ### @methods
     $tb->ok(!!$meta->has_method($_), "$name has method $_")
