@@ -104,4 +104,15 @@ for my $thing (qw{ TestClass::Fail2 TestRole::Fail2 }) {
     test_test "$thing: multiple roles partially fail as expected";
 }
 
+note 'Class::MOP metaclass';
+my $cmop_thing = 'TestClass::CMOP';
+my $cmop_meta  = Class::MOP::Class->create($cmop_thing => (methods => { foo => sub { 1 } }));
+{
+    my ($_ok, $_nok) = counters();
+    test_out $_nok->("$cmop_thing does $ROLE");
+    test_fail 1;
+    does_ok $cmop_thing => $ROLE;
+    test_test q{Class::MOP metaclasses don't ever do roles};
+}
+
 done_testing;

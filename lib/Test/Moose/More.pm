@@ -108,8 +108,15 @@ sub does_ok ($$;$) {
     $roles     = [ $roles ] unless ref $roles;
     $message ||= _thing_name($thing, $thing_meta) . ' does %s';
 
+    # this generally happens when we're checking a vanilla attribute
+    # metaclass, which turns out to be a
+    # Class::MOP::Class::Immutable::Class::MOP::Class.  If our metaclass does
+    # not have a does_role() method, then by definition the metaclass cannot
+    # do the role (that is, it's a Class::MOP metaclass).
+    my $_does = $thing_meta->can('does_role') || sub { 0 };
+
     BEGIN { warnings::unimport 'redundant' if $^V gt v5.21.1 }
-    $tb->ok(!!$thing_meta->does_role($_), sprintf($message, $_))
+    $tb->ok(!!$thing_meta->$_does($_), sprintf($message, $_))
         for @$roles;
 
     return;
@@ -133,8 +140,10 @@ sub does_not_ok ($$;$) {
     $roles     = [ $roles ] unless ref $roles;
     $message ||= _thing_name($thing, $thing_meta) . ' does not do %s';
 
+    my $_does = $thing_meta->can('does_role') || sub { 0 };
+
     BEGIN { warnings::unimport 'redundant' if $^V gt v5.21.1 }
-    $tb->ok(!$thing_meta->does_role($_), sprintf($message, $_))
+    $tb->ok(!$thing_meta->$_does($_), sprintf($message, $_))
         for @$roles;
 
     return;
