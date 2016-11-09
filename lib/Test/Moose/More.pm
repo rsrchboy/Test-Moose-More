@@ -553,7 +553,6 @@ additional class-specific tests.
 
         attributes => [ ... ],
         methods    => [ ... ],
-        isa        => [ ... ],
 
         # ensures sugar is/is-not present
         sugar      => 0,
