@@ -653,7 +653,7 @@ sub _validate_class_guts {
     local $Test::Builder::Level = $Test::Builder::Level + 1;
     return unless is_class_ok $class;
 
-    my $name = ref $class || $class;
+    my $name = _thing_name($class);
     do { ok($class->isa($_), "$name isa $_") for @{$args{isa}} }
         if exists $args{isa};
 
