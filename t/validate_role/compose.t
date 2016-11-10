@@ -44,7 +44,18 @@ use TAP::SimpleOutput 'counters';
 
 validate_role 'TestRole' => (
     -compose         => 1,
-    attributes       => [ bar => { -does => ['Array'] } ],
+
+    attributes => [
+
+        bar => {
+
+            -does => ['Array'],
+            -isa  => ['Moose::Meta::Attribute'],
+            is    => 'ro',
+            lazy  => 1,
+        },
+    ],
+
     does             => [ 'TestRole::One'               ],
     does_not         => [ 'TestRole::Two'               ],
     methods          => [ qw{ method1 }                 ],
