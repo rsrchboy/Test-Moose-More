@@ -32,12 +32,12 @@ for my $thing (qw{ TestClass TestRole }) {
     my ($_ok, $_nok, $_skip) = counters();
     my $name = 'yes_required';
     test_out $_ok->("$thing has an attribute named $name");
-    test_out $_ok->("$name is required");
+    test_out $_ok->("${thing}'s attribute $name is required");
     test_out $_ok->("$thing has an attribute named $name");
-    test_out $_nok->("$name is not required");
+    test_out $_nok->("${thing}'s attribute $name is not required");
     test_fail 7;
     test_out $_ok->("$thing has an attribute named $name");
-    test_out $_nok->("$name is not required");
+    test_out $_nok->("${thing}'s attribute $name is not required");
     test_fail 7;
     validate_attribute $thing => $name => (
         required => 1,
@@ -56,12 +56,12 @@ for my $thing (qw{ TestClass TestRole}) {
     my ($_ok, $_nok, $_skip) = counters();
     my $name = 'no_required';
     test_out $_ok->("$thing has an attribute named $name");
-    test_out $_nok->("$name is required");
+    test_out $_nok->("${thing}'s attribute $name is required");
     test_fail 5;
     test_out $_ok->("$thing has an attribute named $name");
-    test_out $_ok->("$name is not required");
+    test_out $_ok->("${thing}'s attribute $name is not required");
     test_out $_ok->("$thing has an attribute named $name");
-    test_out $_ok->("$name is not required");
+    test_out $_ok->("${thing}'s attribute $name is not required");
     validate_attribute $thing => $name => (
         required => 1,
     );

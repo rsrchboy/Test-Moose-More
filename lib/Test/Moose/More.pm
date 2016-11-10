@@ -826,6 +826,7 @@ sub _validate_attribute_guts {
     return unless has_attribute_ok($thing, $name);
     my $att = _find_attribute($thing => $name);
 
+    local $THING_NAME = _thing_name($thing) . "'s attribute $name";
     return _validate_attribute($att, %opts);
 }
 
@@ -844,8 +845,14 @@ sub __validate_attribute_guts {
         if $thing_opts{does};
 
     ### %thing_opts
-    validate_class $att => %thing_opts
-        if keys %thing_opts;
+    {
+        # If $THING_NAME is set, we're processing an attribute metaclass via
+        # _validate_attribute_guts() or _validate_thing_guts()
+        local $THING_NAME = "${THING_NAME}'s metaclass"
+            if !!$THING_NAME;
+        validate_class $att => %thing_opts
+            if keys %thing_opts;
+    }
 
     return _attribute_options_ok($att, %opts);
 }

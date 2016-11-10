@@ -36,12 +36,12 @@ for my $thing (qw{ TestClass TestRole }) {
     my ($_ok, $_nok, $_skip) = counters();
     my $name = 'yes_coerce';
     test_out $_ok->("$thing has an attribute named $name");
-    test_out $_ok->("$name should coerce");
+    test_out $_ok->("${thing}'s attribute $name should coerce");
     test_out $_ok->("$thing has an attribute named $name");
-    test_out $_nok->("$name should not coerce");
+    test_out $_nok->("${thing}'s attribute $name should not coerce");
     test_fail 7;
     test_out $_ok->("$thing has an attribute named $name");
-    test_out $_nok->("$name should not coerce");
+    test_out $_nok->("${thing}'s attribute $name should not coerce");
     test_fail 7;
     validate_attribute $thing => $name => (
         coerce => 1,
@@ -60,12 +60,12 @@ for my $thing (qw{ TestClass TestRole}) {
     my ($_ok, $_nok, $_skip) = counters();
     my $name = 'no_coerce';
     test_out $_ok->("$thing has an attribute named $name");
-    test_out $_nok->("$name should coerce");
+    test_out $_nok->("${thing}'s attribute $name should coerce");
     test_fail 5;
     test_out $_ok->("$thing has an attribute named $name");
-    test_out $_ok->("$name should not coerce");
+    test_out $_ok->("${thing}'s attribute $name should not coerce");
     test_out $_ok->("$thing has an attribute named $name");
-    test_out $_ok->("$name should not coerce");
+    test_out $_ok->("${thing}'s attribute $name should not coerce");
     validate_attribute $thing => $name => (
         coerce => 1,
     );
