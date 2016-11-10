@@ -2,6 +2,12 @@ Revision history for Test-Moose-More
 
 {{$NEXT}}
 
+0.040-TRIAL  2016-11-10 11:00:24 CST-0600
+	* Make more things consistent with naming in tests, e.g. "Class's
+	  attribute foo" vs "foo", etc.
+	* does_{,not_}ok() now handles metaclasses that don't do roles
+	* has_attribute_ok now honors -subtest
+
 0.039-TRIAL  2016-10-10 18:38:44 CDT-0500
 	* Use prototypes consistently across our test functions.
 	* Moose metaclasses now pass is_class_ok().  *le sigh*
