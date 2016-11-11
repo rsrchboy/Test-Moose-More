@@ -49,6 +49,8 @@ sub get_mop_metaclass_for {
 !!42;
 __END__
 
+=for :stopwords TMM
+
 =head1 SEE ALSO
 
 L<Moose::Util::MetaRole> -- for much of the "find the metaclass for X mop" code
