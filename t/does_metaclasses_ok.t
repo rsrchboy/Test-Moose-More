@@ -9,7 +9,7 @@ use Test::Moose::More::Utils;
 { package TestClass; use Moose;       }
 
 use Moose::Util::MetaRole;
-use List::Util 'uniq';
+use List::Util 1.45 'uniq';
 
 my @class_metaclass_types = qw{
     class
