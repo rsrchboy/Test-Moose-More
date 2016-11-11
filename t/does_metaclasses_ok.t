@@ -1,8 +1,6 @@
 use strict;
 use warnings;
 
-use v5.10;
-
 use Test::More;
 use Test::Moose::More;
 use Test::Moose::More::Utils;
@@ -43,8 +41,6 @@ my %metaroles =
     map { Moose::Meta::Role->create("MetaRole::$_" => ()) }
     uniq sort @class_metaclass_types, @role_metaclass_types, 'nope'
     ;
-
-say for sort keys %metaroles;
 
 Moose::Util::MetaRole::apply_metaroles for => $_,
     class_metaroles => {
