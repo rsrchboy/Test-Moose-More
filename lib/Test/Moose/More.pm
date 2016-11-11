@@ -37,7 +37,10 @@ use Sub::Exporter::Progressive -setup => {
         is_not_anon
         is_role
     } ],
-    groups  => { default => [ ':all' ] },
+    groups => {
+        default  => [ ':all' ],
+        validate => [ map { "validate_$_" } qw{ attribute class role thing } ],
+    },
 };
 
 use Test::Builder;
@@ -1011,6 +1014,24 @@ __END__
 This package contains a number of additional tests that can be employed
 against Moose classes/roles.  It is intended to replace L<Test::Moose> in your
 tests, and re-exports any tests that it has and we do not, yet.
+
+=head2 Export Groups
+
+By default, this package exports all test functions.  You can be more
+selective, however, and there are a number of export groups (aside from the
+default ':all') to help you achieve those dreams!
+
+=begin :list
+
+= :all
+
+All exportable functions.
+
+= :validate
+
+L</validate_attribute>, L</validate_class>, L</validate_role>, L</validate_thing>
+
+=end :list
 
 =head1 SEE ALSO
 
