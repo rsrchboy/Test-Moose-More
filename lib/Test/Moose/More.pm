@@ -36,6 +36,8 @@ use Sub::Exporter::Progressive -setup => {
         is_class
         is_not_anon
         is_role
+
+        does_metaroles_ok
     } ],
     groups => {
         default  => [ ':all' ],
@@ -51,6 +53,8 @@ use Syntax::Keyword::Junction 'any';
 use Moose::Util 'resolve_metatrait_alias', 'does_role', 'find_meta';
 use Moose::Util::TypeConstraints;
 use Data::OptList;
+
+use Test::Moose::More::Utils;
 
 # debugging...
 #use Smart::Comments;
@@ -399,6 +403,28 @@ sub check_sugar_ok ($) {
     return;
 }
 
+=test does_metaroles_ok $thing => { $mop => [ @traits ], ... };
+
+=cut
+
+sub does_metaroles_ok($$) {
+    my ($thing, $metaroles) = @_;
+
+    local $Test::Builder::Level = $Test::Builder::Level + 1;
+
+    my $meta = find_meta($thing);
+    my $name = _thing_name($thing, $meta);
+
+    for my $mop (sort keys %$metaroles) {
+
+        my $mop_metaclass = get_mop_metaclass_for $mop => $meta;
+
+        local $THING_NAME = "${name}'s $mop metaclass $mop_metaclass";
+        does_ok $mop_metaclass => $metaroles->{$mop};
+    }
+
+    return;
+}
 
 =test validate_thing
 
