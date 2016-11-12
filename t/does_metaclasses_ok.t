@@ -10,7 +10,6 @@ use TAP::SimpleOutput 0.007 'counters';
 { package TestRole;  use Moose::Role; }
 { package TestClass; use Moose;       }
 
-use autobox::Core;
 use Moose::Util::MetaRole;
 use List::Util 1.45 'uniq';
 
@@ -64,7 +63,7 @@ for my $type (keys %metaclass_types) {
     my $thing = 'Test' . ucfirst $type;
     $metaclasses{$type} = {
         map { $_ => get_mop_metaclass_for($_ => $thing->meta) }
-        $metaclass_types{$type}->flatten
+        @{ $metaclass_types{$type} }
     };
 }
 
@@ -99,10 +98,10 @@ subtest 'TestRole via does_metaroles_ok' => sub {
         my $thing = 'Test' . ucfirst $thing_type;
 
         test_out $_ok->(_msg ucfirst $thing_type => $_)
-            for $metaclass_types{$thing_type}->sort->flatten;
+            for sort @{ $metaclass_types{$thing_type} };
 
         does_metaroles_ok $thing => {
-            map { $_ => [ "MetaRole::$_" ] } $metaclass_types{$thing_type}->flatten
+            map { $_ => [ "MetaRole::$_" ] } @{ $metaclass_types{$thing_type} }
         };
 
         test_test "$thing all OK";
