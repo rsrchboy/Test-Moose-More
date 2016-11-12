@@ -36,6 +36,8 @@ use Sub::Exporter::Progressive -setup => {
         is_class
         is_not_anon
         is_role
+
+        does_metaroles_ok
     } ],
     groups => {
         default  => [ ':all' ],
@@ -51,6 +53,8 @@ use Syntax::Keyword::Junction 'any';
 use Moose::Util 'resolve_metatrait_alias', 'does_role', 'find_meta';
 use Moose::Util::TypeConstraints;
 use Data::OptList;
+
+use Test::Moose::More::Utils;
 
 # debugging...
 #use Smart::Comments;
@@ -399,6 +403,69 @@ sub check_sugar_ok ($) {
     return;
 }
 
+=test does_metaroles_ok $thing => { $mop => [ @traits ], ... };
+
+Validate the metaclasses associated with a class/role metaclass.
+
+e.g., if I wanted to validate that the attribute trait for
+L<MooseX::AttributeShortcuts> is actually applied, I could do this:
+
+    { package TestClass; use Moose; use MooseX::AttributeShortcuts; }
+    use Test::Moose::More;
+    use Test::More;
+
+    does_metaroles_ok TestClass => {
+       attribute => ['MooseX::AttributeShortcuts::Trait::Attribute'],
+    };
+    done_testing;
+
+This function will accept either class or role metaclasses for $thing.
+
+The MOPs available for classes (L<Moose::Meta::Class>) are:
+
+=for :list
+= class
+= attribute
+= method
+= wrapped_method
+= instance
+= constructor
+= destructor
+
+The MOPs available for roles (L<Moose::Meta::Role>) are:
+
+=for :list
+= role
+= attribute
+= method
+= required_method
+= wrapped_method
+= conflicting_method
+= application_to_class
+= application_to_role
+= application_to_instance
+= applied_attribute
+
+=cut
+
+sub does_metaroles_ok($$) {
+    my ($thing, $metaroles) = @_;
+
+    local $Test::Builder::Level = $Test::Builder::Level + 1;
+
+    my $meta = find_meta($thing);
+    my $name = _thing_name($thing, $meta);
+
+    for my $mop (sort keys %$metaroles) {
+
+        my $mop_metaclass = get_mop_metaclass_for $mop => $meta;
+
+        local $THING_NAME = "${name}'s $mop metaclass $mop_metaclass";
+        does_ok $mop_metaclass => $metaroles->{$mop};
+    }
+
+    return;
+}
 
 =test validate_thing
 
@@ -996,7 +1063,7 @@ sub _class_attribute_options_ok {
 
 __END__
 
-=for :stopwords subtest
+=for :stopwords subtest MOPs
 
 =for Pod::Coverage is_anon is_class is_not_anon is_role
 
