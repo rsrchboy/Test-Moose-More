@@ -14,6 +14,7 @@ use Sub::Exporter::Progressive -setup => {
     groups  => { default  => [':all'] },
 };
 
+use Carp 'croak';
 use List::Util 1.33 qw( first all );
 use Scalar::Util 'blessed';
 
@@ -41,6 +42,10 @@ sub get_mop_metaclass_for {
         map { $meta->meta->find_attribute_by_name($_) }
         ("${mop}_metaclass", "${mop}_class")
         ;
+
+    croak "Cannot find attribute storing the metaclass for $mop in " . $meta->name
+        unless $attr;
+
     my $read_method = $attr->get_read_method;
 
     return $meta->$read_method();
