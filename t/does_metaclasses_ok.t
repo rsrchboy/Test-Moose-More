@@ -10,6 +10,7 @@ use TAP::SimpleOutput 0.007 'counters';
 { package TestRole;  use Moose::Role; }
 { package TestClass; use Moose;       }
 
+use autobox::Core;
 use Moose::Util::MetaRole;
 use List::Util 1.45 'uniq';
 
@@ -43,6 +44,11 @@ my %metaroles =
     uniq sort @class_metaclass_types, @role_metaclass_types, 'nope'
     ;
 
+my %metaclass_types = (
+    class => [ @class_metaclass_types ],
+    role  => [ @role_metaclass_types  ],
+);
+
 Moose::Util::MetaRole::apply_metaroles for => $_,
     class_metaroles => {
         map { $_ => [ "MetaRole::$_" ] } @class_metaclass_types
@@ -53,33 +59,68 @@ Moose::Util::MetaRole::apply_metaroles for => $_,
     for qw{ TestClass TestRole }
     ;
 
+my %metaclasses;
+for my $type (keys %metaclass_types) {
+    my $thing = 'Test' . ucfirst $type;
+    $metaclasses{$type} = {
+        map { $_ => get_mop_metaclass_for($_ => $thing->meta) }
+        $metaclass_types{$type}->flatten
+    };
+}
+
+# We don't know what names these anonymous classes will be graced with -- they
+# are anonymous, after all, and we're creating a bunch of them.  _msg() is a
+# helper function to make building the output lines a bit less painful.
+
+sub _msg { qq{Test${_[0]}'s $_[1] metaclass } . $metaclasses{lc $_[0]}->{$_[1]} . qq{ does MetaRole::} . ($_[2] || $_[1]) }
+
+note explain \%metaclasses;
+
+# NOTE end prep, begin actual tests
+
 subtest 'TestClass via does_metaroles_ok' => sub {
     does_metaroles_ok TestClass => {
         map { $_ => [ "MetaRole::$_" ] } @class_metaclass_types
     };
 };
 
-subtest 'TestRole via does__metaroles_ok' => sub {
+subtest 'TestRole via does_metaroles_ok' => sub {
     does_metaroles_ok TestRole => {
         map { $_ => [ "MetaRole::$_" ] } @role_metaclass_types
     };
 };
 
-my %metaclasses;
-$metaclasses{class} = {
-    map { $_ => get_mop_metaclass_for($_ => TestClass->meta) }
-    @class_metaclass_types
-};
+# NOTE begin Test::Builder::Tester tests
 
-sub _msg { qq{TestClass's $_[0] metaclass } . $metaclasses{class}->{$_[0]} . qq{ does MetaRole::$_[0]} }
 {
-    my ($_ok, $nok) = counters;
-    test_out $_ok->(_msg($_))
-        for sort @class_metaclass_types;
-    does_metaroles_ok TestClass => {
-        map { $_ => [ "MetaRole::$_" ] } @class_metaclass_types
-    };
-    test_test 'TestClass all OK';
+    # check the output of the two subtests above.  (Just more compactly)
+    for my $thing_type (qw{ class role }) {
+        my ($_ok, $_nok) = counters;
+        my $thing = 'Test' . ucfirst $thing_type;
+
+        test_out $_ok->(_msg ucfirst $thing_type => $_)
+            for $metaclass_types{$thing_type}->sort->flatten;
+
+        does_metaroles_ok $thing => {
+            map { $_ => [ "MetaRole::$_" ] } $metaclass_types{$thing_type}->flatten
+        };
+
+        test_test "$thing all OK";
+    }
+}
+
+{
+    # checking for unapplied trait
+
+    for my $thing_type (qw{ Class Role }) {
+        my ($_ok, $_nok) = counters;
+        my $thing        = "Test$thing_type";
+
+        test_out $_nok->(_msg $thing_type => 'attribute', 'nope');
+        test_fail 1;
+        does_metaroles_ok $thing => { attribute => ['MetaRole::nope'] };
+        test_test "test for unapplied metarole ($thing)";
+    }
 }
 
 done_testing;
