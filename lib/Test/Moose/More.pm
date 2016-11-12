@@ -405,6 +405,47 @@ sub check_sugar_ok ($) {
 
 =test does_metaroles_ok $thing => { $mop => [ @traits ], ... };
 
+Validate the metaclasses associated with a class/role metaclass.
+
+e.g., if I wanted to validate that the attribute trait for
+L<MooseX::AttributeShortcuts> is actually applied, I could do this:
+
+    { package TestClass; use Moose; use MooseX::AttributeShortcuts; }
+    use Test::Moose::More;
+    use Test::More;
+
+    does_metaroles_ok TestClass => {
+       attribute => ['MooseX::AttributeShortcuts::Trait::Attribute'],
+    };
+    done_testing;
+
+This function will accept either class or role metaclasses for $thing.
+
+The MOPs available for classes (L<Moose::Meta::Class>) are:
+
+=for :list
+= class
+= attribute
+= method
+= wrapped_method
+= instance
+= constructor
+= destructor
+
+The MOPs available for roles (L<Moose::Meta::Role>) are:
+
+=for :list
+= role
+= attribute
+= method
+= required_method
+= wrapped_method
+= conflicting_method
+= application_to_class
+= application_to_role
+= application_to_instance
+= applied_attribute
+
 =cut
 
 sub does_metaroles_ok($$) {
@@ -1021,7 +1062,7 @@ sub _class_attribute_options_ok {
 
 __END__
 
-=for :stopwords subtest
+=for :stopwords subtest MOPs
 
 =for Pod::Coverage is_anon is_class is_not_anon is_role
 
