@@ -713,6 +713,7 @@ sub _validate_role_guts {
     $args{does} = [ $role, @{ $args{does} || [] } ];
 
     # aaaand a subtest wrapper to make it easier to read...
+    local $THING_NAME = _thing_name($role) . q{'s composed class};
     return validate_class $anon->name => (
         -subtest => 'role composed into ' . $anon->name,
         %args,
