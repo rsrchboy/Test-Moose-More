@@ -1,7 +1,5 @@
 Revision history for Test-Moose-More
 
-{{$NEXT}}
-
 0.041-TRIAL  2016-11-12 20:09:02 CST-0600
 	* Added a ':validate' export group.
 	* Make -compose subtest messages a little cleaner.
