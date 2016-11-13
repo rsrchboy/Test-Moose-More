@@ -371,13 +371,7 @@ sub is_not_anon_ok ($) {
 Ensures that all the standard Moose sugar is no longer directly callable on a
 given package.
 
-=func known_sugar
-
-Returns a list of all the known standard Moose sugar (has, extends, etc).
-
 =cut
-
-sub known_sugar () { qw{ has around augment inner before after blessed confess } }
 
 sub check_sugar_removed_ok ($) {
     my $t = shift @_;
@@ -571,14 +565,14 @@ e.g.:
     ok 5 - TestRole does not do TestRole::Two
     ok 6 - TestRole has method method1
     ok 7 - TestRole has an attribute named bar
-        # Subtest: role composed into Moose::Meta::Class::__ANON__::SERIAL::1
-        ok 1 - Moose::Meta::Class::__ANON__::SERIAL::1 has a metaclass
-        ok 2 - Moose::Meta::Class::__ANON__::SERIAL::1 is a Moose class
-        ok 3 - Moose::Meta::Class::__ANON__::SERIAL::1 does TestRole
-        ok 4 - Moose::Meta::Class::__ANON__::SERIAL::1 does not do TestRole::Two
-        ok 5 - Moose::Meta::Class::__ANON__::SERIAL::1 has method method1
-        ok 6 - Moose::Meta::Class::__ANON__::SERIAL::1 has method blargh
-        ok 7 - Moose::Meta::Class::__ANON__::SERIAL::1 has an attribute named bar
+    # Subtest: role composed into Moose::Meta::Class::__ANON__::SERIAL::1
+        ok 1 - TestRole's composed class has a metaclass
+        ok 2 - TestRole's composed class is a Moose class
+        ok 3 - TestRole's composed class does TestRole
+        ok 4 - TestRole's composed class does not do TestRole::Two
+        ok 5 - TestRole's composed class has method method1
+        ok 6 - TestRole's composed class has method blargh
+        ok 7 - TestRole's composed class has an attribute named bar
         1..7
     ok 8 - role composed into Moose::Meta::Class::__ANON__::SERIAL::1
     1..8
@@ -780,6 +774,7 @@ sub _validate_role_guts {
     $args{does} = [ $role, @{ $args{does} || [] } ];
 
     # aaaand a subtest wrapper to make it easier to read...
+    local $THING_NAME = _thing_name($role) . q{'s composed class};
     return validate_class $anon->name => (
         -subtest => 'role composed into ' . $anon->name,
         %args,
