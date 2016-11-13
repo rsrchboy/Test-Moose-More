@@ -371,13 +371,7 @@ sub is_not_anon_ok ($) {
 Ensures that all the standard Moose sugar is no longer directly callable on a
 given package.
 
-=func known_sugar
-
-Returns a list of all the known standard Moose sugar (has, extends, etc).
-
 =cut
-
-sub known_sugar () { qw{ has around augment inner before after blessed confess } }
 
 sub check_sugar_removed_ok ($) {
     my $t = shift @_;

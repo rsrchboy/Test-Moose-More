@@ -9,6 +9,7 @@ use Sub::Exporter::Progressive -setup => {
 
     exports => [ qw{
         get_mop_metaclass_for
+        known_sugar
     } ],
 
     groups  => { default  => [':all'] },
@@ -50,6 +51,14 @@ sub get_mop_metaclass_for {
 
     return $meta->$read_method();
 }
+
+=func known_sugar
+
+Returns a list of all the known standard Moose sugar (has, extends, etc).
+
+=cut
+
+sub known_sugar () { qw{ has around augment inner before after blessed confess } }
 
 !!42;
 __END__
