@@ -8,7 +8,7 @@ Test::Moose::More - More tools for testing Moose packages
 
 # VERSION
 
-This document describes version 0.040 of Test::Moose::More - released November 10, 2016 as part of Test-Moose-More.
+This document describes version 0.041 of Test::Moose::More - released November 12, 2016 as part of Test-Moose-More.
 
 # SYNOPSIS
 
@@ -26,11 +26,19 @@ This package contains a number of additional tests that can be employed
 against Moose classes/roles.  It is intended to replace [Test::Moose](https://metacpan.org/pod/Test::Moose) in your
 tests, and re-exports any tests that it has and we do not, yet.
 
-# FUNCTIONS
+## Export Groups
 
-## known\_sugar
+By default, this package exports all test functions.  You can be more
+selective, however, and there are a number of export groups (aside from the
+default ':all') to help you achieve those dreams!
 
-Returns a list of all the known standard Moose sugar (has, extends, etc).
+- :all
+
+    All exportable functions.
+
+- :validate
+
+    ["validate\_attribute"](#validate_attribute), ["validate\_class"](#validate_class), ["validate\_role"](#validate_role), ["validate\_thing"](#validate_thing)
 
 # TEST FUNCTIONS
 
@@ -118,6 +126,47 @@ given package.
 ## check\_sugar\_ok $thing
 
 Checks and makes sure a class/etc can still do all the standard Moose sugar.
+
+## does\_metaroles\_ok $thing => { $mop => \[ @traits \], ... };
+
+Validate the metaclasses associated with a class/role metaclass.
+
+e.g., if I wanted to validate that the attribute trait for
+[MooseX::AttributeShortcuts](https://metacpan.org/pod/MooseX::AttributeShortcuts) is actually applied, I could do this:
+
+    { package TestClass; use Moose; use MooseX::AttributeShortcuts; }
+    use Test::Moose::More;
+    use Test::More;
+
+    does_metaroles_ok TestClass => {
+       attribute => ['MooseX::AttributeShortcuts::Trait::Attribute'],
+    };
+    done_testing;
+
+This function will accept either class or role metaclasses for $thing.
+
+The MOPs available for classes ([Moose::Meta::Class](https://metacpan.org/pod/Moose::Meta::Class)) are:
+
+- class
+- attribute
+- method
+- wrapped\_method
+- instance
+- constructor
+- destructor
+
+The MOPs available for roles ([Moose::Meta::Role](https://metacpan.org/pod/Moose::Meta::Role)) are:
+
+- role
+- attribute
+- method
+- required\_method
+- wrapped\_method
+- conflicting\_method
+- application\_to\_class
+- application\_to\_role
+- application\_to\_instance
+- applied\_attribute
 
 ## validate\_thing
 
@@ -216,14 +265,14 @@ additional role-specific tests.
         ok 5 - TestRole does not do TestRole::Two
         ok 6 - TestRole has method method1
         ok 7 - TestRole has an attribute named bar
-            # Subtest: role composed into Moose::Meta::Class::__ANON__::SERIAL::1
-            ok 1 - Moose::Meta::Class::__ANON__::SERIAL::1 has a metaclass
-            ok 2 - Moose::Meta::Class::__ANON__::SERIAL::1 is a Moose class
-            ok 3 - Moose::Meta::Class::__ANON__::SERIAL::1 does TestRole
-            ok 4 - Moose::Meta::Class::__ANON__::SERIAL::1 does not do TestRole::Two
-            ok 5 - Moose::Meta::Class::__ANON__::SERIAL::1 has method method1
-            ok 6 - Moose::Meta::Class::__ANON__::SERIAL::1 has method blargh
-            ok 7 - Moose::Meta::Class::__ANON__::SERIAL::1 has an attribute named bar
+        # Subtest: role composed into Moose::Meta::Class::__ANON__::SERIAL::1
+            ok 1 - TestRole's composed class has a metaclass
+            ok 2 - TestRole's composed class is a Moose class
+            ok 3 - TestRole's composed class does TestRole
+            ok 4 - TestRole's composed class does not do TestRole::Two
+            ok 5 - TestRole's composed class has method method1
+            ok 6 - TestRole's composed class has method blargh
+            ok 7 - TestRole's composed class has an attribute named bar
             1..7
         ok 8 - role composed into Moose::Meta::Class::__ANON__::SERIAL::1
         1..8
