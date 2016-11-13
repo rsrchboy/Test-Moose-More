@@ -571,14 +571,14 @@ e.g.:
     ok 5 - TestRole does not do TestRole::Two
     ok 6 - TestRole has method method1
     ok 7 - TestRole has an attribute named bar
-        # Subtest: role composed into Moose::Meta::Class::__ANON__::SERIAL::1
-        ok 1 - Moose::Meta::Class::__ANON__::SERIAL::1 has a metaclass
-        ok 2 - Moose::Meta::Class::__ANON__::SERIAL::1 is a Moose class
-        ok 3 - Moose::Meta::Class::__ANON__::SERIAL::1 does TestRole
-        ok 4 - Moose::Meta::Class::__ANON__::SERIAL::1 does not do TestRole::Two
-        ok 5 - Moose::Meta::Class::__ANON__::SERIAL::1 has method method1
-        ok 6 - Moose::Meta::Class::__ANON__::SERIAL::1 has method blargh
-        ok 7 - Moose::Meta::Class::__ANON__::SERIAL::1 has an attribute named bar
+    # Subtest: role composed into Moose::Meta::Class::__ANON__::SERIAL::1
+        ok 1 - TestRole's composed class has a metaclass
+        ok 2 - TestRole's composed class is a Moose class
+        ok 3 - TestRole's composed class does TestRole
+        ok 4 - TestRole's composed class does not do TestRole::Two
+        ok 5 - TestRole's composed class has method method1
+        ok 6 - TestRole's composed class has method blargh
+        ok 7 - TestRole's composed class has an attribute named bar
         1..7
     ok 8 - role composed into Moose::Meta::Class::__ANON__::SERIAL::1
     1..8
