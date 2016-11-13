@@ -727,6 +727,9 @@ sub _validate_class_guts {
     do { is_not_immutable_ok $class }
         if exists $args{immutable} && !$args{immutable};
 
+    do { does_metaroles_ok $class => $args{class_metaroles} }
+        if exists $args{class_metaroles};
+
     return validate_thing $class => %args;
 }
 
