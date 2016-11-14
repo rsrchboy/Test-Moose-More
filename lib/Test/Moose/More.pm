@@ -38,6 +38,7 @@ use Sub::Exporter::Progressive -setup => {
         is_role
 
         does_metaroles_ok
+        does_not_metaroles_ok
     } ],
     groups => {
         default  => [ ':all' ],
@@ -440,10 +441,18 @@ The MOPs available for roles (L<Moose::Meta::Role>) are:
 = application_to_instance
 = applied_attribute
 
+=func does_not_metaroles_ok $thing => { $mop => [ @traits ], ... };
+
+As with L</does_metaroles_ok>, but test that the metaroles are not consumed, a
+la L</does_not_ok>.
+
 =cut
 
-sub does_metaroles_ok($$) {
-    my ($thing, $metaroles) = @_;
+sub does_metaroles_ok($$)     { push @_, \&does_ok;     goto &_does_metaroles }
+sub does_not_metaroles_ok($$) { push @_, \&does_not_ok; goto &_does_metaroles }
+
+sub _does_metaroles {
+    my ($thing, $metaroles, $test_func) = @_;
 
     local $Test::Builder::Level = $Test::Builder::Level + 1;
 
@@ -455,7 +464,7 @@ sub does_metaroles_ok($$) {
         my $mop_metaclass = get_mop_metaclass_for $mop => $meta;
 
         local $THING_NAME = "${name}'s $mop metaclass $mop_metaclass";
-        does_ok $mop_metaclass => $metaroles->{$mop};
+        $test_func->($mop_metaclass => $metaroles->{$mop});
     }
 
     return;
