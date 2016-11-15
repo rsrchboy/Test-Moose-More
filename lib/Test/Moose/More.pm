@@ -1069,7 +1069,7 @@ sub _class_attribute_options_ok {
 
 __END__
 
-=for :stopwords subtest MOPs
+=for :stopwords subtest MOPs metaroles
 
 =for Pod::Coverage is_anon is_class is_not_anon is_role
 
