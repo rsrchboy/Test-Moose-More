@@ -613,6 +613,16 @@ A list of methods the role expects to wrap after, on application to a class.
 
 See L<Moose/after> for information on after method modifiers.
 
+* role_metaroles => { $mop => [ $role, ... ], ... }
+
+Checks metaclasses to ensure the given metaroles are applied.  See
+L</does_metaroles_ok>.
+
+* no_role_metaroles => { $mop => [ $role, ... ], ... }
+
+Checks metaclasses to ensure the given metaroles are applied.  See
+L</does_not_metaroles_ok>.
+
 =end :list
 
 =test validate_class
@@ -776,6 +786,12 @@ sub _validate_role_guts {
         if defined $args{around};
     role_wraps_after_method_ok($role => @{ $args{after} })
         if defined $args{after};
+
+    # metaclass / metarole checking
+    do { does_metaroles_ok $role => $args{role_metaroles} }
+        if exists $args{role_metaroles};
+    do { does_not_metaroles_ok $role => $args{no_role_metaroles} }
+        if exists $args{no_role_metaroles};
 
     $args{-compose}
         ?        validate_thing $role => %args
