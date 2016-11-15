@@ -650,6 +650,11 @@ whatever C<-subtest> is set to.
 
 Checks the class to see if it is/isn't immutable.
 
+* class_metaroles => { $mop => [ $role, ... ], ... }
+
+Checks metaclasses to ensure the given metaroles are applied.  See
+L</does_metaroles_ok>.
+
 =end :list
 
 =cut
