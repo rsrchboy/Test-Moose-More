@@ -655,6 +655,11 @@ Checks the class to see if it is/isn't immutable.
 Checks metaclasses to ensure the given metaroles are applied.  See
 L</does_metaroles_ok>.
 
+* no_class_metaroles => { $mop => [ $role, ... ], ... }
+
+Checks metaclasses to ensure the given metaroles are applied.  See
+L</does_not_metaroles_ok>.
+
 =end :list
 
 =cut
@@ -741,8 +746,11 @@ sub _validate_class_guts {
     do { is_not_immutable_ok $class }
         if exists $args{immutable} && !$args{immutable};
 
+    # metaclass / metarole checking
     do { does_metaroles_ok $class => $args{class_metaroles} }
         if exists $args{class_metaroles};
+    do { does_not_metaroles_ok $class => $args{no_class_metaroles} }
+        if exists $args{no_class_metaroles};
 
     return validate_thing $class => %args;
 }
