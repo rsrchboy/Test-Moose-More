@@ -442,6 +442,14 @@ The MOPs available for roles (L<Moose::Meta::Role>) are:
 = application_to_instance
 = applied_attribute
 
+Note!  Neither this function nor does_not_metaroles_ok() attempts to validate
+that the MOP type passed in is a member of the above lists.  There's no gain
+here in implementing such a check, and a negative to be had: specifying an
+invalid MOP type will result in immediate explosions, while it's entirely
+possible other MOP types will be added (either to core, via traits, or "let's
+subclass Moose::Meta::Class/etc and implement something new").
+
+
 =func does_not_metaroles_ok $thing => { $mop => [ @traits ], ... };
 
 As with L</does_metaroles_ok>, but test that the metaroles are not consumed, a
@@ -541,6 +549,37 @@ A list of methods the thing should have.
 
 Ensure that thing can/cannot do the standard Moose sugar.
 
+* metaclasses => { $mop => { ... }, ... }
+
+Validates this thing's metaclasses: that is, given a MOP type (e.g. class,
+attribute, method, ...) and a hashref, find the associated metaclass of the
+given type and invoke L</validate_thing> on it, using the hashref as options
+for validate_thing().
+
+e.g.
+
+    validate_thing 'TestClass' => (
+        metaclasses  => {
+            attribute => {
+                isa  => [ 'Moose::Meta::Attribute' ],
+                does => [ 'MetaRole::attribute'    ],
+            },
+        },
+    );
+
+...yields:
+
+    # Subtest: Checking the attribute metaclass, Moose::Meta::Class::__ANON__::SERIAL::1
+        ok 1 - TestClass's attribute metaclass has a metaclass
+        ok 2 - TestClass's attribute metaclass is a Moose class
+        ok 3 - TestClass's attribute metaclass isa Moose::Meta::Attribute
+        ok 4 - TestClass's attribute metaclass does MetaRole::attribute
+        1..4
+    ok 1 - Checking the attribute metaclass, Moose::Meta::Class::__ANON__::SERIAL::1
+
+Note that validate_class() and validate_role() implement this using
+'class_metaclasses' and 'role_metaclasses', respectively.
+
 =end :list
 
 =test validate_role
@@ -624,6 +663,42 @@ L</does_metaroles_ok>.
 Checks metaclasses to ensure the given metaroles are applied.  See
 L</does_not_metaroles_ok>.
 
+* role_metaclasses => { $mop => { ... }, ... }
+
+Validates this role's metaclasses: that is, given a MOP type (e.g. role,
+attribute, method, ...) and a hashref, find the associated metaclass of the
+given type and invoke L</validate_thing> on it, using the hashref as options
+for validate_thing().
+
+e.g.
+
+    validate_role 'TestRole' => (
+        metaclasses  => {
+            attribute => {
+                isa  => [ 'Moose::Meta::Attribute' ],
+                does => [ 'MetaRole::attribute'    ],
+            },
+        },
+    );
+
+...yields:
+
+    # Subtest: Checking the attribute metaclass, Moose::Meta::Class::__ANON__::SERIAL::1
+        ok 1 - TestRole's attribute metaclass has a metaclass
+        ok 2 - TestRole's attribute metaclass is a Moose class
+        ok 3 - TestRole's attribute metaclass isa Moose::Meta::Attribute
+        ok 4 - TestRole's attribute metaclass does MetaRole::attribute
+        1..4
+    ok 1 - Checking the attribute metaclass, Moose::Meta::Class::__ANON__::SERIAL::1
+
+Note that validate_class() and validate_role() implement this using
+'class_metaclasses' and 'role_metaclasses', respectively.
+
+* class_metaclasses => { $mop => { ... }, ... }
+
+As with role_metaclasses, above, except that this option is only used
+if -compose is also specified.
+
 =end :list
 
 =test validate_class
@@ -670,6 +745,36 @@ L</does_metaroles_ok>.
 
 Checks metaclasses to ensure the given metaroles are applied.  See
 L</does_not_metaroles_ok>.
+
+* class_metaclasses => { $mop => { ... }, ... }
+
+Validates this class' metaclasses: that is, given a MOP type (e.g. role,
+attribute, method, ...) and a hashref, find the associated metaclass of the
+given type and invoke L</validate_thing> on it, using the hashref as options
+for validate_thing().
+
+e.g.
+
+    validate_class 'TestClass' => (
+        metaclasses  => {
+            attribute => {
+                isa  => [ 'Moose::Meta::Attribute' ],
+                does => [ 'MetaRole::attribute'    ],
+            },
+        },
+    );
+
+...yields:
+
+    ok 1 - TestClass has a metaclass
+    ok 2 - TestClass is a Moose class
+    # Subtest: Checking the attribute metaclass, Moose::Meta::Class::__ANON__::SERIAL::1
+        ok 1 - TestClass's attribute metaclass has a metaclass
+        ok 2 - TestClass's attribute metaclass is a Moose class
+        ok 3 - TestClass's attribute metaclass isa Moose::Meta::Attribute
+        ok 4 - TestClass's attribute metaclass does MetaRole::attribute
+        1..4
+    ok 3 - Checking the attribute metaclass, Moose::Meta::Class::__ANON__::SERIAL::1
 
 =end :list
 
