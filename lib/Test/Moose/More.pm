@@ -53,6 +53,7 @@ use Scalar::Util 'blessed';
 use Syntax::Keyword::Junction 'any';
 use Moose::Util 'resolve_metatrait_alias', 'does_role', 'find_meta';
 use Moose::Util::TypeConstraints;
+use Carp 'confess';
 use Data::OptList;
 
 use Test::Moose::More::Utils;
@@ -697,6 +698,9 @@ sub _validate_thing_guts {
 
     local $Test::Builder::Level = $Test::Builder::Level + 1;
 
+    my $meta = find_meta($thing);
+    my $name = _thing_name($thing, $meta);
+
     ### anonymous...
     $args{anonymous} ? is_anon_ok $thing : is_not_anon_ok $thing
         if exists $args{anonymous};
@@ -704,6 +708,18 @@ sub _validate_thing_guts {
     ### sugar checking...
     $args{sugar} ? check_sugar_ok $thing : check_sugar_removed_ok $thing
         if exists $args{sugar};
+
+    # metaclass checking
+    for my $mop (sort keys %{ $args{metaclasses} || {} }) {
+
+        my $mop_metaclass = get_mop_metaclass_for $mop => $meta;
+
+        local $THING_NAME = "${name}'s $mop metaclass";
+        validate_class $mop_metaclass => (
+            -subtest => "Checking the $mop metaclass, $mop_metaclass",
+            %{ $args{metaclasses}->{$mop} },
+        );
+    }
 
     ### roles...
     do { does_ok($thing, $_) for @{$args{does}} }
@@ -764,17 +780,11 @@ sub _validate_class_guts {
     do { does_not_metaroles_ok $class => $args{no_class_metaroles} }
         if exists $args{no_class_metaroles};
 
-    # metaclass checking
-    for my $mop (sort keys %{ $args{class_metaclasses} || {} }) {
+    confess 'Cannot specify both a metaclasses and class_metaclasses to validate_class()!'
+        if $args{class_metaclasses} && $args{metaclasses};
 
-        my $mop_metaclass = get_mop_metaclass_for $mop => $meta;
-
-        local $THING_NAME = "${name}'s $mop metaclass";
-        validate_class $mop_metaclass => (
-            -subtest => "Checking the $mop metaclass, $mop_metaclass",
-            %{ $args{class_metaclasses}->{$mop} },
-        );
-    }
+    $args{metaclasses} = $args{class_metaclasses}
+        if exists $args{class_metaclasses};
 
     return validate_thing $class => %args;
 }
