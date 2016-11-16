@@ -40,11 +40,7 @@ use Test::Builder::Tester; # tests => 1;
 use Test::More;
 use Test::Moose::More;
 
-use aliased 'Perl::Version' => 'PV';
-use constant NEEDS_SUBTEST_HEADER
-    => do { PV->new(Test::More->VERSION) >= PV->new('0.98_05') };
-
-use TAP::SimpleOutput 0.002 'counters';
+use TAP::SimpleOutput 0.008 ':subtest';
 
 note 'validate w/valid class';
 {
@@ -159,31 +155,24 @@ note 'validate invalid class';
 
 note 'validate w/attribute validation';
 {
-    my ($_ok, $_nok, undef, undef, undef, $__any) = counters();
+    my ($_ok, $_nok, undef, undef, undef, $_any) = counters();
     test_out $_ok->('TestClass has a metaclass');
     test_out $_ok->('TestClass is a Moose class');
     test_out $_ok->('TestClass has an attribute named bar');
     test_out $_ok->('TestClass has an attribute named baz');
-    my $__ok = $_ok;
-    my $st_name = do {
-        my ($_ok, $_nok, $_skip, $_plan, undef, $_any) = counters(1, my $name = q{checking TestClass's attribute baz});
-        if (NEEDS_SUBTEST_HEADER) {
-            if ($INC{'Test/Stream.pm'}) {
-                test_out $__any->("# Subtest: $name")
-            }
-            else {
-                test_out $_any->("# Subtest: $name")
-            }
-        }
+    my $name = q{checking TestClass's attribute baz};
+    test_out subtest_header $_any => $name
+        if subtest_header_needed;
+    do {
+        my ($_ok, $_nok, $_skip, $_plan, undef, $_any) = counters(1);
         test_out $_ok->(q{TestClass's attribute baz's metaclass has a metaclass});
         test_out $_ok->(q{TestClass's attribute baz's metaclass is a Moose class});
         test_out $_ok->(q{TestClass's attribute baz's metaclass does TestRole::Two});
         test_out $_ok->(q{TestClass's attribute baz has a reader});
         test_out $_ok->(q{TestClass's attribute baz option reader correct});
         test_out $_plan->();
-        $name;
     };
-    test_out $_ok->($st_name);
+    test_out $_ok->($name);
     test_out $_ok->('TestClass has an attribute named foo');
     validate_class 'TestClass' => (
         attributes => [
