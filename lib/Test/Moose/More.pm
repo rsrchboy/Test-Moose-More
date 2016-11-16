@@ -746,7 +746,9 @@ sub _validate_class_guts {
     local $Test::Builder::Level = $Test::Builder::Level + 1;
     return unless is_class_ok $class;
 
-    my $name = _thing_name($class);
+    my $meta = find_meta($class);
+    my $name = _thing_name($class, $meta);
+
     do { ok($class->isa($_), "$name isa $_") for @{$args{isa}} }
         if exists $args{isa};
 
@@ -761,6 +763,18 @@ sub _validate_class_guts {
         if exists $args{class_metaroles};
     do { does_not_metaroles_ok $class => $args{no_class_metaroles} }
         if exists $args{no_class_metaroles};
+
+    # metaclass checking
+    for my $mop (sort keys %{ $args{class_metaclasses} || {} }) {
+
+        my $mop_metaclass = get_mop_metaclass_for $mop => $meta;
+
+        local $THING_NAME = "${name}'s $mop metaclass";
+        validate_class $mop_metaclass => (
+            -subtest => "Checking the $mop metaclass, $mop_metaclass",
+            %{ $args{class_metaclasses}->{$mop} },
+        );
+    }
 
     return validate_thing $class => %args;
 }
