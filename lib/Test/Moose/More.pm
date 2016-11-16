@@ -811,12 +811,20 @@ sub _validate_role_guts {
     role_wraps_after_method_ok($role => @{ $args{after} })
         if defined $args{after};
 
-    # metaclass / metarole checking
+    # metarole checking
     do { does_metaroles_ok $role => $args{role_metaroles} }
         if exists $args{role_metaroles};
     do { does_not_metaroles_ok $role => $args{no_role_metaroles} }
         if exists $args{no_role_metaroles};
 
+
+    confess 'Cannot specify both a metaclasses and role_metaclasses to validate_class()!'
+        if $args{role_metaclasses} && $args{metaclasses};
+
+    $args{metaclasses} = $args{role_metaclasses}
+        if exists $args{role_metaclasses};
+
+    # if we've been asked to compose ourselves, then do that -- otherwise return
     $args{-compose}
         ?        validate_thing $role => %args
         : return validate_thing $role => %args
