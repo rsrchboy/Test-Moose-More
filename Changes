@@ -1,7 +1,5 @@
 Revision history for Test-Moose-More
 
-{{$NEXT}}
-
 0.042     2017-02-13 09:54:58 CST-0600
 	* Use the subtest bits now in TAP::SimpleOutput
 	* No code changes, just the above test tweak.  Overdue release as GA :)
