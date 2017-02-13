@@ -8,7 +8,7 @@ Test::Moose::More - More tools for testing Moose packages
 
 # VERSION
 
-This document describes version 0.041 of Test::Moose::More - released November 12, 2016 as part of Test-Moose-More.
+This document describes version 0.042 of Test::Moose::More - released February 13, 2017 as part of Test-Moose-More.
 
 # SYNOPSIS
 
@@ -39,6 +39,13 @@ default ':all') to help you achieve those dreams!
 - :validate
 
     ["validate\_attribute"](#validate_attribute), ["validate\_class"](#validate_class), ["validate\_role"](#validate_role), ["validate\_thing"](#validate_thing)
+
+# FUNCTIONS
+
+## does\_not\_metaroles\_ok $thing => { $mop => \[ @traits \], ... };
+
+As with ["does\_metaroles\_ok"](#does_metaroles_ok), but test that the metaroles are not consumed, a
+la ["does\_not\_ok"](#does_not_ok).
 
 # TEST FUNCTIONS
 
