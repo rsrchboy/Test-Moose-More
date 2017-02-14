@@ -7,7 +7,7 @@ use warnings;
 use Test::Builder::Tester;
 use Test::More;
 use Test::Moose::More;
-use TAP::SimpleOutput 0.002 'counters';
+use TAP::SimpleOutput 0.009 'counters';
 
 # immutable class, is_immutable_ok
 {

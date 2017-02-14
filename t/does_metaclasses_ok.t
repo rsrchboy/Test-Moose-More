@@ -5,7 +5,7 @@ use Test::Builder::Tester;
 use Test::More;
 use Test::Moose::More;
 use Test::Moose::More::Utils;
-use TAP::SimpleOutput 0.007 'counters';
+use TAP::SimpleOutput 0.009 'counters';
 
 { package TestRole;  use Moose::Role; }
 { package TestClass; use Moose;       }

@@ -4,7 +4,7 @@ use warnings;
 use Test::Builder::Tester;
 use Test::More;
 use Test::Moose::More;
-use TAP::SimpleOutput 0.006 'counters', ':subtest';
+use TAP::SimpleOutput 0.009 'counters', ':subtest';
 
 # The sole question this test addresses is: "Does has_attribute_ok()'s
 # -subtest option work as expected?"  As such, there are no role vs class

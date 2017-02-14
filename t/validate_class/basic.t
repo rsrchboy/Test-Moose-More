@@ -40,7 +40,7 @@ use Test::Builder::Tester; # tests => 1;
 use Test::More;
 use Test::Moose::More;
 
-use TAP::SimpleOutput 0.008 ':subtest';
+use TAP::SimpleOutput 0.009 ':subtest';
 
 note 'validate w/valid class';
 {

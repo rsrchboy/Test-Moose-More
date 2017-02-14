@@ -11,7 +11,7 @@ use Test::Builder::Tester;
 { package TR1; use Moose::Role; use namespace::autoclean }
 { package TR2; use Moose::Role;                          }
 
-use TAP::SimpleOutput 0.002 'counters';
+use TAP::SimpleOutput 0.009 'counters';
 
 sub _validate {
     my ($thing, $sugar) = @_;
