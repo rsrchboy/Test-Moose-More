@@ -38,6 +38,8 @@ subtest sanity => sub {
     };
 };
 
+# FIXME TODO implement the above, below.
+
 test_out 'ok 1 - TestClass has method foo';
 has_method_ok 'TestClass', 'foo';
 test_test 'has_method_ok works correctly with methods';
