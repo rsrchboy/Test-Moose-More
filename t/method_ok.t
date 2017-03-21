@@ -8,7 +8,7 @@ use Test::More;
 use Test::Moose::More;
 
 subtest sanity => sub {
-    has_no_method_ok TestClass => 'bar';
+    has_method_ok    TestClass => 'foo';
     has_no_method_ok TestClass => 'bar';
 };
 
