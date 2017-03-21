@@ -14,6 +14,7 @@ use Sub::Exporter::Progressive -setup => {
         does_ok
         has_attribute_ok
         has_method_ok
+        has_no_method_ok
         is_anon_ok
         is_class_ok
         is_immutable_ok
@@ -192,15 +193,26 @@ Note: This does B<not> include inherited methods; see L<Class::Mop::Class/has_me
 
 =cut
 
-sub has_method_ok ($@) {
-    my ($thing, @methods) = @_;
+my $_has_test = sub { $tb->ok(!!$_[0]->has_method($_), "$_[1] has method $_")           };
+my $_no_test  = sub { $tb->ok( !$_[0]->has_method($_), "$_[1] does not have method $_") };
+
+sub has_no_method_ok ($@) { unshift @_, $_no_test;  goto \&_method_ok_guts }
+sub has_method_ok    ($@) { unshift @_, $_has_test; goto \&_method_ok_guts }
+
+sub _method_ok_guts {
+    my ($_test, $thing, @methods) = @_;
 
     ### $thing
     my $meta = find_meta($thing);
     my $name = _thing_name($thing, $meta);
 
+    # the test below is run one stack frame up (down?), so let's handle that
+    local $Test::Builder::Level = $Test::Builder::Level + 1;
+
+    # "tiny evil?" -- Eleanor Weyl
+
     ### @methods
-    $tb->ok(!!$meta->has_method($_), "$name has method $_")
+    $_test->($meta => $name)
         for @methods;
 
     return;
