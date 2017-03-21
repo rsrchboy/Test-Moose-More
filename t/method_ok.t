@@ -1,7 +1,7 @@
 use strict;
 use warnings;
 
-{ package TestClass; use Moose; sub foo { } }
+{ package TestClass; use Moose; sub foo { }; has beep => (is => 'ro') }
 
 use Test::Builder::Tester;
 use Test::More;
@@ -9,6 +9,8 @@ use Test::Moose::More;
 
 subtest sanity => sub {
     has_method_ok    TestClass => 'foo';
+    has_method_ok    TestClass => 'beep';
+    subtest multiple => sub { has_method_ok TestClass => 'beep', 'foo' };
     has_no_method_ok TestClass => 'bar';
 };
 
