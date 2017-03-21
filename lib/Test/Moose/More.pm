@@ -190,7 +190,7 @@ sub has_attribute_ok ($$;$) {
 Queries $thing's metaclass to see if $thing has the methods named in @methods.
 
 Note: This does B<not> include inherited methods; see
-L<Class::Mop::Class/has_method>.
+L<Class::MOP::Class/has_method>.
 
 =test has_no_method_ok $thing, @methods
 
@@ -198,7 +198,7 @@ Queries $thing's metaclass to ensure $thing does not provide the methods named
 in @methods.
 
 Note: This does B<not> include inherited methods; see
-L<Class::Mop::Class/has_method>.
+L<Class::MOP::Class/has_method>.
 
 =cut
 
