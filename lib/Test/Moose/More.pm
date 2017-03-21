@@ -557,7 +557,11 @@ same arguments L</validate_attribute> does.  e.g.:
 
 * methods => [ ... ]
 
-A list of methods the thing should have.
+A list of methods the thing should have; see L</has_method_ok>.
+
+* no_methods => [ ... ]
+
+A list of methods the thing should not have; see L</has_no_method_ok>.
 
 * sugar => 0|1
 
@@ -717,6 +721,8 @@ sub _validate_thing_guts {
     ### methods...
     do { has_method_ok($thing, $_) for @{$args{methods}} }
         if exists $args{methods};
+    do { has_no_method_ok($thing, $_) for @{$args{no_methods}} }
+        if exists $args{no_methods};
 
     ### attributes...
     ATTRIBUTE_LOOP:
