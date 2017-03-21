@@ -1,8 +1,9 @@
 use strict;
 use warnings;
 
-{ package TestRole; use Moose::Role; sub role { }; has role_att => (is => 'ro') }
-{ package TestClass; use Moose; sub foo { }; has beep => (is => 'ro') }
+{ package TestRole;  use Moose::Role; sub role { }; has role_att => (is => 'ro') }
+{ package TestClass; use Moose;       sub foo {  }; has beep     => (is => 'ro') }
+{ package TC2;       use Moose;       extends 'TestClass'; sub bar { }           }
 
 use Test::Builder::Tester;
 use Test::More;
@@ -24,8 +25,17 @@ subtest sanity => sub {
     has_method_ok    TestClass => 'beep';
     has_no_method_ok TestClass => 'bar';
 
-    subtest multiple  => sub { has_method_ok    TestClass => 'beep', 'foo'      };
+    subtest multiple  => sub {
+        has_method_ok    TestClass => 'beep', 'foo';
+        has_no_method_ok TestClass => 'boop', 'bar';
+    };
+
     subtest from_role => sub { has_no_method_ok TestClass => 'role', 'role_att' };
+
+    subtest superclass => sub {
+        has_method_ok    TC2 => 'bar';
+        has_no_method_ok TC2 => qw{ foo beep role role_att };
+    };
 };
 
 test_out 'ok 1 - TestClass has method foo';
