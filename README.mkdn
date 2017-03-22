@@ -8,7 +8,7 @@ Test::Moose::More - More tools for testing Moose packages
 
 # VERSION
 
-This document describes version 0.043 of Test::Moose::More - released February 14, 2017 as part of Test-Moose-More.
+This document describes version 0.044 of Test::Moose::More - released March 21, 2017 as part of Test-Moose-More.
 
 # SYNOPSIS
 
@@ -78,6 +78,17 @@ class name, instance, or role name.
 ## has\_method\_ok $thing, @methods
 
 Queries $thing's metaclass to see if $thing has the methods named in @methods.
+
+Note: This does **not** include inherited methods; see
+["has\_method" in Class::MOP::Class](https://metacpan.org/pod/Class::MOP::Class#has_method).
+
+## has\_no\_method\_ok $thing, @methods
+
+Queries $thing's metaclass to ensure $thing does not provide the methods named
+in @methods.
+
+Note: This does **not** include inherited methods; see
+["has\_method" in Class::MOP::Class](https://metacpan.org/pod/Class::MOP::Class#has_method).
 
 ## role\_wraps\_around\_method\_ok $role, @methods
 
@@ -175,6 +186,13 @@ The MOPs available for roles ([Moose::Meta::Role](https://metacpan.org/pod/Moose
 - application\_to\_instance
 - applied\_attribute
 
+Note!  Neither this function nor does\_not\_metaroles\_ok() attempts to validate
+that the MOP type passed in is a member of the above lists.  There's no gain
+here in implementing such a check, and a negative to be had: specifying an
+invalid MOP type will result in immediate explosions, while it's entirely
+possible other MOP types will be added (either to core, via traits, or "let's
+subclass Moose::Meta::Class/etc and implement something new").
+
 ## validate\_thing
 
 Runs a bunch of tests against the given `$thing`, as defined:
@@ -237,11 +255,46 @@ metaclass.
 
 - methods => \[ ... \]
 
-    A list of methods the thing should have.
+    A list of methods the thing should have; see ["has\_method\_ok"](#has_method_ok).
+
+- no\_methods => \[ ... \]
+
+    A list of methods the thing should not have; see ["has\_no\_method\_ok"](#has_no_method_ok).
 
 - sugar => 0|1
 
     Ensure that thing can/cannot do the standard Moose sugar.
+
+- metaclasses => { $mop => { ... }, ... }
+
+    Validates this thing's metaclasses: that is, given a MOP type (e.g. class,
+    attribute, method, ...) and a hashref, find the associated metaclass of the
+    given type and invoke ["validate\_thing"](#validate_thing) on it, using the hashref as options
+    for validate\_thing().
+
+    e.g.
+
+        validate_thing 'TestClass' => (
+            metaclasses  => {
+                attribute => {
+                    isa  => [ 'Moose::Meta::Attribute' ],
+                    does => [ 'MetaRole::attribute'    ],
+                },
+            },
+        );
+
+    ...yields:
+
+        # Subtest: Checking the attribute metaclass, Moose::Meta::Class::__ANON__::SERIAL::1
+            ok 1 - TestClass's attribute metaclass has a metaclass
+            ok 2 - TestClass's attribute metaclass is a Moose class
+            ok 3 - TestClass's attribute metaclass isa Moose::Meta::Attribute
+            ok 4 - TestClass's attribute metaclass does MetaRole::attribute
+            1..4
+        ok 1 - Checking the attribute metaclass, Moose::Meta::Class::__ANON__::SERIAL::1
+
+    Note that validate\_class() and validate\_role() implement this using
+    'class\_metaclasses' and 'role\_metaclasses', respectively.
 
 ## validate\_role
 
@@ -311,6 +364,52 @@ additional role-specific tests.
 
     See ["after" in Moose](https://metacpan.org/pod/Moose#after) for information on after method modifiers.
 
+- role\_metaroles => { $mop => \[ $role, ... \], ... }
+
+    Checks metaclasses to ensure the given metaroles are applied.  See
+    ["does\_metaroles\_ok"](#does_metaroles_ok).
+
+- no\_role\_metaroles => { $mop => \[ $role, ... \], ... }
+
+    Checks metaclasses to ensure the given metaroles are applied.  See
+    ["does\_not\_metaroles\_ok"](#does_not_metaroles_ok).
+
+- role\_metaclasses => { $mop => { ... }, ... }
+
+    Validates this role's metaclasses: that is, given a MOP type (e.g. role,
+    attribute, method, ...) and a hashref, find the associated metaclass of the
+    given type and invoke ["validate\_thing"](#validate_thing) on it, using the hashref as options
+    for validate\_thing().
+
+    e.g.
+
+        validate_role 'TestRole' => (
+            metaclasses  => {
+                attribute => {
+                    isa  => [ 'Moose::Meta::Attribute' ],
+                    does => [ 'MetaRole::attribute'    ],
+                },
+            },
+        );
+
+    ...yields:
+
+        # Subtest: Checking the attribute metaclass, Moose::Meta::Class::__ANON__::SERIAL::1
+            ok 1 - TestRole's attribute metaclass has a metaclass
+            ok 2 - TestRole's attribute metaclass is a Moose class
+            ok 3 - TestRole's attribute metaclass isa Moose::Meta::Attribute
+            ok 4 - TestRole's attribute metaclass does MetaRole::attribute
+            1..4
+        ok 1 - Checking the attribute metaclass, Moose::Meta::Class::__ANON__::SERIAL::1
+
+    Note that validate\_class() and validate\_role() implement this using
+    'class\_metaclasses' and 'role\_metaclasses', respectively.
+
+- class\_metaclasses => { $mop => { ... }, ... }
+
+    As with role\_metaclasses, above, except that this option is only used
+    if -compose is also specified.
+
 ## validate\_class
 
 The same as validate\_thing(), but ensures `$thing` is a class, and allows for
@@ -343,6 +442,46 @@ additional class-specific tests.
 - immutable => 0|1
 
     Checks the class to see if it is/isn't immutable.
+
+- class\_metaroles => { $mop => \[ $role, ... \], ... }
+
+    Checks metaclasses to ensure the given metaroles are applied.  See
+    ["does\_metaroles\_ok"](#does_metaroles_ok).
+
+- no\_class\_metaroles => { $mop => \[ $role, ... \], ... }
+
+    Checks metaclasses to ensure the given metaroles are applied.  See
+    ["does\_not\_metaroles\_ok"](#does_not_metaroles_ok).
+
+- class\_metaclasses => { $mop => { ... }, ... }
+
+    Validates this class' metaclasses: that is, given a MOP type (e.g. role,
+    attribute, method, ...) and a hashref, find the associated metaclass of the
+    given type and invoke ["validate\_thing"](#validate_thing) on it, using the hashref as options
+    for validate\_thing().
+
+    e.g.
+
+        validate_class 'TestClass' => (
+            metaclasses  => {
+                attribute => {
+                    isa  => [ 'Moose::Meta::Attribute' ],
+                    does => [ 'MetaRole::attribute'    ],
+                },
+            },
+        );
+
+    ...yields:
+
+        ok 1 - TestClass has a metaclass
+        ok 2 - TestClass is a Moose class
+        # Subtest: Checking the attribute metaclass, Moose::Meta::Class::__ANON__::SERIAL::1
+            ok 1 - TestClass's attribute metaclass has a metaclass
+            ok 2 - TestClass's attribute metaclass is a Moose class
+            ok 3 - TestClass's attribute metaclass isa Moose::Meta::Attribute
+            ok 4 - TestClass's attribute metaclass does MetaRole::attribute
+            1..4
+        ok 3 - Checking the attribute metaclass, Moose::Meta::Class::__ANON__::SERIAL::1
 
 ## validate\_attribute
 
@@ -457,23 +596,6 @@ feature.
 # AUTHOR
 
 Chris Weyl <cweyl@alumni.drew.edu>
-
-## I'm a material boy in a material world
-
-<div>
-    <a href="https://gratipay.com/RsrchBoy/"><img src="http://img.shields.io/gratipay/RsrchBoy.svg" /></a>
-    <a href="http://bit.ly/rsrchboys-wishlist"><img src="http://wps.io/wp-content/uploads/2014/05/amazon_wishlist.resized.png" /></a>
-    <a href="https://flattr.com/submit/auto?user_id=RsrchBoy&url=https%3A%2F%2Fgithub.com%2FRsrchBoy%2FTest-Moose-More&title=RsrchBoy's%20CPAN%20Test-Moose-More&tags=%22RsrchBoy's%20Test-Moose-More%20in%20the%20CPAN%22"><img src="http://api.flattr.com/button/flattr-badge-large.png" /></a>
-</div>
-
-Please note **I do not expect to be gittip'ed or flattr'ed for this work**,
-rather **it is simply a very pleasant surprise**. I largely create and release
-works like this because I need them or I find it enjoyable; however, don't let
-that stop you if you feel like it ;)
-
-[Flattr](https://flattr.com/submit/auto?user_id=RsrchBoy&url=https%3A%2F%2Fgithub.com%2FRsrchBoy%2FTest-Moose-More&title=RsrchBoy&#x27;s%20CPAN%20Test-Moose-More&tags=%22RsrchBoy&#x27;s%20Test-Moose-More%20in%20the%20CPAN%22),
-[Gratipay](https://gratipay.com/RsrchBoy/), or indulge my
-[Amazon Wishlist](http://bit.ly/rsrchboys-wishlist)...  If and \*only\* if you so desire.
 
 # CONTRIBUTORS
 
