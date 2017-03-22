@@ -1,6 +1,7 @@
 Revision history for Test-Moose-More
 
 {{$NEXT}}
+	* Add metarole/class options to validate_...()
 
 0.041-TRIAL  2016-11-12 20:09:02 CST-0600
 	* Added a ':validate' export group.
