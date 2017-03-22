@@ -473,7 +473,7 @@ possible other MOP types will be added (either to core, via traits, or "let's
 subclass Moose::Meta::Class/etc and implement something new").
 
 
-=func does_not_metaroles_ok $thing => { $mop => [ @traits ], ... };
+=test does_not_metaroles_ok $thing => { $mop => [ @traits ], ... };
 
 As with L</does_metaroles_ok>, but test that the metaroles are not consumed, a
 la L</does_not_ok>.
