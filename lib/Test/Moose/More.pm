@@ -14,6 +14,7 @@ use Sub::Exporter::Progressive -setup => {
         does_ok
         has_attribute_ok
         has_method_ok
+        has_no_method_ok
         is_anon_ok
         is_class_ok
         is_immutable_ok
@@ -189,19 +190,39 @@ sub has_attribute_ok ($$;$) {
 
 Queries $thing's metaclass to see if $thing has the methods named in @methods.
 
-Note: This does B<not> include inherited methods; see L<Class::Mop::Class/has_method>.
+Note: This does B<not> include inherited methods; see
+L<Class::MOP::Class/has_method>.
+
+=test has_no_method_ok $thing, @methods
+
+Queries $thing's metaclass to ensure $thing does not provide the methods named
+in @methods.
+
+Note: This does B<not> include inherited methods; see
+L<Class::MOP::Class/has_method>.
 
 =cut
 
-sub has_method_ok ($@) {
-    my ($thing, @methods) = @_;
+my $_has_test = sub { $tb->ok(!!$_[0]->has_method($_), "$_[1] has method $_")           };
+my $_no_test  = sub { $tb->ok( !$_[0]->has_method($_), "$_[1] does not have method $_") };
+
+sub has_no_method_ok ($@) { unshift @_, $_no_test;  goto \&_method_ok_guts }
+sub has_method_ok    ($@) { unshift @_, $_has_test; goto \&_method_ok_guts }
+
+sub _method_ok_guts {
+    my ($_test, $thing, @methods) = @_;
 
     ### $thing
     my $meta = find_meta($thing);
     my $name = _thing_name($thing, $meta);
 
+    # the test below is run one stack frame up (down?), so let's handle that
+    local $Test::Builder::Level = $Test::Builder::Level + 1;
+
+    # "tiny evil?" -- Eleanor Weyl
+
     ### @methods
-    $tb->ok(!!$meta->has_method($_), "$name has method $_")
+    $_test->($meta => $name)
         for @methods;
 
     return;
@@ -545,7 +566,11 @@ same arguments L</validate_attribute> does.  e.g.:
 
 * methods => [ ... ]
 
-A list of methods the thing should have.
+A list of methods the thing should have; see L</has_method_ok>.
+
+* no_methods => [ ... ]
+
+A list of methods the thing should not have; see L</has_no_method_ok>.
 
 * sugar => 0|1
 
@@ -837,6 +862,8 @@ sub _validate_thing_guts {
     ### methods...
     do { has_method_ok($thing, $_) for @{$args{methods}} }
         if exists $args{methods};
+    do { has_no_method_ok($thing, $_) for @{$args{no_methods}} }
+        if exists $args{no_methods};
 
     ### attributes...
     ATTRIBUTE_LOOP:
