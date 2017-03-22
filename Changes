@@ -1,7 +1,5 @@
 Revision history for Test-Moose-More
 
-{{$NEXT}}
-
 0.044-TRIAL  2017-03-21 20:34:29 CDT-0500
 	* Add metarole/class options to validate_...()
 	* add has_no_method_ok(), which does exactly what you think it does
