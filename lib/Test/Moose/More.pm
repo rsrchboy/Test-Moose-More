@@ -29,6 +29,9 @@ use Sub::Exporter::Progressive -setup => {
         validate_thing
         with_immutable
 
+        is_pristine_ok
+        is_not_pristine_ok
+
         role_wraps_around_method_ok
         role_wraps_before_method_ok
         role_wraps_after_method_ok
@@ -316,6 +319,26 @@ sub is_not_immutable_ok ($;$) {
 
     $message ||= _thing_name($thing, $meta) . ' is not immutable';
     return $tb->ok(!$meta->is_immutable, $message);
+}
+
+=test is_pristine_ok $thing
+
+Passes if $thing is pristine.  See L<Class::MOP::Class/is_pristine>.
+
+=test is_not_pristine_ok $thing
+
+Passes if $thing is not pristine.  See L<Class::MOP::Class/is_pristine>.
+
+=cut
+
+
+{
+    my $_is_test  = sub { $tb->ok( $_[0]->is_pristine(), "$_[1] is pristine")     };
+    my $_not_test = sub { $tb->ok(!$_[0]->is_pristine(), "$_[1] is not pristine") };
+
+    # FIXME should probably rename _method_ok_guts()...
+    sub is_pristine_ok ($)     { @_ = ($_is_test,  @_, q{}); goto \&_method_ok_guts }
+    sub is_not_pristine_ok ($) { @_ = ($_not_test, @_, q{}); goto \&_method_ok_guts }
 }
 
 =test is_role_ok $thing
