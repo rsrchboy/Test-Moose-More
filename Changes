@@ -1,7 +1,5 @@
 Revision history for Test-Moose-More
 
-{{$NEXT}}
-
 0.045     2017-03-24 20:34:45 CDT-0500
 	* Fix a POD command error (=func vs =test)
 	* No code changes, just promoting the changes from 0.044 to GA
