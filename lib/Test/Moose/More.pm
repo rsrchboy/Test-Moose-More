@@ -277,18 +277,12 @@ Note that this really only makes sense if $thing is a role.
 
 =cut
 
-sub requires_method_ok ($@) {
-    my ($thing, @methods) = @_;
+{
+    my $_is_test  = sub { $tb->ok( $_[0]->requires_method($_), "$_[1] requires method $_")         };
+    # my $_not_test = sub { $tb->ok(!$_[0]->requires_method($_), "$_[1] does not require method $_") };
 
-    ### $thing
-    my $meta = find_meta($thing);
-    my $name = _thing_name($thing, $meta);
-
-    ### @methods
-    $tb->ok(!!$meta->requires_method($_), "$name requires method $_")
-        for @methods;
-
-    return;
+    sub requires_method_ok ($@)  { unshift @_, $_is_test; goto \&_method_ok_guts }
+    # sub does_not_require_method_ok ($) { @_ = ($_not_test, @_, q{}); goto \&_method_ok_guts }
 }
 
 =test is_immutable_ok $thing
