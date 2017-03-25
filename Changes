@@ -1,6 +1,7 @@
 Revision history for Test-Moose-More
 
 {{$NEXT}}
+	* Add pristine tests
 
 0.045     2017-03-24 20:34:45 CDT-0500
 	* Fix a POD command error (=func vs =test)
