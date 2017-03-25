@@ -22,12 +22,14 @@ use Sub::Exporter::Progressive -setup => {
         is_not_immutable_ok
         is_role_ok
         meta_ok
-        requires_method_ok
         validate_attribute
         validate_class
         validate_role
         validate_thing
         with_immutable
+
+        requires_method_ok
+        does_not_require_method_ok
 
         is_pristine_ok
         is_not_pristine_ok
@@ -275,14 +277,21 @@ Queries $thing's metaclass to see if $thing requires the methods named in
 
 Note that this really only makes sense if $thing is a role.
 
+=test does_not_require_method_ok $thing, @methods
+
+Queries $thing's metaclass to ensure $thing does not require the methods named
+in @methods.
+
+Note that this really only makes sense if $thing is a role.
+
 =cut
 
 {
     my $_is_test  = sub { $tb->ok( $_[0]->requires_method($_), "$_[1] requires method $_")         };
-    # my $_not_test = sub { $tb->ok(!$_[0]->requires_method($_), "$_[1] does not require method $_") };
+    my $_not_test = sub { $tb->ok(!$_[0]->requires_method($_), "$_[1] does not require method $_") };
 
-    sub requires_method_ok ($@)  { unshift @_, $_is_test; goto \&_method_ok_guts }
-    # sub does_not_require_method_ok ($) { @_ = ($_not_test, @_, q{}); goto \&_method_ok_guts }
+    sub requires_method_ok ($@)         { unshift @_, $_is_test;  goto \&_method_ok_guts }
+    sub does_not_require_method_ok ($@) { unshift @_, $_not_test; goto \&_method_ok_guts }
 }
 
 =test is_immutable_ok $thing
