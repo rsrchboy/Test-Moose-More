@@ -208,11 +208,13 @@ L<Class::MOP::Class/has_method>.
 
 =cut
 
-my $_has_test = sub { $tb->ok(!!$_[0]->has_method($_), "$_[1] has method $_")           };
-my $_no_test  = sub { $tb->ok( !$_[0]->has_method($_), "$_[1] does not have method $_") };
+{
+    my $_has_test = sub { $tb->ok(!!$_[0]->has_method($_), "$_[1] has method $_")           };
+    my $_no_test  = sub { $tb->ok( !$_[0]->has_method($_), "$_[1] does not have method $_") };
 
-sub has_no_method_ok ($@) { unshift @_, $_no_test;  goto \&_method_ok_guts }
-sub has_method_ok    ($@) { unshift @_, $_has_test; goto \&_method_ok_guts }
+    sub has_no_method_ok ($@) { unshift @_, $_no_test;  goto \&_method_ok_guts }
+    sub has_method_ok    ($@) { unshift @_, $_has_test; goto \&_method_ok_guts }
+}
 
 sub _method_ok_guts {
     my ($_test, $thing, @methods) = @_;
