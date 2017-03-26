@@ -13,8 +13,6 @@ use Sub::Exporter::Progressive -setup => {
         does_not_ok
         does_ok
         has_attribute_ok
-        has_method_ok
-        has_no_method_ok
         is_anon_ok
         is_class_ok
         is_immutable_ok
@@ -27,6 +25,11 @@ use Sub::Exporter::Progressive -setup => {
         validate_role
         validate_thing
         with_immutable
+
+        has_method_ok
+        has_no_method_ok
+        has_method_from_anywhere_ok
+        has_no_method_from_anywhere_ok
 
         requires_method_ok
         does_not_require_method_ok
