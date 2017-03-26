@@ -234,8 +234,8 @@ L<Class::MOP::Class/find_method_by_name>.
     sub has_method_ok    ($@) { unshift @_, $_has_test; goto \&_method_ok_guts }
 }
 {
-    my $_has_test = sub { $tb->ok(!!$_[0]->get_method_by_name($_), "$_[1] has method $_")           };
-    my $_no_test  = sub { $tb->ok( !$_[0]->get_method_by_name($_), "$_[1] does not have method $_") };
+    my $_has_test = sub { $tb->ok(!!$_[0]->find_method_by_name($_), "$_[1] has method $_")           };
+    my $_no_test  = sub { $tb->ok( !$_[0]->find_method_by_name($_), "$_[1] does not have method $_") };
 
     sub has_no_method_from_anywhere_ok ($@) { unshift @_, $_no_test;  goto \&_method_ok_guts }
     sub has_method_from_anywhere_ok    ($@) { unshift @_, $_has_test; goto \&_method_ok_guts }
