@@ -13,8 +13,6 @@ use Sub::Exporter::Progressive -setup => {
         does_not_ok
         does_ok
         has_attribute_ok
-        has_method_ok
-        has_no_method_ok
         is_anon_ok
         is_class_ok
         is_immutable_ok
@@ -27,6 +25,11 @@ use Sub::Exporter::Progressive -setup => {
         validate_role
         validate_thing
         with_immutable
+
+        has_method_ok
+        has_no_method_ok
+        has_method_from_anywhere_ok
+        has_no_method_from_anywhere_ok
 
         requires_method_ok
         does_not_require_method_ok
@@ -206,6 +209,21 @@ in @methods.
 Note: This does B<not> include inherited methods; see
 L<Class::MOP::Class/has_method>.
 
+=test has_method_from_anywhere_ok $thing, @methods
+
+Queries $thing's metaclass to see if $thing has the methods named in @methods.
+
+Note: This B<does> include inherited methods; see
+L<Class::MOP::Class/find_method_by_name>.
+
+=test has_no_method_from_anywhere_ok $thing, @methods
+
+Queries $thing's metaclass to ensure $thing does not provide the methods named
+in @methods.
+
+Note: This B<does> include inherited methods; see
+L<Class::MOP::Class/find_method_by_name>.
+
 =cut
 
 {
@@ -214,6 +232,13 @@ L<Class::MOP::Class/has_method>.
 
     sub has_no_method_ok ($@) { unshift @_, $_no_test;  goto \&_method_ok_guts }
     sub has_method_ok    ($@) { unshift @_, $_has_test; goto \&_method_ok_guts }
+}
+{
+    my $_has_test = sub { $tb->ok(!!$_[0]->find_method_by_name($_), "$_[1] has method $_")           };
+    my $_no_test  = sub { $tb->ok( !$_[0]->find_method_by_name($_), "$_[1] does not have method $_") };
+
+    sub has_no_method_from_anywhere_ok ($@) { unshift @_, $_no_test;  goto \&_method_ok_guts }
+    sub has_method_from_anywhere_ok    ($@) { unshift @_, $_has_test; goto \&_method_ok_guts }
 }
 
 sub _method_ok_guts {

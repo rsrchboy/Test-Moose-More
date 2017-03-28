@@ -1,15 +1,16 @@
 use strict;
 use warnings;
 
-{ package TestRole;  use Moose::Role; sub role { }; has role_att => (is => 'ro') }
-{ package TestClass; use Moose;       sub foo {  }; has beep     => (is => 'ro') }
-{ package TC2;       use Moose;       extends 'TestClass'; sub bar { }           }
+{ package TestRole;  use Moose::Role; sub role  { }; has role_att  => (is => 'ro') }
+{ package TestRole2; use Moose::Role; with 'TestRole';                             }
+{ package TestClass; use Moose;       sub foo {  }; has beep       => (is => 'ro') }
+{ package TC2;       use Moose; extends 'TestClass'; with 'TestRole'; sub bar { }  }
 
 use Test::Builder::Tester;
 use Test::More;
 use Test::Moose::More;
 
-subtest sanity => sub {
+subtest strict => sub {
 
     # This seems somewhat arbitrary, but it's what Class::MOP::Class considers
     # to be a method of a class or not, rather than what a consumer of such a
@@ -34,8 +35,26 @@ subtest sanity => sub {
 
     subtest superclass => sub {
         has_method_ok    TC2 => 'bar';
-        has_no_method_ok TC2 => qw{ foo beep role role_att };
+        has_no_method_ok TC2 => qw{ foo beep };
+        has_method_ok TC2    => qw{ role role_att };
     };
+
+};
+
+subtest anywhere => sub {
+
+    # This is more along the lines of what a consumer would consider a class
+    # providing: they care about what can be called, not so much where the
+    # method came from.
+
+    has_method_from_anywhere_ok    TestClass => qw{ foo beep                   };
+    has_no_method_from_anywhere_ok TestClass => qw{ nope                       };
+    has_method_from_anywhere_ok    TC2       => qw{ foo beep bar role role_att };
+    has_method_from_anywhere_ok    TestRole  => qw{ role                       };
+    has_no_method_from_anywhere_ok TestRole  => qw{ role_att                   };
+    has_method_from_anywhere_ok    TestRole2 => qw{ role                       };
+    has_no_method_from_anywhere_ok TestRole2 => qw{ role_att                   };
+
 };
 
 # FIXME TODO implement the above, below.
