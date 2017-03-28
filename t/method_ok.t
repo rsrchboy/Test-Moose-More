@@ -87,6 +87,12 @@ test_out 'ok 1 - TC2 has method role';
 has_method_ok 'TC2', 'role';
 test_test 'has_method_ok works correctly with methods from roles';
 
+# superclass
+test_out 'not ok 1 - TC2 has method foo';
+test_fail(1);
+has_method_ok 'TC2', 'foo';
+test_test 'has_method_ok works correctly with superclass methods';
+
 
 ## has_no_method_ok()
 
@@ -110,6 +116,12 @@ test_out 'not ok 1 - TC2 does not have method role';
 test_fail(1);
 has_no_method_ok 'TC2', 'role';
 test_test 'has_no_method_ok works correctly with methods from roles';
+
+# superclass
+test_out 'ok 1 - TC2 does not have method foo';
+has_no_method_ok 'TC2', 'foo';
+test_test 'has_no_method_ok works correctly with superclass methods';
+
 
 # multiples
 {
