@@ -2,6 +2,7 @@ Revision history for Test-Moose-More
 
 {{$NEXT}}
 	* Add pristine tests
+	* Add has{,_no}_method_ok() TBT tests
 	* Add:
 		does_not_require_method_ok()
 		has_{,no_}method_from_anywhere_ok()
