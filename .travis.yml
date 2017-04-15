@@ -1,34 +1,23 @@
+# use the container-based infrastructure
 sudo: false
-addons:
-  apt:
-    packages:
-      - aspell
-      - aspell-en
+
 language: perl
 perl:
-  - "5.8"
-  - "5.10"
-  - "5.12"
-  - "5.14"
-  - "5.16"
-  - "5.18"
-  - "5.20"
-  - "5.22"
-  - "5.24"
-  - "dev"
-env:
-  global:
-    - COVERAGE=1
-cache:
-  directories:
-    - $HOME/perl5/perlbrew/perls/$TRAVIS_PERL_VERSION/bin/
-    - $HOME/perl5/perlbrew/perls/$TRAVIS_PERL_VERSION/lib/site_perl/
-before_cache:
-    - perlbrew list
-    - set | grep -a 'PERL.*='
+   - "5.8"
+   - "5.10"
+   - "5.12"
+   - "5.14"
+   - "5.16"
+   - "5.18"
+   - "5.20"
+   - "5.21"
+
 matrix:
-  allow_failures:
-    - perl: dev
+   allow_failures:
+      - perl: "5.8"
+      - perl: "5.21"
+
 before_install:
-  - cpanp x
-  - eval $(curl https://travis-perl.github.io/init) --auto
+   # git bits sometimes needed...
+   - git config user.name 'Travis-CI'
+   - git config user.email 'travis@nowhere.dne'
