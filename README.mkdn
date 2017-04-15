@@ -8,7 +8,7 @@ Test::Moose::More - More tools for testing Moose packages
 
 # VERSION
 
-This document describes version 0.045 of Test::Moose::More - released March 24, 2017 as part of Test-Moose-More.
+This document describes version 0.046 of Test::Moose::More - released April 14, 2017 as part of Test-Moose-More.
 
 # SYNOPSIS
 
@@ -83,6 +83,21 @@ in @methods.
 Note: This does **not** include inherited methods; see
 ["has\_method" in Class::MOP::Class](https://metacpan.org/pod/Class::MOP::Class#has_method).
 
+## has\_method\_from\_anywhere\_ok $thing, @methods
+
+Queries $thing's metaclass to see if $thing has the methods named in @methods.
+
+Note: This **does** include inherited methods; see
+["find\_method\_by\_name" in Class::MOP::Class](https://metacpan.org/pod/Class::MOP::Class#find_method_by_name).
+
+## has\_no\_method\_from\_anywhere\_ok $thing, @methods
+
+Queries $thing's metaclass to ensure $thing does not provide the methods named
+in @methods.
+
+Note: This **does** include inherited methods; see
+["find\_method\_by\_name" in Class::MOP::Class](https://metacpan.org/pod/Class::MOP::Class#find_method_by_name).
+
 ## role\_wraps\_around\_method\_ok $role, @methods
 
 Queries $role's metaclass to see if $role wraps the methods named in
@@ -105,6 +120,13 @@ Queries $thing's metaclass to see if $thing requires the methods named in
 
 Note that this really only makes sense if $thing is a role.
 
+## does\_not\_require\_method\_ok $thing, @methods
+
+Queries $thing's metaclass to ensure $thing does not require the methods named
+in @methods.
+
+Note that this really only makes sense if $thing is a role.
+
 ## is\_immutable\_ok $thing
 
 Passes if $thing is immutable.
@@ -112,6 +134,14 @@ Passes if $thing is immutable.
 ## is\_not\_immutable\_ok $thing
 
 Passes if $thing is not immutable; that is, is mutable.
+
+## is\_pristine\_ok $thing
+
+Passes if $thing is pristine.  See ["is\_pristine" in Class::MOP::Class](https://metacpan.org/pod/Class::MOP::Class#is_pristine).
+
+## is\_not\_pristine\_ok $thing
+
+Passes if $thing is not pristine.  See ["is\_pristine" in Class::MOP::Class](https://metacpan.org/pod/Class::MOP::Class#is_pristine).
 
 ## is\_role\_ok $thing
 
