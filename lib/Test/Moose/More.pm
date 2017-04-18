@@ -1311,8 +1311,6 @@ sub _class_attribute_options_ok {
     return;
 }
 
-1;
-
 !!42;
 
 __END__
