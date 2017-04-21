@@ -5,6 +5,9 @@ package Test::Moose::More;
 use strict;
 use warnings;
 
+# debugging...
+# use Smart::Comments '###';
+
 use Sub::Exporter::Progressive -setup => {
     exports => [ qw{
         attribute_options_ok
@@ -45,6 +48,7 @@ use Sub::Exporter::Progressive -setup => {
         role_wraps_before_method_ok
         validate_attribute
         validate_class
+        validate_method
         validate_role
         validate_thing
         with_immutable
@@ -695,9 +699,29 @@ sub _validate_thing_guts {
     do { does_not_ok($thing, $_) for @{$args{does_not}} }
         if exists $args{does_not};
 
-    ### methods...
-    do { has_method_ok($thing, $_) for @{$args{methods}} }
-        if exists $args{methods};
+    # ### methods...
+    # do { has_method_ok($thing, $_) for @{$args{methods}} }
+    #     if exists $args{methods};
+
+    METHOD_LOOP:
+    for my $method (@{Data::OptList::mkopt($args{methods} || [])}) {
+
+        # # # local $THING_NAME = "${thing}'s method $name";
+        # # local $THING_NAME = "${THING_NAME}'s method $name"
+        # #     if !!$THING_NAME;
+        # local $THING_NAME
+        #     = !!$THING_NAME
+        #     ? "${THING_NAME}'s method $name"
+        #     : "${thing}::$name()"
+        #     ;
+        # local $THING_NAME = "${name}'s metaclass";
+
+        my ($name, $opts) = @$method;
+        has_method_ok($thing, $name);
+        _validate_method([ $thing, $name ], -subtest => 1, %$opts)
+            if !!$opts;
+    }
+
     do { has_no_method_ok($thing, $_) for @{$args{no_methods}} }
         if exists $args{no_methods};
 
@@ -989,6 +1013,53 @@ sub _class_attribute_options_ok {
 
     return;
 }
+
+# TODO validate_method()
+
+sub validate_method ($$@) {
+
+    return _validate_subtest_wrapper( \&_validate_method_guts, [shift, shift], @_);
+}
+
+sub _validate_method { _validate_subtest_wrapper(\&_validate_method_guts, @_) }
+
+sub _validate_method_guts {
+    my ($thingname, %opts) = @_;
+    my ($thing, $name) = @$thingname;
+
+    ### $thing
+    ### $name
+    ### %opts
+
+    my %thing_opts =
+        map   { $_ => delete $opts{"-$_"} }
+        apply { s/^-//                    }
+        grep  { /^-/                      }
+        sort keys %opts
+        ;
+
+    local $Test::Builder::Level = $Test::Builder::Level + 1;
+
+    my $method = find_meta($thing)->get_method($name) || return;
+
+    {
+        local $THING_NAME
+            = !!$THING_NAME
+            ? "${THING_NAME}'s method $name"
+            : "${thing}'s method $name"
+            ;
+
+        ### %thing_opts
+        validate_class $method => %thing_opts
+            if keys %thing_opts;
+    }
+
+    method_from_pkg_ok($thing => $name, $opts{orig_pkg})
+        if defined $opts{orig_pkg};
+
+    return;
+}
+
 
 !!42;
 
