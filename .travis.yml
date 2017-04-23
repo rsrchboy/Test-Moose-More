@@ -15,13 +15,11 @@ perl:
   - "5.20"
   - "5.22"
   - "5.24"
-  - "dev"
 env:
   global:
     - COVERAGE=1
 matrix:
   allow_failures:
-    - perl: 'dev'
     - perl: '5.8'
 before_install:
   - cpanp x
