@@ -27,6 +27,15 @@ note 'pass (TBT)';
     test_test;
 }
 
+note 'fails - DNE method (TBT)';
+{
+    my ($_ok, $_nok) = counters;
+    test_out $_nok->('C has no method dne');
+    test_fail 1;
+    method_from_pkg_ok C => 'dne', 'A';
+    test_test;
+}
+
 note 'fails (TBT)';
 {
     my ($_ok, $_nok) = counters;
