@@ -1,0 +1,39 @@
+use strict;
+use warnings;
+
+use Test::More;
+use Test::Moose::More;
+
+use Test::Builder::Tester;
+use TAP::SimpleOutput;
+
+{ package A; use Moose::Role; sub a {} }
+{ package B; use Moose;       sub b {} }
+{ package C; use Moose; extends 'B'; with 'A'; sub c {} }
+
+
+subtest standalone => sub {
+
+    method_from_pkg_ok C => 'a', 'A';
+    method_from_pkg_ok C => 'b', 'B';
+    method_from_pkg_ok C => 'c', 'C';
+};
+
+note 'pass (TBT)';
+{
+    my ($_ok, $_nok) = counters;
+    test_out $_ok->('C->a() from A');
+    method_from_pkg_ok C => 'a', 'A';
+    test_test;
+}
+
+note 'fails (TBT)';
+{
+    my ($_ok, $_nok) = counters;
+    test_out $_nok->('C->b() from A');
+    test_fail 1;
+    method_from_pkg_ok C => 'b', 'A';
+    test_test;
+}
+
+done_testing;
