@@ -874,6 +874,9 @@ sub _validate_subtest_wrapper {
     return $func->($thing => %args)
         unless $args{-subtest};
 
+    $args{-subtest} = _thing_name($thing)
+        if "$args{-subtest}" eq '1';
+
     # ...or with one.
     return $tb->subtest(delete $args{-subtest} => sub { $func->($thing => %args) });
 }
