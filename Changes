@@ -1,6 +1,7 @@
 Revision history for Test-Moose-More
 
 {{$NEXT}}
+	* Add method_from_pkg_ok()
 	* Tests which support subtests (typically validate_*()) now do something
 	  sensible when '-subtest => 1' is given.
 
