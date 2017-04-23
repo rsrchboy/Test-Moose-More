@@ -31,6 +31,8 @@ use Sub::Exporter::Progressive -setup => {
         has_method_from_anywhere_ok
         has_no_method_from_anywhere_ok
 
+        method_from_pkg_ok
+
         requires_method_ok
         does_not_require_method_ok
 
@@ -258,6 +260,27 @@ sub _method_ok_guts {
         for @methods;
 
     return;
+}
+
+=test method_from_pkg_ok $thing, $method, $orig_pkg
+
+Given a thing (role, class, etc) and a method, test where it originally came
+from.
+
+=cut
+
+sub method_from_pkg_ok($$$) {
+    my ($thing, $method, $orig_pkg) = @_;
+
+    ### $thing
+    my $meta = find_meta($thing);
+    my $name = _thing_name($thing, $meta);
+
+    # my $mmeta = $meta->get_method($method)
+    my $mmeta = $meta->find_method_by_name($method)
+        or return $tb->ok(0, "$name has no method $method");
+
+    return $tb->ok($mmeta->original_package_name eq $orig_pkg, "${name}->$method() from $orig_pkg");
 }
 
 =test role_wraps_around_method_ok $role, @methods
