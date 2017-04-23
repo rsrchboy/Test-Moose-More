@@ -19,13 +19,6 @@ perl:
 env:
   global:
     - COVERAGE=1
-cache:
-  directories:
-    - $HOME/perl5/perlbrew/perls/$TRAVIS_PERL_VERSION/bin/
-    - $HOME/perl5/perlbrew/perls/$TRAVIS_PERL_VERSION/lib/site_perl/
-before_cache:
-    - perlbrew list
-    - set | grep -a 'PERL.*='
 matrix:
   allow_failures:
     - perl:
