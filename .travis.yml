@@ -28,7 +28,9 @@ before_cache:
     - set | grep -a 'PERL.*='
 matrix:
   allow_failures:
-    - perl: dev
+    - perl:
+      - 'dev'
+      - '5.8'
 before_install:
   - cpanp x
   - eval $(curl https://travis-perl.github.io/init) --auto
