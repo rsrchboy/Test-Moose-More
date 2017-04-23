@@ -32,6 +32,7 @@ use Sub::Exporter::Progressive -setup => {
         has_no_method_from_anywhere_ok
 
         method_from_pkg_ok
+        method_not_from_pkg_ok
 
         requires_method_ok
         does_not_require_method_ok
@@ -264,14 +265,21 @@ sub _method_ok_guts {
 
 =test method_from_pkg_ok $thing, $method, $orig_pkg
 
-Given a thing (role, class, etc) and a method, test where it originally came
-from.
+Given a thing (role, class, etc) and a method, test that it originally came
+from $orig_pkg.
+
+=test method_not_from_pkg_ok $thing, $method, $orig_pkg
+
+Given a thing (role, class, etc) and a method, test that it did not come from
+$orig_pkg.
 
 =cut
 
 {
     my $_yes = sub { $tb->ok($_[0]->original_package_name eq $_[1], _thing_name($_[2])." from $_[1]") };
-    sub method_from_pkg_ok($$$) { _method_from_pkg_ok($_yes, @_) }
+    my $_no  = sub { $tb->ok($_[0]->original_package_name ne $_[1], _thing_name($_[2])." is not from $_[1]") };
+    sub method_from_pkg_ok($$$)     { _method_from_pkg_ok($_yes, @_) }
+    sub method_not_from_pkg_ok($$$) { _method_from_pkg_ok($_no,  @_) }
 }
 
 sub _method_from_pkg_ok {
