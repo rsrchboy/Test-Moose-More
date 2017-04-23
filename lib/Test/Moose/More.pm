@@ -269,8 +269,15 @@ from.
 
 =cut
 
-sub method_from_pkg_ok($$$) {
-    my ($thing, $method, $orig_pkg) = @_;
+{
+    my $_yes = sub { $tb->ok($_[0]->original_package_name eq $_[1], _thing_name($_[2])." from $_[1]") };
+    sub method_from_pkg_ok($$$) { _method_from_pkg_ok($_yes, @_) }
+}
+
+sub _method_from_pkg_ok {
+    my ($test, $thing, $method, $orig_pkg) = @_;
+
+    local $Test::Builder::Level = $Test::Builder::Level + 1;
 
     ### $thing
     my $meta = find_meta($thing);
@@ -280,7 +287,10 @@ sub method_from_pkg_ok($$$) {
     my $mmeta = $meta->find_method_by_name($method)
         or return $tb->ok(0, "$name has no method $method");
 
-    return $tb->ok($mmeta->original_package_name eq $orig_pkg, "${name}->$method() from $orig_pkg");
+    local $THING_NAME = "$name->$method()";
+    local $Test::Builder::Level = $Test::Builder::Level + 1;
+
+    return $test->($mmeta, $orig_pkg, $meta);
 }
 
 =test role_wraps_around_method_ok $role, @methods
