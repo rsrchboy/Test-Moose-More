@@ -276,8 +276,8 @@ $orig_pkg.
 =cut
 
 {
-    my $_yes = sub { $tb->ok($_[0]->original_package_name eq $_[1], _thing_name($_[2])." from $_[1]") };
-    my $_no  = sub { $tb->ok($_[0]->original_package_name ne $_[1], _thing_name($_[2])." is not from $_[1]") };
+    my $_yes = sub { $tb->ok($_[0]->original_package_name eq $_[1], "$_[3] is from $_[1]")     };
+    my $_no  = sub { $tb->ok($_[0]->original_package_name ne $_[1], "$_[3] is not from $_[1]") };
     sub method_from_pkg_ok($$$)     { _method_from_pkg_ok($_yes, @_) }
     sub method_not_from_pkg_ok($$$) { _method_from_pkg_ok($_no,  @_) }
 }
@@ -285,20 +285,17 @@ $orig_pkg.
 sub _method_from_pkg_ok {
     my ($test, $thing, $method, $orig_pkg) = @_;
 
-    local $Test::Builder::Level = $Test::Builder::Level + 1;
-
     ### $thing
     my $meta = find_meta($thing);
     my $name = _thing_name($thing, $meta);
 
     # my $mmeta = $meta->get_method($method)
+    local $Test::Builder::Level = $Test::Builder::Level + 1;
     my $mmeta = $meta->find_method_by_name($method)
         or return $tb->ok(0, "$name has no method $method");
 
-    local $THING_NAME = "$name->$method()";
     local $Test::Builder::Level = $Test::Builder::Level + 1;
-
-    return $test->($mmeta, $orig_pkg, $meta);
+    return $test->($mmeta, $orig_pkg, $meta, "${name}'s method $method");
 }
 
 =test role_wraps_around_method_ok $role, @methods

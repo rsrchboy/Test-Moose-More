@@ -22,7 +22,7 @@ subtest standalone => sub {
 note 'pass (TBT)';
 {
     my ($_ok, $_nok) = counters;
-    test_out $_ok->('C->a() from A');
+    test_out $_ok->(q{C's method a is from A});
     method_from_pkg_ok C => 'a', 'A';
     test_test;
 }
@@ -39,7 +39,7 @@ note 'fails - DNE method (TBT)';
 note 'fails (TBT)';
 {
     my ($_ok, $_nok) = counters;
-    test_out $_nok->('C->b() from A');
+    test_out $_nok->(q{C's method b is from A});
     test_fail 1;
     method_from_pkg_ok C => 'b', 'A';
     test_test;
