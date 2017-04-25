@@ -280,6 +280,11 @@ $orig_pkg.
     my $_no  = sub { $tb->ok($_[0]->original_package_name ne $_[1], "$_[3] is not from $_[1]") };
     sub method_from_pkg_ok($$$)     { _method_from_pkg_ok($_yes, @_) }
     sub method_not_from_pkg_ok($$$) { _method_from_pkg_ok($_no,  @_) }
+
+    my $_yes_in = sub { $tb->ok($_[0]->package_name eq $_[1], "$_[3] is in $_[1]")     };
+    my $_no_in  = sub { $tb->ok($_[0]->package_name ne $_[1], "$_[3] is not in $_[1]") };
+    sub method_in_pkg_ok($$$)     { _method_from_pkg_ok($_yes_in, @_) }
+    sub method_not_in_pkg_ok($$$) { _method_from_pkg_ok($_no_in,  @_) }
 }
 
 sub _method_from_pkg_ok {
