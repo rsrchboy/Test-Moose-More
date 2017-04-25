@@ -289,7 +289,6 @@ sub _method_from_pkg_ok {
     my $meta = find_meta($thing);
     my $name = _thing_name($thing, $meta);
 
-    # my $mmeta = $meta->get_method($method)
     local $Test::Builder::Level = $Test::Builder::Level + 1;
     my $mmeta = $meta->find_method_by_name($method)
         or return $tb->ok(0, "$name has no method $method");
