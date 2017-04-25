@@ -1,6 +1,8 @@
 Revision history for Test-Moose-More
 
 {{$NEXT}}
+
+0.047     2017-04-24 22:48:33 CDT-0500
 	* Add method_from_pkg_ok(), method_not_from_pkg_ok()
 	* Tests which support subtests (typically validate_*()) now do something
 	  sensible when '-subtest => 1' is given.

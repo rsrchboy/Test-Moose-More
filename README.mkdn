@@ -8,7 +8,7 @@ Test::Moose::More - More tools for testing Moose packages
 
 # VERSION
 
-This document describes version 0.046 of Test::Moose::More - released April 14, 2017 as part of Test-Moose-More.
+This document describes version 0.047 of Test::Moose::More - released April 24, 2017 as part of Test-Moose-More.
 
 # SYNOPSIS
 
@@ -97,6 +97,16 @@ in @methods.
 
 Note: This **does** include inherited methods; see
 ["find\_method\_by\_name" in Class::MOP::Class](https://metacpan.org/pod/Class::MOP::Class#find_method_by_name).
+
+## method\_from\_pkg\_ok $thing, $method, $orig\_pkg
+
+Given a thing (role, class, etc) and a method, test that it originally came
+from $orig\_pkg.
+
+## method\_not\_from\_pkg\_ok $thing, $method, $orig\_pkg
+
+Given a thing (role, class, etc) and a method, test that it did not come from
+$orig\_pkg.
 
 ## role\_wraps\_around\_method\_ok $role, @methods
 
