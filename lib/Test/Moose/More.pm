@@ -34,6 +34,9 @@ use Sub::Exporter::Progressive -setup => {
         method_from_pkg_ok
         method_not_from_pkg_ok
 
+        method_is_accessor_ok
+        method_is_not_accessor_ok
+
         requires_method_ok
         does_not_require_method_ok
 
@@ -273,6 +276,16 @@ from $orig_pkg.
 Given a thing (role, class, etc) and a method, test that it did not come from
 $orig_pkg.
 
+=test method_is_accessor_ok $thing, $method
+
+Given a thing (role, class, etc) and a method, test that the method is an
+accessor -- that is, it descends from L<Class::MOP::Accessor>.
+
+=test method_is_not_accessor_ok $thing, $method
+
+Given a thing (role, class, etc) and a method, test that the method is B<not>
+an accessor -- that is, it does not descend from L<Class::MOP::Accessor>.
+
 =cut
 
 {
@@ -280,6 +293,11 @@ $orig_pkg.
     my $_no  = sub { $tb->ok($_[0]->original_package_name ne $_[1], "$_[3] is not from $_[1]") };
     sub method_from_pkg_ok($$$)     { _method_from_pkg_ok($_yes, @_) }
     sub method_not_from_pkg_ok($$$) { _method_from_pkg_ok($_no,  @_) }
+
+    my $_yes_acc = sub { $tb->ok( $_[0]->isa('Class::MOP::Method::Accessor'), "$_[3] is an accessor method")     };
+    my $_no_acc  = sub { $tb->ok(!$_[0]->isa('Class::MOP::Method::Accessor'), "$_[3] is not an accessor method") };
+    sub method_is_accessor_ok($$)     { _method_from_pkg_ok($_yes_acc, @_) }
+    sub method_is_not_accessor_ok($$) { _method_from_pkg_ok($_no_acc,  @_) }
 }
 
 sub _method_from_pkg_ok {
