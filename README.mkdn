@@ -8,7 +8,7 @@ Test::Moose::More - More tools for testing Moose packages
 
 # VERSION
 
-This document describes version 0.047 of Test::Moose::More - released April 24, 2017 as part of Test-Moose-More.
+This document describes version 0.048 of Test::Moose::More - released May 03, 2017 as part of Test-Moose-More.
 
 # SYNOPSIS
 
@@ -107,6 +107,16 @@ from $orig\_pkg.
 
 Given a thing (role, class, etc) and a method, test that it did not come from
 $orig\_pkg.
+
+## method\_is\_accessor\_ok $thing, $method
+
+Given a thing (role, class, etc) and a method, test that the method is an
+accessor -- that is, it descends from [Class::MOP::Accessor](https://metacpan.org/pod/Class::MOP::Accessor).
+
+## method\_is\_not\_accessor\_ok $thing, $method
+
+Given a thing (role, class, etc) and a method, test that the method is **not**
+an accessor -- that is, it does not descend from [Class::MOP::Accessor](https://metacpan.org/pod/Class::MOP::Accessor).
 
 ## role\_wraps\_around\_method\_ok $role, @methods
 
