@@ -276,6 +276,16 @@ from $orig_pkg.
 Given a thing (role, class, etc) and a method, test that it did not come from
 $orig_pkg.
 
+=test method_is_accessor_ok $thing, $method
+
+Given a thing (role, class, etc) and a method, test that the method is an
+accessor -- that is, it descends from L<Class::MOP::Accessor>.
+
+=test method_is_not_accessor_ok $thing, $method
+
+Given a thing (role, class, etc) and a method, test that the method is B<not>
+an accessor -- that is, it does not descend from L<Class::MOP::Accessor>.
+
 =cut
 
 {
