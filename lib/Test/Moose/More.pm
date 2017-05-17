@@ -20,6 +20,7 @@ use Sub::Exporter::Progressive -setup => {
         is_not_immutable_ok
         is_role_ok
         meta_ok
+        no_meta_ok
         validate_attribute
         validate_class
         validate_role
@@ -101,17 +102,21 @@ sub _thing_name {
 =test meta_ok $thing
 
 Tests $thing to see if it has a metaclass; $thing may be the class name or
-instance of the class you wish to check.
+instance of the class you wish to check.  Passes if $thing has a metaclass.
+
+=test no_meta_ok $thing
+
+Tests $thing to see if it does not have a metaclass; $thing may be the class
+name or instance of the class you wish to check.  Passes if $thing does not
+have a metaclass.
 
 =cut
 
-sub meta_ok ($;$) {
-    my ($thing, $message) = @_;
-
-    my $thing_meta = find_meta($thing);
-    $message ||= _thing_name($thing, $thing_meta) . ' has a meta';
-
-    return $tb->ok(!!$thing_meta, $message);
+{
+    my $_yes = sub { $tb->ok(!!shift, shift . ' has a meta')           };
+    my $_no  = sub { $tb->ok( !shift, shift . ' does not have a meta') };
+    sub meta_ok    ($;$) { unshift @_, $_yes, $_[0]; goto \&_method_ok_guts }
+    sub no_meta_ok ($;$) { unshift @_, $_no,  $_[0]; goto \&_method_ok_guts }
 }
 
 =test does_ok $thing, < $role | \@roles >, [ $message ]
