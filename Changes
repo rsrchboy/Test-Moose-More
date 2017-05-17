@@ -2,6 +2,7 @@ Revision history for Test-Moose-More
 
 {{$NEXT}}
 	* Add method_is_accessor_ok(), method_is_not_accessor_ok()
+	* Fix POD link to Class::MOP::Method::Accessor
 
 0.047     2017-04-24 22:48:33 CDT-0500
 	* Add method_from_pkg_ok(), method_not_from_pkg_ok()
