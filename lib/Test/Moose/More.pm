@@ -10,51 +10,43 @@ use Sub::Exporter::Progressive -setup => {
         attribute_options_ok
         check_sugar_ok
         check_sugar_removed_ok
+        does_metaroles_ok
+        does_not_metaroles_ok
         does_not_ok
+        does_not_require_method_ok
         does_ok
         has_attribute_ok
+        has_method_from_anywhere_ok
+        has_method_ok
+        has_no_method_from_anywhere_ok
+        has_no_method_ok
+        is_anon
         is_anon_ok
+        is_class
         is_class_ok
         is_immutable_ok
+        is_not_anon
         is_not_anon_ok
         is_not_immutable_ok
+        is_not_pristine_ok
+        is_pristine_ok
+        is_role
         is_role_ok
         meta_ok
+        method_from_pkg_ok
+        method_is_accessor_ok
+        method_is_not_accessor_ok
+        method_not_from_pkg_ok
         no_meta_ok
+        requires_method_ok
+        role_wraps_after_method_ok
+        role_wraps_around_method_ok
+        role_wraps_before_method_ok
         validate_attribute
         validate_class
         validate_role
         validate_thing
         with_immutable
-
-        has_method_ok
-        has_no_method_ok
-        has_method_from_anywhere_ok
-        has_no_method_from_anywhere_ok
-
-        method_from_pkg_ok
-        method_not_from_pkg_ok
-
-        method_is_accessor_ok
-        method_is_not_accessor_ok
-
-        requires_method_ok
-        does_not_require_method_ok
-
-        is_pristine_ok
-        is_not_pristine_ok
-
-        role_wraps_around_method_ok
-        role_wraps_before_method_ok
-        role_wraps_after_method_ok
-
-        is_anon
-        is_class
-        is_not_anon
-        is_role
-
-        does_metaroles_ok
-        does_not_metaroles_ok
     } ],
     groups => {
         default  => [ ':all' ],
