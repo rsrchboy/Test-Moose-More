@@ -981,14 +981,14 @@ sub _validate_thing_guts {
         has_attribute_ok($thing, $name)
             or next ATTRIBUTE_LOOP;
 
-        if ($opts && (my $att = find_meta($thing)->get_attribute($name))) {
+        if (!!$opts) {
 
             SKIP: {
                 skip 'Cannot examine attribute metaclass in roles', 1
                     if (find_meta($thing)->isa('Moose::Meta::Role'));
 
                 local $THING_NAME = _thing_name($thing) . "'s attribute $name";
-                _validate_attribute($att => (
+                _validate_attribute(_find_attribute($thing, $name) => (
                     -subtest => "checking $THING_NAME",
                     %$opts,
                 ));
