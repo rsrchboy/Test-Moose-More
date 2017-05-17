@@ -978,7 +978,8 @@ sub _validate_thing_guts {
     for my $attribute (@{Data::OptList::mkopt($args{attributes} || [])}) {
 
         my ($name, $opts) = @$attribute;
-        has_attribute_ok($thing, $name);
+        has_attribute_ok($thing, $name)
+            or next ATTRIBUTE_LOOP;
 
         if ($opts && (my $att = find_meta($thing)->get_attribute($name))) {
 
