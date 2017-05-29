@@ -988,6 +988,9 @@ sub _validate_thing_guts {
                 skip 'Cannot examine attribute metaclass in roles', 1
                     if (find_meta($thing)->isa('Moose::Meta::Role'));
 
+                # FIXME reeeeeally need to sort the things necessitating this
+                $opts->{__ASSOCIATED__THING__} = $thing;
+
                 local $THING_NAME = _thing_name($thing) . "'s attribute $name";
                 _validate_attribute(_find_attribute($thing, $name) => (
                     -subtest => "checking $THING_NAME",
@@ -1214,12 +1217,17 @@ sub _validate_attribute_guts {
     return unless has_attribute_ok($thing, $name);
     my $att = _find_attribute($thing => $name);
 
+    $opts{__ASSOCIATED__THING__} = $thing;
+
     local $THING_NAME = _thing_name($thing) . "'s attribute $name";
     return _validate_attribute($att, %opts);
 }
 
 sub __validate_attribute_guts {
     my ($att, %opts) = @_;
+
+    # maybe, maybe not
+    my $thing = delete $opts{__ASSOCIATED__THING__};
 
     local $Test::Builder::Level = $Test::Builder::Level + 1;
     my %thing_opts =
@@ -1231,6 +1239,17 @@ sub __validate_attribute_guts {
 
     $thing_opts{does} = [ map { resolve_metatrait_alias(Attribute => $_) } @{$thing_opts{does}} ]
         if $thing_opts{does};
+
+    if (!!$opts{-set}) {
+
+        # if we're here, we're testing the set/value of the attribute itself.
+        my $is_set = $att->has_value($thing);
+
+        $tb->ok($opts{-set}
+            ? ($is_set, _thing_name($thing).' has a value')
+            : (!$is_set, _thing_name($thing).' does not have a value')
+        );
+    }
 
     ### %thing_opts
     {
