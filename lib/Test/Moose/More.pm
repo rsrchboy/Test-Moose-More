@@ -332,9 +332,9 @@ C<@methods> with an after method modifier.
 
 =cut
 
-sub role_wraps_around_method_ok ($@) { unshift @_, 'around'; goto \&_role_wraps }
-sub role_wraps_before_method_ok ($@) { unshift @_, 'before'; goto \&_role_wraps }
-sub role_wraps_after_method_ok  ($@) { unshift @_, 'after';  goto \&_role_wraps }
+sub role_wraps_around_method_ok ($@) { _role_wraps(around => @_) }
+sub role_wraps_before_method_ok ($@) { _role_wraps(before => @_) }
+sub role_wraps_after_method_ok  ($@) { _role_wraps(after  => @_) }
 
 sub _role_wraps {
     my ($style, $thing, @methods) = @_;
@@ -346,6 +346,7 @@ sub _role_wraps {
     my $name = _thing_name($thing, $meta);
 
     ### @methods
+    local $Test::Builder::Level = $Test::Builder::Level + 2;
     $tb->ok(!!$meta->$meta_method($_), "$name wraps $style method $_")
         for @methods;
 
