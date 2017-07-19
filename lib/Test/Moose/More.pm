@@ -108,8 +108,8 @@ have a metaclass.
 {
     my $_yes = sub { $tb->ok(!!shift, shift . ' has a meta')           };
     my $_no  = sub { $tb->ok( !shift, shift . ' does not have a meta') };
-    sub meta_ok    ($;$) { unshift @_, $_yes, $_[0]; goto \&_method_ok_guts }
-    sub no_meta_ok ($;$) { unshift @_, $_no,  $_[0]; goto \&_method_ok_guts }
+    sub meta_ok    ($;$) { _method_ok_guts($_yes, $_[0], @_) }
+    sub no_meta_ok ($;$) { _method_ok_guts($_no,  $_[0], @_) }
 }
 
 =test does_ok $thing, < $role | \@roles >, [ $message ]
@@ -236,15 +236,15 @@ L<Class::MOP::Class/find_method_by_name>.
     my $_has_test = sub { $tb->ok(!!$_[0]->has_method($_), "$_[1] has method $_")           };
     my $_no_test  = sub { $tb->ok( !$_[0]->has_method($_), "$_[1] does not have method $_") };
 
-    sub has_no_method_ok ($@) { unshift @_, $_no_test;  goto \&_method_ok_guts }
-    sub has_method_ok    ($@) { unshift @_, $_has_test; goto \&_method_ok_guts }
+    sub has_no_method_ok ($@) { _method_ok_guts($_no_test,  @_) }
+    sub has_method_ok    ($@) { _method_ok_guts($_has_test, @_) }
 }
 {
     my $_has_test = sub { $tb->ok(!!$_[0]->find_method_by_name($_), "$_[1] has method $_")           };
     my $_no_test  = sub { $tb->ok( !$_[0]->find_method_by_name($_), "$_[1] does not have method $_") };
 
-    sub has_no_method_from_anywhere_ok ($@) { unshift @_, $_no_test;  goto \&_method_ok_guts }
-    sub has_method_from_anywhere_ok    ($@) { unshift @_, $_has_test; goto \&_method_ok_guts }
+    sub has_no_method_from_anywhere_ok ($@) { _method_ok_guts($_no_test,  @_) }
+    sub has_method_from_anywhere_ok    ($@) { _method_ok_guts($_has_test, @_) }
 }
 
 sub _method_ok_guts {
@@ -254,8 +254,8 @@ sub _method_ok_guts {
     my $meta = find_meta($thing);
     my $name = _thing_name($thing, $meta);
 
-    # the test below is run one stack frame up (down?), so let's handle that
-    local $Test::Builder::Level = $Test::Builder::Level + 1;
+    # the test below is run two stack frame up (down?), so let's handle that
+    local $Test::Builder::Level = $Test::Builder::Level + 2;
 
     # "tiny evil?" -- Eleanor Weyl
 
@@ -372,8 +372,8 @@ Note that this really only makes sense if C<$thing> is a role.
     my $_is_test  = sub { $tb->ok( $_[0]->requires_method($_), "$_[1] requires method $_")         };
     my $_not_test = sub { $tb->ok(!$_[0]->requires_method($_), "$_[1] does not require method $_") };
 
-    sub requires_method_ok ($@)         { unshift @_, $_is_test;  goto \&_method_ok_guts }
-    sub does_not_require_method_ok ($@) { unshift @_, $_not_test; goto \&_method_ok_guts }
+    sub requires_method_ok ($@)         { _method_ok_guts($_is_test,  @_) }
+    sub does_not_require_method_ok ($@) { _method_ok_guts($_not_test, @_) }
 }
 
 =test is_immutable_ok $thing
@@ -422,8 +422,8 @@ Passes if C<$thing> is not pristine.  See L<Class::MOP::Class/is_pristine>.
     my $_not_test = sub { $tb->ok(!$_[0]->is_pristine(), "$_[1] is not pristine") };
 
     # FIXME should probably rename _method_ok_guts()...
-    sub is_pristine_ok ($)     { @_ = ($_is_test,  @_, q{}); goto \&_method_ok_guts }
-    sub is_not_pristine_ok ($) { @_ = ($_not_test, @_, q{}); goto \&_method_ok_guts }
+    sub is_pristine_ok ($)     { _method_ok_guts($_is_test,  @_, q{}) }
+    sub is_not_pristine_ok ($) { _method_ok_guts($_not_test, @_, q{}) }
 }
 
 =test is_role_ok $thing
