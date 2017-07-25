@@ -636,28 +636,28 @@ metaclass.
 
 =begin :list
 
-* -subtest => 'subtest name...'
+* C<< -subtest => 'subtest name...' >>
 
 If set, all tests run will be wrapped in a subtest, the name of which will be
 whatever C<-subtest> is set to.
 
-* isa => [ ... ]
+* C<< isa => [ ... ] >>
 
 A list of superclasses thing should have.
 
-* anonymous => 0|1
+* C<< anonymous => 0|1 >>
 
 Check to see if the class is/isn't anonymous.
 
-* does => [ ... ]
+* C<< does => [ ... ] >>
 
 A list of roles the thing should do.
 
-* does_not => [ ... ]
+* C<< does_not => [ ... ] >>
 
 A list of roles the thing should not do.
 
-* attributes => [ ... ]
+* C<< attributes => [ ... ] >>
 
 The attributes list specified here is in the form of a list of names, each
 optionally followed by a hashref of options to test the attribute for; this
@@ -673,19 +673,19 @@ hashref takes the same arguments L</validate_attribute> does.  e.g.:
         ],
     );
 
-* methods => [ ... ]
+* C<< methods => [ ... ] >>
 
 A list of methods the thing should have; see L</has_method_ok>.
 
-* no_methods => [ ... ]
+* C<< no_methods => [ ... ] >>
 
 A list of methods the thing should not have; see L</has_no_method_ok>.
 
-* sugar => 0|1
+* C<< sugar => 0|1 >>
 
 Ensure that thing can/cannot do the standard Moose sugar.
 
-* metaclasses => { $mop => { ... }, ... }
+* C<< metaclasses => { $mop => { ... }, ... } >>
 
 Validates this thing's metaclasses: that is, given a MOP type (e.g. class,
 attribute, method, ...) and a hashref, find the associated metaclass of the
@@ -732,7 +732,7 @@ for additional role-specific tests.
 
 =begin :list
 
-* -compose => 0|1
+* C<< -compose => 0|1 >>
 
 When true, attempt to compose the role into an anonymous class, then use it to
 run L</validate_class>.  The options we're given are passed to C<validate_class()>
@@ -762,44 +762,44 @@ e.g.:
     ok 8 - role composed into Moose::Meta::Class::__ANON__::SERIAL::1
     1..8
 
-* -subtest => 'subtest name...'
+* C<< -subtest => 'subtest name...' >>
 
 If set, all tests run will be wrapped in a subtest, the name of which will be
 whatever C<-subtest> is set to.
 
-* required_methods => [ ... ]
+* C<< required_methods => [ ... ] >>
 
 A list of methods the role requires a consuming class to supply.
 
-* before => [ ... ]
+* C<< before => [ ... ] >>
 
 A list of methods the role expects to wrap before, on application to a class.
 
 See L<Moose/before> for information on before method modifiers.
 
-* around => [ ... ]
+* C<< around => [ ... ] >>
 
 A list of methods the role expects to wrap around, on application to a class.
 
 See L<Moose/around> for information on around method modifiers.
 
-* after => [ ... ]
+* C<< after => [ ... ] >>
 
 A list of methods the role expects to wrap after, on application to a class.
 
 See L<Moose/after> for information on after method modifiers.
 
-* role_metaroles => { $mop => [ $role, ... ], ... }
+* C<< role_metaroles => { $mop => [ $role, ... ], ... } >>
 
 Checks metaclasses to ensure the given metaroles are applied.  See
 L</does_metaroles_ok>.
 
-* no_role_metaroles => { $mop => [ $role, ... ], ... }
+* C<< no_role_metaroles => { $mop => [ $role, ... ], ... } >>
 
 Checks metaclasses to ensure the given metaroles are applied.  See
 L</does_not_metaroles_ok>.
 
-* role_metaclasses => { $mop => { ... }, ... }
+* C<< role_metaclasses => { $mop => { ... }, ... } >>
 
 Validates this role's metaclasses: that is, given a MOP type (e.g. role,
 attribute, method, ...) and a hashref, find the associated metaclass of the
@@ -830,7 +830,7 @@ e.g.
 Note that C<validate_class()> and C<validate_role()> implement this using
 C<class_metaclasses> and C<role_metaclasses>, respectively.
 
-* class_metaclasses => { $mop => { ... }, ... }
+* C<< class_metaclasses => { $mop => { ... }, ... } >>
 
 As with role_metaclasses, above, except that this option is only used
 if C<-compose> is also specified.
@@ -863,26 +863,26 @@ for additional class-specific tests.
 
 =begin :list
 
-* -subtest => 'subtest name...'
+* C<< -subtest => 'subtest name...' >>
 
 If set, all tests run will be wrapped in a subtest, the name of which will be
 whatever C<-subtest> is set to.
 
-* immutable => 0|1
+* C<< immutable => 0|1 >>
 
 Checks the class to see if it is/isn't immutable.
 
-* class_metaroles => { $mop => [ $role, ... ], ... }
+* C<< class_metaroles => { $mop => [ $role, ... ], ... } >>
 
 Checks metaclasses to ensure the given metaroles are applied.  See
 L</does_metaroles_ok>.
 
-* no_class_metaroles => { $mop => [ $role, ... ], ... }
+* C<< no_class_metaroles => { $mop => [ $role, ... ], ... } >>
 
 Checks metaclasses to ensure the given metaroles are applied.  See
 L</does_not_metaroles_ok>.
 
-* class_metaclasses => { $mop => { ... }, ... }
+* C<< class_metaclasses => { $mop => { ... }, ... } >>
 
 Validates this class' metaclasses: that is, given a MOP type (e.g. role,
 attribute, method, ...) and a hashref, find the associated metaclass of the
@@ -1149,7 +1149,7 @@ the following:
 
 =begin :list
 
-* -subtest => 'subtest name...'
+* C<< -subtest => 'subtest name...' >>
 
 If set, all tests run will be wrapped in a subtest, the name of which will be
 whatever C<-subtest> is set to.
@@ -1166,41 +1166,41 @@ in a role.
 
 =begin :list
 
-* -subtest => 'subtest name...'
+* C<< -subtest => 'subtest name...' >>
 
 If set, all tests run (save the first, "does this thing even have this
 attribute?" test) will be wrapped in a subtest, the name of which will be
 whatever C<-subtest> is set to.
 
-* is => ro|rw
+* C<< is => ro|rw >>
 
 Tests for reader/writer options set as one would expect.
 
-* isa => ...
+* C<< isa => ... >>
 
 Validates that the attribute requires its value to be a given type.
 
-* does => ...
+* C<< does => ... >>
 
 Validates that the attribute requires its value to do a given role.
 
-* builder => '...'
+* C<< builder => '...' >>
 
 Validates that the attribute expects the method name given to be its builder.
 
-* default => ...
+* C<< default => ... >>
 
 Validates that the attribute has the given default.
 
-* init_arg => '...'
+* C<< init_arg => '...' >>
 
 Validates that the attribute has the given initial argument name.
 
-* lazy => 0|1
+* C<< lazy => 0|1 >>
 
 Validates that the attribute is/isn't lazy.
 
-* required => 0|1
+* C<< required => 0|1 >>
 
 Validates that setting the attribute's value is/isn't required.
 
