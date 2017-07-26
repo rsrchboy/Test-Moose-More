@@ -8,7 +8,7 @@ Test::Moose::More - More tools for testing Moose packages
 
 # VERSION
 
-This document describes version 0.048 of Test::Moose::More - released June 17, 2017 as part of Test-Moose-More.
+This document describes version 0.049 of Test::Moose::More - released July 25, 2017 as part of Test-Moose-More.
 
 # SYNOPSIS
 
@@ -272,28 +272,28 @@ Runs a bunch of tests against the given `$thing`, as defined:
 `$thing` can be the name of a role or class, an object instance, or a
 metaclass.
 
-- -subtest => 'subtest name...'
+- `-subtest => 'subtest name...'`
 
     If set, all tests run will be wrapped in a subtest, the name of which will be
     whatever `-subtest` is set to.
 
-- isa => \[ ... \]
+- `isa => [ ... ]`
 
     A list of superclasses thing should have.
 
-- anonymous => 0|1
+- `anonymous => 0|1`
 
     Check to see if the class is/isn't anonymous.
 
-- does => \[ ... \]
+- `does => [ ... ]`
 
     A list of roles the thing should do.
 
-- does\_not => \[ ... \]
+- `does_not => [ ... ]`
 
     A list of roles the thing should not do.
 
-- attributes => \[ ... \]
+- `attributes => [ ... ]`
 
     The attributes list specified here is in the form of a list of names, each
     optionally followed by a hashref of options to test the attribute for; this
@@ -309,19 +309,19 @@ metaclass.
             ],
         );
 
-- methods => \[ ... \]
+- `methods => [ ... ]`
 
     A list of methods the thing should have; see ["has\_method\_ok"](#has_method_ok).
 
-- no\_methods => \[ ... \]
+- `no_methods => [ ... ]`
 
     A list of methods the thing should not have; see ["has\_no\_method\_ok"](#has_no_method_ok).
 
-- sugar => 0|1
+- `sugar => 0|1`
 
     Ensure that thing can/cannot do the standard Moose sugar.
 
-- metaclasses => { $mop => { ... }, ... }
+- `metaclasses => { $mop => { ... }, ... }`
 
     Validates this thing's metaclasses: that is, given a MOP type (e.g. class,
     attribute, method, ...) and a hashref, find the associated metaclass of the
@@ -364,7 +364,7 @@ for additional role-specific tests.
         # ...and all other options from validate_thing()
     );
 
-- -compose => 0|1
+- `-compose => 0|1`
 
     When true, attempt to compose the role into an anonymous class, then use it to
     run ["validate\_class"](#validate_class).  The options we're given are passed to `validate_class()`
@@ -393,44 +393,44 @@ for additional role-specific tests.
         ok 8 - role composed into Moose::Meta::Class::__ANON__::SERIAL::1
         1..8
 
-- -subtest => 'subtest name...'
+- `-subtest => 'subtest name...'`
 
     If set, all tests run will be wrapped in a subtest, the name of which will be
     whatever `-subtest` is set to.
 
-- required\_methods => \[ ... \]
+- `required_methods => [ ... ]`
 
     A list of methods the role requires a consuming class to supply.
 
-- before => \[ ... \]
+- `before => [ ... ]`
 
     A list of methods the role expects to wrap before, on application to a class.
 
     See ["before" in Moose](https://metacpan.org/pod/Moose#before) for information on before method modifiers.
 
-- around => \[ ... \]
+- `around => [ ... ]`
 
     A list of methods the role expects to wrap around, on application to a class.
 
     See ["around" in Moose](https://metacpan.org/pod/Moose#around) for information on around method modifiers.
 
-- after => \[ ... \]
+- `after => [ ... ]`
 
     A list of methods the role expects to wrap after, on application to a class.
 
     See ["after" in Moose](https://metacpan.org/pod/Moose#after) for information on after method modifiers.
 
-- role\_metaroles => { $mop => \[ $role, ... \], ... }
+- `role_metaroles => { $mop => [ $role, ... ], ... }`
 
     Checks metaclasses to ensure the given metaroles are applied.  See
     ["does\_metaroles\_ok"](#does_metaroles_ok).
 
-- no\_role\_metaroles => { $mop => \[ $role, ... \], ... }
+- `no_role_metaroles => { $mop => [ $role, ... ], ... }`
 
     Checks metaclasses to ensure the given metaroles are applied.  See
     ["does\_not\_metaroles\_ok"](#does_not_metaroles_ok).
 
-- role\_metaclasses => { $mop => { ... }, ... }
+- `role_metaclasses => { $mop => { ... }, ... }`
 
     Validates this role's metaclasses: that is, given a MOP type (e.g. role,
     attribute, method, ...) and a hashref, find the associated metaclass of the
@@ -461,7 +461,7 @@ for additional role-specific tests.
     Note that `validate_class()` and `validate_role()` implement this using
     `class_metaclasses` and `role_metaclasses`, respectively.
 
-- class\_metaclasses => { $mop => { ... }, ... }
+- `class_metaclasses => { $mop => { ... }, ... }`
 
     As with role\_metaclasses, above, except that this option is only used
     if `-compose` is also specified.
@@ -490,26 +490,26 @@ for additional class-specific tests.
         # ...and all other options from validate_thing()
     );
 
-- -subtest => 'subtest name...'
+- `-subtest => 'subtest name...'`
 
     If set, all tests run will be wrapped in a subtest, the name of which will be
     whatever `-subtest` is set to.
 
-- immutable => 0|1
+- `immutable => 0|1`
 
     Checks the class to see if it is/isn't immutable.
 
-- class\_metaroles => { $mop => \[ $role, ... \], ... }
+- `class_metaroles => { $mop => [ $role, ... ], ... }`
 
     Checks metaclasses to ensure the given metaroles are applied.  See
     ["does\_metaroles\_ok"](#does_metaroles_ok).
 
-- no\_class\_metaroles => { $mop => \[ $role, ... \], ... }
+- `no_class_metaroles => { $mop => [ $role, ... ], ... }`
 
     Checks metaclasses to ensure the given metaroles are applied.  See
     ["does\_not\_metaroles\_ok"](#does_not_metaroles_ok).
 
-- class\_metaclasses => { $mop => { ... }, ... }
+- `class_metaclasses => { $mop => { ... }, ... }`
 
     Validates this class' metaclasses: that is, given a MOP type (e.g. role,
     attribute, method, ...) and a hashref, find the associated metaclass of the
@@ -585,7 +585,7 @@ attribute to require the value do a given role.
 This function takes all the options ["attribute\_options\_ok"](#attribute_options_ok) takes, as well as
 the following:
 
-- -subtest => 'subtest name...'
+- `-subtest => 'subtest name...'`
 
     If set, all tests run will be wrapped in a subtest, the name of which will be
     whatever `-subtest` is set to.
@@ -598,41 +598,41 @@ Validates that an attribute is set up as expected; like
 Note that some of these options will skip if used against attributes defined
 in a role.
 
-- -subtest => 'subtest name...'
+- `-subtest => 'subtest name...'`
 
     If set, all tests run (save the first, "does this thing even have this
     attribute?" test) will be wrapped in a subtest, the name of which will be
     whatever `-subtest` is set to.
 
-- is => ro|rw
+- `is => ro|rw`
 
     Tests for reader/writer options set as one would expect.
 
-- isa => ...
+- `isa => ...`
 
     Validates that the attribute requires its value to be a given type.
 
-- does => ...
+- `does => ...`
 
     Validates that the attribute requires its value to do a given role.
 
-- builder => '...'
+- `builder => '...'`
 
     Validates that the attribute expects the method name given to be its builder.
 
-- default => ...
+- `default => ...`
 
     Validates that the attribute has the given default.
 
-- init\_arg => '...'
+- `init_arg => '...'`
 
     Validates that the attribute has the given initial argument name.
 
-- lazy => 0|1
+- `lazy => 0|1`
 
     Validates that the attribute is/isn't lazy.
 
-- required => 0|1
+- `required => 0|1`
 
     Validates that setting the attribute's value is/isn't required.
 
