@@ -14,7 +14,7 @@ use TAP::SimpleOutput 0.009 'counters';
         is => 'ro',
     );
 
-    sub bar { ... }
+    sub bar { }
 }
 
 subtest 'plain - method' => sub {
