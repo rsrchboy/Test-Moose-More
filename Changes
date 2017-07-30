@@ -1,7 +1,5 @@
 Revision history for Test-Moose-More
 
-{{$NEXT}}
-
 0.049-TRIAL  2017-07-30 13:27:51 CDT-0500
 	* Add definition_context_ok()
 
