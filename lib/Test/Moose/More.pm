@@ -10,6 +10,7 @@ use Sub::Exporter::Progressive -setup => {
         attribute_options_ok
         check_sugar_ok
         check_sugar_removed_ok
+        definition_context_ok
         does_metaroles_ok
         does_not_metaroles_ok
         does_not_ok
@@ -313,6 +314,33 @@ sub _method_from_pkg_ok {
 
     local $Test::Builder::Level = $Test::Builder::Level + 1;
     return $test->($mmeta, $orig_pkg, $meta, "${name}'s method $method");
+}
+
+=test definition_context_ok $meta, \%dc
+
+Validates the definition context of a metaclass instance.  This is a strict
+comparison.
+
+=cut
+
+sub definition_context_ok ($$) {
+    my ($meta, $dc) = @_;
+
+    my $name = _thing_name($meta, $meta);
+
+    return unless $tb->ok(
+        $meta->can('definition_context'),
+        "$name can definition_context()",
+    );
+
+    my $meta_dc = $meta->definition_context;
+
+    ### $dc
+    ### $meta_dc
+
+    local $Test::Builder::Level = $Test::Builder::Level + 1;
+    return is_deeply $meta_dc => $dc,
+        "$name definition context is strictly correct";
 }
 
 =test role_wraps_around_method_ok $role, @methods
