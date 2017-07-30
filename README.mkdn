@@ -8,7 +8,7 @@ Test::Moose::More - More tools for testing Moose packages
 
 # VERSION
 
-This document describes version 0.049 of Test::Moose::More - released July 25, 2017 as part of Test-Moose-More.
+This document describes version 0.049 of Test::Moose::More - released July 30, 2017 as part of Test-Moose-More.
 
 # SYNOPSIS
 
@@ -125,6 +125,11 @@ accessor -- that is, it descends from [Class::MOP::Method::Accessor](https://met
 
 Given a thing (role, class, etc) and a method, test that the method is **not**
 an accessor -- that is, it does not descend from [Class::MOP::Method::Accessor](https://metacpan.org/pod/Class::MOP::Method::Accessor).
+
+## definition\_context\_ok $meta, \\%dc
+
+Validates the definition context of a metaclass instance.  This is a strict
+comparison.
 
 ## role\_wraps\_around\_method\_ok $role, @methods
 
@@ -248,6 +253,54 @@ or "let's subclass Moose::Meta::Class/etc and implement something new").
 
 As with ["does\_metaroles\_ok"](#does_metaroles_ok), but test that the metaroles are not consumed, a
 la ["does\_not\_ok"](#does_not_ok).
+
+## attribute\_options\_ok
+
+Validates that an attribute is set up as expected; like
+`validate_attribute()`, but only concerns itself with attribute options.
+
+Note that some of these options will skip if used against attributes defined
+in a role.
+
+- `-subtest => 'subtest name...'`
+
+    If set, all tests run (save the first, "does this thing even have this
+    attribute?" test) will be wrapped in a subtest, the name of which will be
+    whatever `-subtest` is set to.
+
+- `is => ro|rw`
+
+    Tests for reader/writer options set as one would expect.
+
+- `isa => ...`
+
+    Validates that the attribute requires its value to be a given type.
+
+- `does => ...`
+
+    Validates that the attribute requires its value to do a given role.
+
+- `builder => '...'`
+
+    Validates that the attribute expects the method name given to be its builder.
+
+- `default => ...`
+
+    Validates that the attribute has the given default.
+
+- `init_arg => '...'`
+
+    Validates that the attribute has the given initial argument name.
+
+- `lazy => 0|1`
+
+    Validates that the attribute is/isn't lazy.
+
+- `required => 0|1`
+
+    Validates that setting the attribute's value is/isn't required.
+
+# VALIDATION METHODS
 
 ## validate\_thing
 
@@ -589,52 +642,6 @@ the following:
 
     If set, all tests run will be wrapped in a subtest, the name of which will be
     whatever `-subtest` is set to.
-
-## attribute\_options\_ok
-
-Validates that an attribute is set up as expected; like
-`validate_attribute()`, but only concerns itself with attribute options.
-
-Note that some of these options will skip if used against attributes defined
-in a role.
-
-- `-subtest => 'subtest name...'`
-
-    If set, all tests run (save the first, "does this thing even have this
-    attribute?" test) will be wrapped in a subtest, the name of which will be
-    whatever `-subtest` is set to.
-
-- `is => ro|rw`
-
-    Tests for reader/writer options set as one would expect.
-
-- `isa => ...`
-
-    Validates that the attribute requires its value to be a given type.
-
-- `does => ...`
-
-    Validates that the attribute requires its value to do a given role.
-
-- `builder => '...'`
-
-    Validates that the attribute expects the method name given to be its builder.
-
-- `default => ...`
-
-    Validates that the attribute has the given default.
-
-- `init_arg => '...'`
-
-    Validates that the attribute has the given initial argument name.
-
-- `lazy => 0|1`
-
-    Validates that the attribute is/isn't lazy.
-
-- `required => 0|1`
-
-    Validates that setting the attribute's value is/isn't required.
 
 # SEE ALSO
 
