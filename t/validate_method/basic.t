@@ -4,9 +4,7 @@ use warnings;
 use Moose::Util 'with_traits';
 use Moose::Util::MetaRole;
 
-{ package TestRole;           use Moose::Role;                       }
-
-{ package BBB; use Moose::Role; }
+{ package BBB; use Moose::Role; sub bbb { } }
 
 {
     package AAA;
@@ -19,11 +17,9 @@ use Moose::Util::MetaRole;
         },
     );
 
-
-    with 'TestRole';
+    with 'BBB';
 
     has foo => (is => 'ro');
-
 
     sub method1 { }
 
@@ -62,6 +58,7 @@ subtest 'sanity runs...' => sub {
 
     validate_class AAA => (
         -subtest => 1,
+        class_metaroles => { method => ['BBB'] },
         methods => [
             method1 => {
                 -isa             => [ 'Moose::Meta::Method' ],
@@ -71,7 +68,19 @@ subtest 'sanity runs...' => sub {
 
             has_bar => {
                 -isa             => [ 'Moose::Meta::Method::Accessor' ],
+                -definition_context => {
+                    context     => 'has declaration',
+                    description => 'native delegation method AAA::has_bar (count) of attribute bar',
+                    file        => __FILE__,
+                    line        => 26,
+                    package     => 'AAA',
+                    type        => 'class'
+                },
                 original_package => 'AAA',
+            },
+
+            bbb => {
+                original_package => 'BBB',
             },
         ],
     );
