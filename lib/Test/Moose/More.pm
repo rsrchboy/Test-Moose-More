@@ -1517,6 +1517,37 @@ Validates that setting the attribute's value is/isn't required.
 
 =end :list
 
+=head2 validate_method
+
+    validate_method 'AAA' => method1 => (
+        -isa             => [ 'Moose::Meta::Method' ],
+        -does            => [ 'BBB' ],
+        original_package => 'AAA',
+    );
+
+C<validate_thing()> allows you to test a
+L<method metaclass|Moose::Meta::Method>.
+
+As with C<validate_attribute()>, options passed to C<validate_method()>
+prefixed with C<-> (except C<-subtest>) test the method's metaclass instance using
+L<validate_class()>.
+
+This function takes the following options:
+
+=begin :list
+
+* C<< -subtest => 'subtest name...' >>
+
+If set, all tests run will be wrapped in a subtest, the name of which will be
+whatever C<-subtest> is set to.  If C<< -subtest => 1 >>, a suitable name for
+the subtest will be chosen.
+
+* C<< original_package => $package_name >>
+
+Checks to ensure that this method originally came from C<$package_name>.
+
+=end :list
+
 =head1 SEE ALSO
 
 L<Test::Moose>
