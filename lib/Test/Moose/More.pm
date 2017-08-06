@@ -673,6 +673,10 @@ sub _validate_thing_guts {
     my $meta = find_meta($thing);
     my $name = _thing_name($thing, $meta);
 
+    ### definition context...
+    definition_context_ok $thing => $args{definition_context}
+        if exists $args{definition_context};
+
     ### anonymous...
     $args{anonymous} ? is_anon_ok $thing : is_not_anon_ok $thing
         if exists $args{anonymous};
@@ -1221,6 +1225,11 @@ e.g.
 
 Note that C<validate_class()> and C<validate_role()> implement this using
 C<class_metaclasses> and C<role_metaclasses>, respectively.
+
+* C<< definition_context => { ... } >>
+
+Checks to ensure that the thing has a definition context, and that it is
+strictly equal to the contents of the hash reference passed in.
 
 =end :list
 
