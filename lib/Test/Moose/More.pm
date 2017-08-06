@@ -1054,8 +1054,8 @@ sub _validate_method_guts {
             if keys %thing_opts;
     }
 
-    method_from_pkg_ok($thing => $name, $opts{orig_pkg})
-        if defined $opts{orig_pkg};
+    method_from_pkg_ok($thing => $name, $opts{original_package})
+        if defined $opts{original_package};
 
     return;
 }

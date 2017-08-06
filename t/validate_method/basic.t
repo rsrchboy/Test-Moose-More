@@ -52,10 +52,10 @@ use TAP::SimpleOutput 0.009 ':subtest';
 subtest 'sanity runs...' => sub {
 
     validate_method 'AAA' => method1 => (
-        -subtest => 1,
-        -isa => [ 'Moose::Meta::Method' ],
-        -does => [ 'BBB' ],
-        orig_pkg => 'AAA',
+        -subtest         => 1,
+        -isa             => [ 'Moose::Meta::Method' ],
+        -does            => [ 'BBB' ],
+        original_package => 'AAA',
     );
 
     pass 'now...';
@@ -64,13 +64,14 @@ subtest 'sanity runs...' => sub {
         -subtest => 1,
         methods => [
             method1 => {
-                -isa => [ 'Moose::Meta::Method' ],
-                -does => [ 'BBB' ],
-                isa => [ 'Moose::Meta::Method' ],
+                -isa             => [ 'Moose::Meta::Method' ],
+                -does            => [ 'BBB' ],
+                original_package => 'AAA',
             },
 
             has_bar => {
-                -isa => [ 'Moose::Meta::Method::Accessor' ],
+                -isa             => [ 'Moose::Meta::Method::Accessor' ],
+                original_package => 'AAA',
             },
         ],
     );
