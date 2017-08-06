@@ -1133,7 +1133,8 @@ metaclass.
 * C<< -subtest => 'subtest name...' >>
 
 If set, all tests run will be wrapped in a subtest, the name of which will be
-whatever C<-subtest> is set to.
+whatever C<-subtest> is set to.  If C<< -subtest => 1 >>, a suitable name for
+the subtest will be chosen.
 
 * C<< isa => [ ... ] >>
 
@@ -1259,7 +1260,8 @@ e.g.:
 * C<< -subtest => 'subtest name...' >>
 
 If set, all tests run will be wrapped in a subtest, the name of which will be
-whatever C<-subtest> is set to.
+whatever C<-subtest> is set to.  If C<< -subtest => 1 >>, a suitable name for
+the subtest will be chosen.
 
 * C<< required_methods => [ ... ] >>
 
@@ -1360,7 +1362,8 @@ for additional class-specific tests.
 * C<< -subtest => 'subtest name...' >>
 
 If set, all tests run will be wrapped in a subtest, the name of which will be
-whatever C<-subtest> is set to.
+whatever C<-subtest> is set to.  If C<< -subtest => 1 >>, a suitable name for
+the subtest will be chosen.
 
 * C<< immutable => 0|1 >>
 
@@ -1459,7 +1462,8 @@ the following:
 * C<< -subtest => 'subtest name...' >>
 
 If set, all tests run will be wrapped in a subtest, the name of which will be
-whatever C<-subtest> is set to.
+whatever C<-subtest> is set to.  If C<< -subtest => 1 >>, a suitable name for
+the subtest will be chosen.
 
 =end :list
 
