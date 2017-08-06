@@ -1170,7 +1170,18 @@ hashref takes the same arguments L</validate_attribute> does.  e.g.:
 
 * C<< methods => [ ... ] >>
 
-A list of methods the thing should have; see L</has_method_ok>.
+A list of methods the thing should have.
+
+Additionaly, much like the C<attributes> option, you can pass in a hash reference
+of options, and L<validate_method()> will be invoked on the method's metaclass.
+e.g.:
+
+    validate_thing $thing => (
+        methods => [
+            'self_destruct',
+            activate_life_support => { -does => ..., ... },
+        ],
+    );
 
 * C<< no_methods => [ ... ] >>
 
