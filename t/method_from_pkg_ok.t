@@ -40,7 +40,10 @@ note 'fails (TBT)';
 {
     my ($_ok, $_nok) = counters;
     test_out $_nok->(q{C's method b is from A});
-    test_fail 1;
+    test_fail 4;
+    test_err
+        q{#          got: 'B'},
+        q{#     expected: 'A'};
     method_from_pkg_ok C => 'b', 'A';
     test_test;
 }
