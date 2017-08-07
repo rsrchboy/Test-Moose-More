@@ -473,8 +473,8 @@ Passes if C<C<$thing>'s> metaclass is a L<Moose::Meta::Class>.
 sub is_role  ($) { goto \&is_role_ok  }
 sub is_class ($) { goto \&is_class_ok }
 
-sub is_role_ok  ($) { unshift @_, 'Role';  goto \&_is_moosey_ok }
-sub is_class_ok ($) { unshift @_, 'Class'; goto \&_is_moosey_ok }
+sub is_role_ok  ($) { _is_moosey_ok('Role',  @_) }
+sub is_class_ok ($) { _is_moosey_ok('Class', @_) }
 
 sub _is_moosey_ok {
     my ($type, $thing) =  @_;
