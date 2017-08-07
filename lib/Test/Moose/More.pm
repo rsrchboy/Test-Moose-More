@@ -473,19 +473,18 @@ Passes if C<C<$thing>'s> metaclass is a L<Moose::Meta::Class>.
 sub is_role  ($) { goto \&is_role_ok  }
 sub is_class ($) { goto \&is_class_ok }
 
-sub is_role_ok  ($) { _is_moosey_ok('Role',  @_) }
-sub is_class_ok ($) { _is_moosey_ok('Class', @_) }
+sub is_role_ok  ($) { _is_moosey_ok('Moose::Meta::Role',  'Moose role',  @_) }
+sub is_class_ok ($) { _is_moosey_ok('Moose::Meta::Class', 'Moose class', @_) }
 
 sub _is_moosey_ok {
-    my ($type, $thing) =  @_;
+    my ($type, $type_name, $thing) =  @_;
 
     my $thing_name = _thing_name($thing);
+    my $meta       = find_meta($thing);
 
-    my $meta = find_meta($thing);
-    $tb->ok(!!$meta, "$thing_name has a metaclass");
-    return unless !!$meta;
+    local $Test::Builder::Level = $Test::Builder::Level + 1;
 
-    my $is_moosey = $meta->isa("Moose::Meta::$type");
+    return unless $tb->ok(!!$meta, "$thing_name has a metaclass");
 
     # special check for class -- this will happen when, say, you're validating
     # an attribute and it's a bog standard Moose::Meta::Attribute: strictly
@@ -494,10 +493,11 @@ sub _is_moosey_ok {
     # in the context of what we're asking about here.  Better approaches to
     # this welcomed as pull requests :)
 
+    my $is_moosey = $meta->isa($type);
     $is_moosey ||= ($meta->name || q{}) =~ /^Moose::Meta::/
-        if $type eq 'Class';
+        if $type eq 'Moose::Meta::Class';
 
-    return $tb->ok($is_moosey, "$thing_name is a Moose " . lc $type);
+    return $tb->ok($is_moosey, "$thing_name is a $type_name");
 }
 
 =test is_anon_ok $thing
