@@ -294,8 +294,8 @@ an accessor -- that is, it does not descend from L<Class::MOP::Method::Accessor>
 =cut
 
 {
-    my $_yes = sub { $tb->ok($_[0]->original_package_name eq $_[1], "$_[3] is from $_[1]")     };
-    my $_no  = sub { $tb->ok($_[0]->original_package_name ne $_[1], "$_[3] is not from $_[1]") };
+    my $_yes = sub { $tb->is_eq($_[0]->original_package_name, $_[1], "$_[3] is from $_[1]")     };
+    my $_no  = sub { $tb->isnt_eq($_[0]->original_package_name, $_[1], "$_[3] is not from $_[1]") };
     sub method_from_pkg_ok($$$)     { _method_from_pkg_ok($_yes, @_) }
     sub method_not_from_pkg_ok($$$) { _method_from_pkg_ok($_no,  @_) }
 
