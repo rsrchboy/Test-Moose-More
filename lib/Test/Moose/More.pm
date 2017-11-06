@@ -58,7 +58,6 @@ use Sub::Exporter::Progressive -setup => {
 use Test::Builder;
 use Test::More;
 use Test::Moose 'with_immutable';
-use List::MoreUtils 'apply';
 use Scalar::Util 'blessed';
 use Syntax::Keyword::Junction 'any';
 use Moose::Util 'resolve_metatrait_alias', 'does_role', 'find_meta';
@@ -845,9 +844,9 @@ sub __validate_attribute_guts {
 
     local $Test::Builder::Level = $Test::Builder::Level + 1;
     my %thing_opts =
-        map   { $_ => delete $opts{"-$_"} }
-        apply { s/^-//                    }
-        grep  { /^-/                      }
+        map  { $_ => delete $opts{"-$_"}  }
+        map  { (my $d = $_) =~ s/^-//; $d }
+        grep { /^-/                       }
         sort keys %opts
         ;
 
