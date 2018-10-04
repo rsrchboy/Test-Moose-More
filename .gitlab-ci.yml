@@ -1,0 +1,20 @@
+stages:
+  - build
+  - test
+
+build:
+  stage: build
+  image: registry.gitlab.com/rsrchboy/perl-ci/dzil:latest
+  script:
+    - dzil build
+  artifacts:
+    paths:
+      - Test-Moose-More-*.tar.gz
+
+test:
+  stage: test
+  image: alpine:3.8
+  script:
+    - cpanm --verbose ./Test-Moose-More-*.tar.gz
+  dependencies:
+    - build
