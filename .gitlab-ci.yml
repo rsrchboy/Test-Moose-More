@@ -16,7 +16,7 @@ build:
 
 test:
   stage: test
-  image: alpine:3.8
+  image: registry.gitlab.com/rsrchboy/perl-ci:latest
   script:
     - cpanm --verbose ./Test-Moose-More-*.tar.gz
   dependencies:
