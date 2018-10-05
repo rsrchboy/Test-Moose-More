@@ -5,6 +5,8 @@ stages:
 build:
   stage: build
   image: registry.gitlab.com/rsrchboy/perl-ci/dzil:latest
+  variables:
+    DZSIGN: never
   script:
     - git config user.name nobody ; git config user.email nobody@nowhere.io
     - dzil build
