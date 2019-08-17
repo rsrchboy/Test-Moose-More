@@ -60,7 +60,7 @@ use Test::More;
 use Test::Moose 'with_immutable';
 use List::MoreUtils 'apply';
 use Scalar::Util 'blessed';
-use Syntax::Keyword::Junction 'any';
+use List::Util 1.33 'any';
 use Moose::Util 'resolve_metatrait_alias', 'does_role', 'find_meta';
 use Moose::Util::TypeConstraints;
 use Carp 'confess';
@@ -952,7 +952,7 @@ sub _class_attribute_options_ok {
         : ok(!$att->is_required, "$thing_name is not required")
         ;
 
-    $check->($_) for grep { any(@check_opts) eq $_ } sort keys %opts;
+    $check->($_) for grep { my $key = $_; any { $key eq $_ } @check_opts } sort keys %opts;
 
     do { $tb->skip("cannot test '$_' options yet", 1); delete $opts{$_} }
         for grep { exists $opts{$_} } @unhandled_opts;

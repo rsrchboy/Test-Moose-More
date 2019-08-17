@@ -1,6 +1,8 @@
 Revision history for Test-Moose-More
 
 {{$NEXT}}
+        * switch from Syntax::Keyword::Junction to List::Util to resolve
+        * compatibility issues
 
 0.050     2017-09-20 22:41:41 CDT-0500
 	* No code changes, releasing 0.049 as non-trial
